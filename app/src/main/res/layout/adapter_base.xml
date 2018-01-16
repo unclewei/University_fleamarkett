@@ -14,7 +14,6 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="5dp"
         android:background="#fffefe"
-        android:clickable="true"
         app:cardPreventCornerOverlap="true"
         app:cardUseCompatPadding="true">
 
