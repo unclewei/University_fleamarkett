@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/login1"
+    >
+
+    <Button
+        android:layout_marginTop="180dp"
+        android:id="@+id/login_activity1_login"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:background="@drawable/button_login"
+        android:textColor="#FFF"
+        android:text="登 录"/>
+
+</FrameLayout>

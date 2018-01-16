@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login1"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:layout_marginBottom="50dp" />
+
+    <EditText
+        android:id="@+id/login_activity3_edittext"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/bg_edittext_selector"
+        android:gravity="center"
+        android:hint="昵称" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="选择学校" />
+
+    <Spinner
+        android:id="@+id/login_activity3_spinner1"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+
+        />
+
+    <Spinner
+        android:id="@+id/login_activity3_spinner2"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp" />
+
+    <Spinner
+        android:id="@+id/login_activity3_spinner3"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp" />
+
+    <Spinner
+        android:id="@+id/login_activity3_spinner4"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp" />
+
+    <Button
+        android:id="@+id/login_activity3_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_login"
+        android:text="确定" />
+
+</LinearLayout>

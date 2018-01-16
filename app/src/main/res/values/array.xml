@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <resources>
+        <string-array name="spinnername1">
+            <item>广东</item>
+
+        </string-array>
+        <string-array name="spinnername2">
+            <item>江门</item>
+
+        </string-array>
+        <string-array name="spinnername3">
+            <item>五邑大学</item>
+            <item>江门职业技术学院</item>
+
+        </string-array>
+    <string-array name="spinnername4">
+        <item>计算机学院</item>
+        <item>经济管理学院</item>
+        <item>土木工程学院</item>
+        <item>艺术设计学院</item>
+
+    </string-array>
+    </resources>
