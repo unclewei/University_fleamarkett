@@ -274,7 +274,7 @@ public class BOMB_openhelper {
                     map.put("zan_nub",object.getZan_nub()+"");
                     map.put("organization",object.getOrganization());
                     map.put("head_portrait_url",object.getHead_portrait());
-                    callback.onImageLoad(map); 
+                    callback.onImageLoad(map);
                 } else {
                     callback.onError();
                     Log.i("bmob", "失败：" + e.getMessage() + "," + e.getErrorCode());
