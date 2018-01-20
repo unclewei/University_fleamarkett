@@ -9,11 +9,13 @@ import android.util.Base64;
 import android.widget.ImageView;
 
 /**
- * Created by Administrator on 2016/11/25 0025.
+ *
+ * @author Administrator
+ * @date 2016/11/25 0025
  * 这个是首页广告的内容
  */
 
-public class text extends Activity {
+public class TextActivity extends Activity {
     private ImageView iv;
 
     @Override

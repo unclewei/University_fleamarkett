@@ -5,15 +5,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -21,30 +16,24 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.uncle.bomb.BOMB_openhelper;
-import com.uncle.method.Info;
 import com.uncle.method.MyAdapter.AsyncImageLoader;
-import com.uncle.method.MyAdapter.NoScrollListView;
-import com.uncle.method.PhotoView;
 import com.uncle.method.get_internet_image;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Created by Administrator on 2017/3/11 0011.
+ *
+ * @author Administrator
+ * @date 2017/3/11 0011
  */
 
-public class bt1_intent_to_context extends Activity {
+public class GoodsDetailsActivity extends Activity {
     private TextView title, price, zan_nub,organization,name;//标题，价格，点赞数，学院
     private ImageView img1, img2, img3, img4 = null, img5 = null, img6 = null,icon,call;
     private get_internet_image internew_image;//获取网络图片的方法
@@ -164,9 +153,9 @@ public class bt1_intent_to_context extends Activity {
             @Override
             public void onClick(View v) {
                 if (owner.equals(myobject)){
-                    Toast.makeText(bt1_intent_to_context.this,"不能自己与自己聊天",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GoodsDetailsActivity.this,"不能自己与自己聊天",Toast.LENGTH_SHORT).show();
                 }else {
-                    Intent intent = new Intent(bt1_intent_to_context.this, chat_activity.class);
+                    Intent intent = new Intent(GoodsDetailsActivity.this, ChatActivity.class);
                     intent.putExtra("owner", owner);
                     startActivity(intent);
                 }
@@ -176,9 +165,9 @@ public class bt1_intent_to_context extends Activity {
             @Override
             public void onClick(View v) {
                 if (owner.equals(myobject)){
-                    Toast.makeText(bt1_intent_to_context.this,"不能自己与自己聊天",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GoodsDetailsActivity.this,"不能自己与自己聊天",Toast.LENGTH_SHORT).show();
                 }else {
-                Intent intent = new Intent(bt1_intent_to_context.this,chat_activity.class);
+                Intent intent = new Intent(GoodsDetailsActivity.this,ChatActivity.class);
                 intent.putExtra("owner",owner);
                 startActivity(intent);
                 }
@@ -188,9 +177,9 @@ public class bt1_intent_to_context extends Activity {
             @Override
             public void onClick(View v) {
                 if (owner.equals(myobject)){
-                    Toast.makeText(bt1_intent_to_context.this,"不能自己与自己聊天",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GoodsDetailsActivity.this,"不能自己与自己聊天",Toast.LENGTH_SHORT).show();
                 }else {
-                    Intent intent = new Intent(bt1_intent_to_context.this,chat_activity.class);
+                    Intent intent = new Intent(GoodsDetailsActivity.this,ChatActivity.class);
                     intent.putExtra("owner",owner);
                     startActivity(intent);
                 }
@@ -211,7 +200,7 @@ public class bt1_intent_to_context extends Activity {
         img1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(bt1_intent_to_context.this, bt1_ViewPagerActivity.class);
+                Intent intent = new Intent(GoodsDetailsActivity.this, ViewPagerActivity.class);
                 path_for_click(intent, 0);
                 startActivity(intent);
             }
@@ -219,7 +208,7 @@ public class bt1_intent_to_context extends Activity {
         img2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(bt1_intent_to_context.this, bt1_ViewPagerActivity.class);
+                Intent intent = new Intent(GoodsDetailsActivity.this, ViewPagerActivity.class);
                 path_for_click(intent, 1);
                 startActivity(intent);
             }
@@ -227,7 +216,7 @@ public class bt1_intent_to_context extends Activity {
         img3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(bt1_intent_to_context.this, bt1_ViewPagerActivity.class);
+                Intent intent = new Intent(GoodsDetailsActivity.this, ViewPagerActivity.class);
                 path_for_click(intent, 2);
                 startActivity(intent);
             }
@@ -274,9 +263,9 @@ public class bt1_intent_to_context extends Activity {
                     title.setText(map.get("title"));
                     price.setText(map.get("price"));
                     zan_nub.setText(map.get("zan_nub"));
-                    Glide.with(bt1_intent_to_context.this).load(map.get("image1")).into(img1);
-                    Glide.with(bt1_intent_to_context.this).load(map.get("image2")).into(img2);
-                    Glide.with(bt1_intent_to_context.this).load(map.get("image3")).into(img3);
+                    Glide.with(GoodsDetailsActivity.this).load(map.get("image1")).into(img1);
+                    Glide.with(GoodsDetailsActivity.this).load(map.get("image2")).into(img2);
+                    Glide.with(GoodsDetailsActivity.this).load(map.get("image3")).into(img3);
                 }
 
                 @Override
@@ -299,7 +288,7 @@ public class bt1_intent_to_context extends Activity {
                     InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(comment_text.getWindowToken(), 0); // 关闭软键盘
                     comment_text.setText(null);
-                    Toast.makeText(bt1_intent_to_context.this, "评论成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GoodsDetailsActivity.this, "评论成功", Toast.LENGTH_SHORT).show();
                     final String finalText_context = text_context;
                     new Thread() {
                         @Override
@@ -319,7 +308,7 @@ public class bt1_intent_to_context extends Activity {
                     InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(comment_text.getWindowToken(), 0); // 关闭软键盘
                     comment_text.setText(null);
-                    Toast.makeText(bt1_intent_to_context.this, "回复成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GoodsDetailsActivity.this, "回复成功", Toast.LENGTH_SHORT).show();
                     final String finalText_context = text_context;
                     new Thread() {
                         @Override
@@ -330,7 +319,7 @@ public class bt1_intent_to_context extends Activity {
                     }.start();
 
                 } else {
-                    Toast.makeText(bt1_intent_to_context.this, "内容不能为空", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GoodsDetailsActivity.this, "内容不能为空", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -355,7 +344,7 @@ public class bt1_intent_to_context extends Activity {
     }//获取评论呢
 
     public void get_new_textview(String context) {
-        TextView textView = new TextView(bt1_intent_to_context.this);
+        TextView textView = new TextView(GoodsDetailsActivity.this);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         textView.setLayoutParams(layoutParams);
@@ -372,7 +361,7 @@ public class bt1_intent_to_context extends Activity {
             comment_text.setFocusableInTouchMode(true);
             comment_text.requestFocus();
             //打开软键盘
-            InputMethodManager imm = (InputMethodManager) bt1_intent_to_context.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) GoodsDetailsActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
             comment_reply = false;
         }

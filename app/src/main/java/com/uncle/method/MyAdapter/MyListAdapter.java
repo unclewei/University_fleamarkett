@@ -1,25 +1,14 @@
 package com.uncle.method.MyAdapter;
 
-/**
- * Created by Administrator on 2017/2/9 0009.
- */
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.os.Handler;
-import android.os.Message;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -27,13 +16,12 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.uncle.administrator.university_fleamarket.R;
-import com.uncle.administrator.university_fleamarket.bt1_ViewPagerActivity;
-import com.uncle.administrator.university_fleamarket.bt1_intent_to_context;
-import com.uncle.method.PhotoView;
 
+/**
+ * @author unclewei
+ */
 public class MyListAdapter extends BaseAdapter  {
 
-    private LayoutInflater inflater;
     private ListView listView;
     private Context context;
     private List<HashMap<String,String>> dataArray=new ArrayList<>();

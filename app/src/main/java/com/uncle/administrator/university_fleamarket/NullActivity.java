@@ -9,7 +9,7 @@ import com.uncle.administrator.university_fleamarket.R;
  * Created by Administrator on 2017/6/7 0007.
  */
 
-public class null_activity extends Activity {
+public class NullActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

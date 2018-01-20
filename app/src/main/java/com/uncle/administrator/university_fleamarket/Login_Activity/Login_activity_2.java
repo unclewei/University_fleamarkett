@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import com.uncle.administrator.university_fleamarket.MainActivity;
 import com.uncle.administrator.university_fleamarket.R;
-import com.uncle.administrator.university_fleamarket.bt3_person_data_change;
 import com.uncle.bomb.BOMB_openhelper;
 
 import java.util.ArrayList;

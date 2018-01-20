@@ -5,25 +5,21 @@ package com.uncle.administrator.university_fleamarket;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * Created by Administrator on 2016/11/22 0022.
  */
 
-public class the_base_button_3 extends Fragment implements View.OnClickListener {
+public class PersonFragment extends Fragment implements View.OnClickListener {
     private LinearLayout  person;
     private TextView tv_name,tv_school;
     private ImageView icon,set,sell,sold,buy,zan;
@@ -68,14 +64,14 @@ public class the_base_button_3 extends Fragment implements View.OnClickListener 
         person.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(),bt3_person_data_change.class);
+                Intent intent = new Intent(getContext(),ChangePersonDataActivity.class);
                 startActivity(intent);
             }
         });
     }
 
     private void intent_to_null_activity(){
-        Intent intent = new Intent(getContext(),null_activity.class);
+        Intent intent = new Intent(getContext(),NullActivity.class);
         startActivity(intent);
     }
 
@@ -121,7 +117,7 @@ public class the_base_button_3 extends Fragment implements View.OnClickListener 
         }
     }
 //
-//    public void sell(){
+//    public void SellActivity(){
 //
 //        clean.setOnClickListener(new View.OnClickListener() {
 //            @Override

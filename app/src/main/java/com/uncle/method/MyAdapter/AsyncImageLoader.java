@@ -19,8 +19,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.util.Log;
 
-import com.uncle.administrator.university_fleamarket.chat_activity;
-
 public class AsyncImageLoader {
     static final Handler handler = new Handler();
     private int i = 0;

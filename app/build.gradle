@@ -18,12 +18,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    dataBinding {
+        enabled = true
+    }
 
-//    sourceSets {
-//    main{
-//        jniLibs.srcDirs = ['libs']
-//    }
-//    }
 }
 
 dependencies {

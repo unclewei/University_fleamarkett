@@ -1,30 +1,26 @@
 package com.uncle.administrator.university_fleamarket;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.uncle.method.PhotoView;
 
-import java.io.File;
-
 /**
- * Created by Administrator on 2017/3/16 0016.
+ *
+ * @author Administrator
+ * @date 2017/3/16 0016
  * 点击图片，进入的viewpager中左右拉
  */
 
-public class bt1_ViewPagerActivity extends Activity {
+public class ViewPagerActivity extends Activity {
     private ViewPager mPager;
     private String[] imgsId;
 
@@ -57,7 +53,7 @@ public class bt1_ViewPagerActivity extends Activity {
 
             @Override
             public Object instantiateItem(ViewGroup container, int position) {
-                PhotoView view = new PhotoView(bt1_ViewPagerActivity.this);
+                PhotoView view = new PhotoView(ViewPagerActivity.this);
                 view.enable();
                 view.setScaleType(ImageView.ScaleType.FIT_CENTER);
 

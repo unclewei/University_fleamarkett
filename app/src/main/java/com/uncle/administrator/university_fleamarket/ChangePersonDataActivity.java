@@ -13,7 +13,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -29,7 +28,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,10 +42,12 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * Created by Administrator on 2017/5/22 0022.
+ *
+ * @author Administrator
+ * @date 2017/5/22 0022
  */
 
-public class bt3_person_data_change extends Activity {
+public class ChangePersonDataActivity extends Activity {
     private LinearLayout icon, name, school;
     private ImageView hand;
     private TextView text_name, text_school;
@@ -115,7 +115,7 @@ public class bt3_person_data_change extends Activity {
 
     //菊花转圈圈
     private void wait_look(){
-        m_pDialog= ProgressDialog.show(bt3_person_data_change.this, null, "修改中…");
+        m_pDialog= ProgressDialog.show(ChangePersonDataActivity.this, null, "修改中…");
         new Thread(){
             @Override
             public void run() {
@@ -171,7 +171,7 @@ public class bt3_person_data_change extends Activity {
             @Override
             public void done() {
                 viewHandler.sendEmptyMessage(0);
-                Intent intent = new Intent(bt3_person_data_change.this,MainActivity.class);
+                Intent intent = new Intent(ChangePersonDataActivity.this,MainActivity.class);
                 startActivity(intent);
                 finish();
 
@@ -179,7 +179,7 @@ public class bt3_person_data_change extends Activity {
 
             @Override
             public void fail() {
-                Toast.makeText(bt3_person_data_change.this,"网络不好，上传失败",Toast.LENGTH_SHORT).show();
+                Toast.makeText(ChangePersonDataActivity.this,"网络不好，上传失败",Toast.LENGTH_SHORT).show();
             }
         });
     }

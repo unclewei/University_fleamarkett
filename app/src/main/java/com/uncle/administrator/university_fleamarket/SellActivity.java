@@ -28,8 +28,6 @@ import com.uncle.bomb.BOMB_openhelper;
 import com.uncle.method.turns;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,14 +36,15 @@ import cn.bmob.v3.Bmob;
 
 
 /**
- * Created by Administrator on 2016/12/11 0011.
+ *
+ * @author Administrator
+ * @date 2016/12/11 0011
  */
 
-public class sell extends Activity {
+public class SellActivity extends Activity {
     private EditText ed_title, ed_detail, ed_price;
     private Button close, bt_send;
     private ImageView img;
-    //    private Bitmap bmp;
     private String title, detail, price;
     private String img_string;//图片的String格式
 
@@ -92,7 +91,7 @@ public class sell extends Activity {
     private void get_data_from_sharepreference(){
         SharedPreferences sharedPreferences = getSharedPreferences("account", Context.MODE_WORLD_READABLE);
         if (sharedPreferences.getString("object_id","没有id").equals("没有id")){
-            Intent intent = new Intent(sell.this,welcome_page.class);
+            Intent intent = new Intent(SellActivity.this,welcome_page.class);
             startActivity(intent);
             finish();
         }else {
@@ -121,13 +120,13 @@ public class sell extends Activity {
                 detail = ed_detail.getText().toString().trim();
                 price = ed_price.getText().toString().trim();
                 if (title.isEmpty()) {
-                    Toast.makeText(sell.this, "没有标题怎么卖呢~~", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SellActivity.this, "没有标题怎么卖呢~~", Toast.LENGTH_SHORT).show();
                 } else if (detail.isEmpty()) {
-                    Toast.makeText(sell.this, "再描述点细节吧~~", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SellActivity.this, "再描述点细节吧~~", Toast.LENGTH_SHORT).show();
                 } else if (price.isEmpty()) {
-                    Toast.makeText(sell.this, "没有价格你要免费送给我吗~~", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SellActivity.this, "没有价格你要免费送给我吗~~", Toast.LENGTH_SHORT).show();
                 } else if (imageItem.size() <= 3) {
-                    Toast.makeText(sell.this, "要有三张以上图片才能让别人了解你哟~~", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SellActivity.this, "要有三张以上图片才能让别人了解你哟~~", Toast.LENGTH_SHORT).show();
                 } else {//开启数据库
                     final BOMB_openhelper bomb = new BOMB_openhelper();
                     new Thread() {
@@ -154,10 +153,10 @@ public class sell extends Activity {
                             super.run();
                         }
                     }.start();
-                    Toast.makeText(sell.this, "发布成功，一会儿就能看到你的信息咯~" , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SellActivity.this, "发布成功，一会儿就能看到你的信息咯~" , Toast.LENGTH_SHORT).show();
 
 
-                    Intent intent = new Intent(sell.this, MainActivity.class);
+                    Intent intent = new Intent(SellActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();
                 }
@@ -226,9 +225,9 @@ public class sell extends Activity {
                                              @Override
                                              public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                                                  if (imageItem.size() == 10) { //第一张为默认图片
-                                                     Toast.makeText(sell.this, "图片数9张已满", Toast.LENGTH_SHORT).show();
+                                                     Toast.makeText(SellActivity.this, "图片数9张已满", Toast.LENGTH_SHORT).show();
                                                  } else if (position == 0) { //点击图片位置为+ 0对应0张图片
-                                                     Toast.makeText(sell.this, "添加图片", Toast.LENGTH_SHORT).show();
+                                                     Toast.makeText(SellActivity.this, "添加图片", Toast.LENGTH_SHORT).show();
                                                      //选择图片
                                                      Intent intent = new Intent(Intent.ACTION_PICK,
                                                              MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -291,7 +290,7 @@ public class sell extends Activity {
      * position为删除图片位置
      */
     protected void dialog(final int position) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(sell.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(SellActivity.this);
         builder.setMessage("确认移除已添加图片吗？");
         builder.setTitle("提示");
         builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {

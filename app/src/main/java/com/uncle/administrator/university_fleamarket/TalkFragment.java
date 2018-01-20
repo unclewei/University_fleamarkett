@@ -2,16 +2,12 @@ package com.uncle.administrator.university_fleamarket;
 
 
 import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +27,7 @@ import java.util.HashMap;
  * Created by Administrator on 2016/11/22 0022.
  */
 
-public class the_base_button_2 extends Fragment {
+public class TalkFragment extends Fragment {
     private LinearLayout base_linearLayout;
     private Chat_data_Dao chat_dao;
     private Drawable drawable2;
@@ -197,7 +193,7 @@ public class the_base_button_2 extends Fragment {
             @Override
             public void onClick(View v) {
                 String target_ID = tv.getText().toString();
-                Intent intent = new Intent(getContext(), chat_activity.class);
+                Intent intent = new Intent(getContext(), ChatActivity.class);
                 intent.putExtra("owner", target_ID);
                 startActivity(intent);
             }

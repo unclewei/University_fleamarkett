@@ -33,16 +33,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".text" />
-        <activity android:name=".sell" />
-        <activity android:name=".bt1_intent_to_context" />
-        <activity android:name=".bt1_ViewPagerActivity" />
-        <activity android:name=".chat_activity" />
+        <activity android:name=".TextActivity" />
+        <activity android:name=".SellActivity" />
+        <activity android:name=".GoodsDetailsActivity" />
+        <activity android:name=".ViewPagerActivity" />
+        <activity android:name=".ChatActivity" />
         <activity android:name=".Login_Activity.Login_activity_2" />
         <activity android:name=".Login_Activity.Login_activity_1" />
         <activity android:name=".Login_Activity.Login_activity3_setname" />
-        <activity android:name=".bt3_person_data_change" />
-        <activity android:name=".null_activity" />
+        <activity android:name=".ChangePersonDataActivity" />
+        <activity android:name=".NullActivity" />
         <activity android:name=".Login_Activity.welcome_page"/>
 
 

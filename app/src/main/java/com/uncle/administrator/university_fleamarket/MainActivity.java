@@ -77,7 +77,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private void initTab() {
 
         if (the_first == null) {
-            the_first = new the_base_button_1();
+            the_first = new HomeFragment();
         }
 
         if (!the_first.isAdded()) {
@@ -107,8 +107,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             case R.id.rl_me: // 我的
                 clickTab3Layout();
                 break;
-            case R.id.rl_sell://sell
-                Intent intent = new Intent(MainActivity.this, sell.class);
+            case R.id.rl_sell://SellActivity
+                Intent intent = new Intent(MainActivity.this, SellActivity.class);
                 startActivity(intent);
                 break;
             default:
@@ -122,7 +122,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private void clickTab1Layout() {
 
         if (the_first == null) {
-            the_first = new the_base_button_1();
+            the_first = new HomeFragment();
         }
         addOrShowFragment(getSupportFragmentManager().beginTransaction(), the_first);
         // 设置底部tab变化
@@ -142,7 +142,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
      */
     private void clickTab2Layout() {
         if (the_secend == null) {
-            the_secend = new the_base_button_2();
+            the_secend = new TalkFragment();
         }
         addOrShowFragment(getSupportFragmentManager().beginTransaction(), the_secend);
 
@@ -162,7 +162,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
      */
     private void clickTab3Layout() {
         if (the_thirs == null) {
-            the_thirs = new the_base_button_3();
+            the_thirs = new PersonFragment();
         }
 
         addOrShowFragment(getSupportFragmentManager().beginTransaction(), the_thirs);

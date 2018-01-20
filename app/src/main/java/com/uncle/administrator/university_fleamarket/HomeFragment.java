@@ -1,9 +1,7 @@
 package com.uncle.administrator.university_fleamarket;
 
 
-import android.content.ClipData;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -31,30 +29,24 @@ import android.widget.Toast;
 
 import com.uncle.bomb.shop_goods;
 import com.uncle.method.MyAdapter.MyListAdapter;
-import com.uncle.method.get_internet_image;
 import com.uncle.method.view.RefreshableView;
-
-import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
-import cn.bmob.v3.listener.QueryListener;
-
-import static android.content.Intent.getIntent;
-import static com.uncle.administrator.university_fleamarket.R.drawable;
 
 /**
- * Created by Administrator on 2016/11/22 0022.
+ *
+ * @author Administrator
+ * @date 2016/11/22 0022
  */
-public class the_base_button_1 extends Fragment implements AbsListView.OnScrollListener, View.OnClickListener {
+public class HomeFragment extends Fragment implements AbsListView.OnScrollListener, View.OnClickListener {
     private ImageView[] imageViews = null;
     private ImageView imageView = null;
     private ViewPager advPager = null;
@@ -183,7 +175,7 @@ public class the_base_button_1 extends Fragment implements AbsListView.OnScrollL
                         map.put("image5", goods.getImage5());
                         map.put("image6", goods.getImage6());
                         map.put("title", goods.getTitle());
-                        map.put("text", goods.getText());
+                        map.put("TextActivity", goods.getText());
                         map.put("price", goods.getPrice());
                         map.put("variety", goods.getVariety());
                         map.put("objectID", goods.getObjectId());
@@ -221,7 +213,7 @@ public class the_base_button_1 extends Fragment implements AbsListView.OnScrollL
                 HashMap<String, String> map = (HashMap<String, String>) adapter.getItem(position);
                 String objID = map.get("objectID");
                 String owner_id = map.get("owner");
-                Intent intent = new Intent(getContext(), bt1_intent_to_context.class);
+                Intent intent = new Intent(getContext(), GoodsDetailsActivity.class);
                 intent.putExtra("objID", objID);
                 intent.putExtra("owner_id", owner_id);
 
@@ -256,7 +248,7 @@ public class the_base_button_1 extends Fragment implements AbsListView.OnScrollL
        }
     }
     private void intent_to_null_activity(){
-        Intent intent = new Intent(getContext(),null_activity.class);
+        Intent intent = new Intent(getContext(),NullActivity.class);
         startActivity(intent);
     }
 
@@ -521,7 +513,7 @@ public class the_base_button_1 extends Fragment implements AbsListView.OnScrollL
     }
 
     public void send_advantage(int i) {
-        Intent intent = new Intent(getActivity(), text.class);
+        Intent intent = new Intent(getActivity(), TextActivity.class);
         intent.putExtra("image", i);
         startActivity(intent);
 

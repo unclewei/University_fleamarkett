@@ -112,7 +112,7 @@ public class BOMB_openhelper {
                         map.put("image5", goods.getImage5());
                         map.put("image6", goods.getImage6());
                         map.put("title", goods.getTitle());
-                        map.put("text", goods.getText());
+                        map.put("TextActivity", goods.getText());
                         map.put("price", goods.getPrice());
                         map.put("variety", goods.getVariety());
                         al.add(map);
@@ -265,7 +265,7 @@ public class BOMB_openhelper {
                     map.put("image5", object.getImage5());
                     map.put("image6", object.getImage6());
                     map.put("title", object.getTitle());
-                    map.put("text", object.getText());
+                    map.put("TextActivity", object.getText());
                     map.put("price", object.getPrice());
                     map.put("variety", object.getVariety());
                     map.put("objectID", object.getObjectId());
