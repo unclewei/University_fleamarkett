@@ -19,15 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.nostra13.universalimageloader.utils.L;
-import com.uncle.bomb.BOMB_openhelper;
-import com.uncle.database.Chat_data_Dao;
-import com.uncle.database.goods_Dao;
-import com.uncle.database.goods_SQL_OpenHelper;
-
-import java.io.IOException;
-import java.net.URL;
-
 /**
  * Created by Administrator on 2016/11/22 0022.
  */

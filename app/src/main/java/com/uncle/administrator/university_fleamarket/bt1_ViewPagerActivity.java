@@ -83,9 +83,6 @@ public class bt1_ViewPagerActivity extends Activity {
         options.inPreferredConfig = Bitmap.Config.ARGB_4444;//用ARBG_4444色彩模式加载图片
         Bitmap bitmap = BitmapFactory.decodeFile(path,options);
 
-
-
-
         return bitmap;
     }
 }

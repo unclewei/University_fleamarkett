@@ -25,28 +25,25 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
+import com.bumptech.glide.Glide;
 import com.uncle.administrator.university_fleamarket.R;
 import com.uncle.administrator.university_fleamarket.bt1_ViewPagerActivity;
+import com.uncle.administrator.university_fleamarket.bt1_intent_to_context;
 import com.uncle.method.PhotoView;
 
 public class MyListAdapter extends BaseAdapter  {
 
     private LayoutInflater inflater;
     private ListView listView;
-    private AsyncImageLoader asyncImageLoader;
-
+    private Context context;
     private List<HashMap<String,String>> dataArray=new ArrayList<>();
 
 
 
-    public MyListAdapter(Activity activity, List<HashMap<String,String>> imageAndTexts, ListView listView) {
+    public MyListAdapter(Context context, List<HashMap<String,String>> imageAndTexts, ListView listView) {
 
         this.listView = listView;
-        asyncImageLoader = new AsyncImageLoader();
-        inflater = activity.getLayoutInflater();
+        this.context = context;
         dataArray=imageAndTexts;
     }
 
@@ -82,12 +79,12 @@ public class MyListAdapter extends BaseAdapter  {
         ImageView head_portrait;
     }
     //不需要ViewHolder版，直接将ImageAndText与XML资源关联起来
-    public View getView( int position, View convertView, ViewGroup parent) {
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
 
         final Holder holder;
         if (convertView == null) {
             holder =new Holder();
-            convertView = inflater.inflate(R.layout.adapter_base, null);
         }else{
             convertView.setTag(position);
 //            holder = (Holder) convertView.getTag();
@@ -124,122 +121,12 @@ public class MyListAdapter extends BaseAdapter  {
         //否则在下拉时会随机匹配背景，不美观
 
 
-        ImageLoader imageLoader  = ImageLoader.getInstance();//初始化
-        DisplayImageOptions options =  new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.img_loading) // 设置图片下载期间显示的图片
-                .showImageForEmptyUri(R.drawable.img_loading) // 设置图片Uri为空或是错误的时候显示的图片
-                .showImageOnFail(R.drawable.img_loading) // 设置图片加载或解码过程中发生错误显示的图片
-                .cacheInMemory(true) // 设置下载的图片是否缓存在内存中
-                .cacheOnDisk(true) // 设置下载的图片是否缓存在SD卡中
-                .displayer(new RoundedBitmapDisplayer(20)) // 设置成圆角图片
-//                .displayer(new FadeInBitmapDisplayer(100))//是否图片加载好后渐入的动画时间
-                .build(); // 构建完成
 
         View view = listView.findViewWithTag(position);
-//        ImageView iv= (ImageView) view.findViewById(R.id.adapter_img1);
-//        holder.iv2= (ImageView) view.findViewById(R.id.adapter_img2);
-//        holder.iv3= (ImageView) view.findViewById(R.id.adapter_img3);
-        imageLoader.displayImage(imageUrl1, holder.iv1, options);
-        imageLoader.displayImage(imageUrl2, holder.iv2, options);
-        imageLoader.displayImage(imageUrl3, holder.iv3, options);
-//
-//        asyncImageLoader.loadDrawable(inflater.getContext(),position,imageUrl1, new AsyncImageLoader.ImageCallback() {
-//            @Override
-//            public void onImageLoad(Integer pos, Drawable drawable) {
-//                View view = listView.findViewWithTag(pos);
-//                if(view != null){
-//                    ImageView iv = (ImageView) view.findViewById(R.id.adapter_img1);
-//                    iv.setBackgroundDrawable(drawable);
-//
-//
-//                }
-//
-//           }
-//            //加载不成功的图片处理
-//            @Override
-//            public void onError(Integer pos) {
-//                View view = listView.findViewWithTag(pos);
-//                if(view != null){
-//                    ImageView iv = (ImageView) view.findViewById(R.id.adapter_img1);
-//                    iv.setBackgroundResource(R.drawable.img_loading);
-//                }
-//            }
-//
-//        });
-//        asyncImageLoader.loadDrawable(inflater.getContext(),position,imageUrl2, new AsyncImageLoader.ImageCallback() {
-//            @Override
-//            public void onImageLoad(Integer pos, Drawable drawable) {
-//                View view = listView.findViewWithTag(pos);
-//                if(view != null){
-//                    ImageView iv = (ImageView) view.findViewById(R.id.adapter_img2);
-//                    iv.setBackgroundDrawable(drawable);
-//
-//                }
-//            }
-//            //加载不成功的图片处理
-//            @Override
-//            public void onError(Integer pos) {
-//                View view = listView.findViewWithTag(pos);
-//                if(view != null){
-//                    ImageView iv = (ImageView) view.findViewById(R.id.adapter_img2);
-//                    iv.setBackgroundResource(R.drawable.img_loading);
-//                }
-//            }
-//
-//        });
-//        asyncImageLoader.loadDrawable(inflater.getContext(),position,imageUrl3, new AsyncImageLoader.ImageCallback() {
-//            @Override
-//            public void onImageLoad(Integer pos, Drawable drawable) {
-//                View view = listView.findViewWithTag(pos);
-//                if(view != null){
-//                    ImageView iv = (ImageView) view.findViewById(R.id.adapter_img3);
-//                    iv.setBackgroundDrawable(drawable);
-//                    Message message = new Message();
-//
-//                }
-//            }
-//            //加载不成功的图片处理
-//            @Override
-//            public void onError(Integer pos) {
-//                View view = listView.findViewWithTag(pos);
-//                if(view != null){
-//                    ImageView iv = (ImageView) view.findViewById(R.id.adapter_img3);
-//                    iv.setBackgroundResource(R.drawable.img_loading);
-//                }
-//            }
-//
-//        });
-        asyncImageLoader.loadDrawable(inflater.getContext(),position,head_portrait_url, new AsyncImageLoader.ImageCallback() {
-            @Override
-            public void onImageLoad(Integer pos, Drawable drawable) {
-                View view = listView.findViewWithTag(pos);
-                if(view != null){
-                    if (drawable !=null){
-                    ImageView iv = (ImageView) view.findViewById(R.id.adapter_head_portrait);
-                    iv.setBackgroundDrawable(drawable);
-                }else {
-                        ImageView iv = (ImageView) view.findViewById(R.id.adapter_head_portrait);
-                        iv.setBackgroundResource(R.drawable.head);
-                    }
-                }
-            }
-            //加载不成功的图片处理
-            @Override
-            public void onError(Integer pos) {
-                View view = listView.findViewWithTag(pos);
-                if(view != null){
-                    ImageView iv = (ImageView) view.findViewById(R.id.adapter_head_portrait);
-                    iv.setBackgroundResource(R.drawable.person);
-                }
-            }
 
-        });
-
-
-
-
-
-
+        Glide.with(context).load(imageUrl1).into(holder.iv1);
+        Glide.with(context).load(imageUrl2).into(holder.iv2);
+        Glide.with(context).load(imageUrl3).into(holder.iv3);
 
         position++;
         return convertView;

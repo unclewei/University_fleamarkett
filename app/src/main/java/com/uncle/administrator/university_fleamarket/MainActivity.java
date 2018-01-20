@@ -3,8 +3,6 @@ package com.uncle.administrator.university_fleamarket;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 
 
 import android.support.v4.app.Fragment;
@@ -18,12 +16,7 @@ import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.uncle.Application.UILApplication;
-
-import cn.bmob.v3.Bmob;
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
 
@@ -55,9 +48,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
         initUI();
         initTab();
-
-        UILApplication uilApplication = (UILApplication) getApplication();
-        uilApplication.onCreate();
 
 
     }

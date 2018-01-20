@@ -1,5 +1,6 @@
 package com.uncle.administrator.university_fleamarket;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -25,14 +26,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
-import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
+import com.bumptech.glide.Glide;
 import com.uncle.bomb.BOMB_openhelper;
 import com.uncle.method.Info;
 import com.uncle.method.MyAdapter.AsyncImageLoader;
@@ -64,13 +58,10 @@ public class bt1_intent_to_context extends Activity {
     private final int DEAL_WITH_IMAGE = 5;
     private final int CHAT_ACTIVITY_ACCOUNT_NAME = 7;
     private final int CHAT_ACTIVITY_ACCOUNT_HEAD = 8;
-    private String img1_path, img2_path, img3_path, img4_path = null, img5_path = null, img6_path = null;
     private String objectID, new_objectID;//1.获取的数据库中的id。2.新生成的数据的objectid。
     private BOMB_openhelper bomb = new BOMB_openhelper();
     private String owner;//该条目的发出人objectid
     private String myobject,myorganization,head_portrait,myname;//本地存取的自己的objectid,学院
-    private ImageLoader imageLoader;
-    private DisplayImageOptions options;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -103,10 +94,6 @@ public class bt1_intent_to_context extends Activity {
         head_LinearLayout = (LinearLayout) findViewById(R.id.bt1_listview_intent_name_LinearLayout);
         linearLayout_comment = (LinearLayout) findViewById(R.id.bt1_listview_intent_Linear_for_txet);
         internew_image = new get_internet_image();
-
-
-
-        initImageLoader();
 
         get_data_from_shareperecence();
         get_intent_message();
@@ -213,9 +200,9 @@ public class bt1_intent_to_context extends Activity {
 
 
     private void path_for_click(Intent intent, int a) {
-        intent.putExtra("img1_path", img1_path);
-        intent.putExtra("img2_path", img2_path);
-        intent.putExtra("img3_path", img3_path);
+//        intent.putExtra("img1_path", img1_path);
+//        intent.putExtra("img2_path", img2_path);
+//        intent.putExtra("img3_path", img3_path);
         intent.putExtra("nub", a);
     }//缩减代码，点击中的一部分
 
@@ -245,18 +232,6 @@ public class bt1_intent_to_context extends Activity {
                 startActivity(intent);
             }
         });
-        if (img4 != null) {
-            img4.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(bt1_intent_to_context.this, bt1_ViewPagerActivity.class);
-                    path_for_click(intent, 4);
-                    intent.putExtra("img4_path", img4_path);
-                    startActivity(intent);
-
-                }
-            });
-        }
     }//图片的点击方法，跳转到viewpagerActivity
 
     public void zan_click() {
@@ -284,18 +259,6 @@ public class bt1_intent_to_context extends Activity {
         });
     }//点赞，加一
 
-    private void initImageLoader(){
-          imageLoader  = ImageLoader.getInstance();//初始化
-          options =  new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.img_loading) // 设置图片下载期间显示的图片
-                .showImageForEmptyUri(R.drawable.img_loading) // 设置图片Uri为空或是错误的时候显示的图片
-                .showImageOnFail(R.drawable.img_loading) // 设置图片加载或解码过程中发生错误显示的图片
-                .cacheInMemory(true) // 设置下载的图片是否缓存在内存中
-                .cacheOnDisk(true) // 设置下载的图片是否缓存在SD卡中
-//                    .displayer(new RoundedBitmapDisplayer(20)) // 设置成圆角图片
-                .displayer(new FadeInBitmapDisplayer(100))//是否图片加载好后渐入的动画时间
-                .build(); // 构建完成
-    }
 
     //从上一个页面获得信息，intent
     public void get_intent_message() {
@@ -311,86 +274,13 @@ public class bt1_intent_to_context extends Activity {
                     title.setText(map.get("title"));
                     price.setText(map.get("price"));
                     zan_nub.setText(map.get("zan_nub"));
-                    imageLoader.displayImage(map.get("image1"),img1, options);
-                    img1_path =  imageLoader.getDiscCache().get(map.get("image1")).getPath();
-                    imageLoader.displayImage(map.get("image2"),img2, options);
-                    img2_path =  imageLoader.getDiscCache().get(map.get("image2")).getPath();
-                    imageLoader.displayImage(map.get("image3"),img3, options);
-                    img3_path =  imageLoader.getDiscCache().get(map.get("image3")).getPath();
-//                    img1.setImageDrawable(internew_image.loadImageFromNetworkmini(bt1_intent_to_context.this, map.get("image1")));
-//                    img1_path = internew_image.get_file_path().toString();
-//                    img2.setImageDrawable(internew_image.loadImageFromNetworkmini(bt1_intent_to_context.this, map.get("image2")));
-//                    img2_path = internew_image.get_file_path().toString();
-//                    img3.setImageDrawable(internew_image.loadImageFromNetworkmini(bt1_intent_to_context.this, map.get("image3")));
-//                    img3_path = internew_image.get_file_path().toString();
-
-                    if (map.get("image4") != null) {
-                        new Thread() {
-                            @Override
-                            public void run() {
-                                if (map.get("image4").contains(".jpg")||map.get("image4").contains(".png")) {
-
-
-//                                    Drawable d = internew_image.loadImageFromNetworkmini(bt1_intent_to_context.this, map.get("image4"));
-//                                    String img4_path = internew_image.get_file_path().toString();
-                                    Bundle boundle = new Bundle();
-                                    boundle.putString("path", map.get("image4"));
-                                    Message message = new Message();
-                                    message.setData(boundle);
-//                                    message.obj = d;
-                                    message.what = DEAL_WITH_IMAGE;
-                                    handler.sendMessage(message);
-
-                                }
-                                super.run();
-                            }
-                        }.start();
-                    }
-                    if (map.get("image5") != null) {
-                        new Thread() {
-                            @Override
-                            public void run() {
-                                if (map.get("image5").contains(".jpg")||map.get("image5").contains(".png")) {
-//                                    imageLoader.displayImage(map.get("image5"),img5, options);
-//                                    Drawable d = internew_image.loadImageFromNetworkmini(bt1_intent_to_context.this, map.get("image5"));
-                                    String img4_path = internew_image.get_file_path().toString();
-                                    Bundle boundle = new Bundle();
-                                    boundle.putString("path", img4_path);
-                                    Message message = new Message();
-                                    message.setData(boundle);
-//                                    message.obj = d;
-                                    message.what = DEAL_WITH_IMAGE;
-                                    handler.sendMessage(message);
-                                }
-                                super.run();
-                            }
-                        }.start();
-                    }
-                    if (map.get("image6") != null) {
-                        new Thread() {
-                            @Override
-                            public void run() {
-                                if (map.get("image5").contains(".jpg")||map.get("image5").contains(".png")) {
-                                    imageLoader.displayImage(map.get("image6"),img6, options);
-//                                    Drawable d = internew_image.loadImageFromNetworkmini(bt1_intent_to_context.this, map.get("image6"));
-                                    String img4_path = internew_image.get_file_path().toString();
-                                    Bundle boundle = new Bundle();
-                                    boundle.putString("path", img4_path);
-                                    Message message = new Message();
-                                    message.setData(boundle);
-//                                    message.obj = d;
-                                    message.what = DEAL_WITH_IMAGE;
-                                    handler.sendMessage(message);
-                                }
-                                super.run();
-                            }
-                        }.start();
-                    }
+                    Glide.with(bt1_intent_to_context.this).load(map.get("image1")).into(img1);
+                    Glide.with(bt1_intent_to_context.this).load(map.get("image2")).into(img2);
+                    Glide.with(bt1_intent_to_context.this).load(map.get("image3")).into(img3);
                 }
 
                 @Override
                 public void onError() {
-
                 }
             });
             get_comment();//获取评论
@@ -489,27 +379,12 @@ public class bt1_intent_to_context extends Activity {
     }//让编辑框弹出来，并显示对谁进行评论
 
 
+    @SuppressLint("HandlerLeak")
     private final Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
-                case DEAL_WITH_IMAGE://如果数据库中存在第四幅图，那么开启新线程下载图片，然后就传送消息，在消息机制中更新界面。
-                    ImageView  img4 = new ImageView(bt1_intent_to_context.this);
-                    Bundle bundle = msg.getData();
-                    String img4_path = (String) bundle.get("path");
-                    imageLoader.displayImage(img4_path,img4, options);
-                    img4_path =  imageLoader.getDiscCache().get(img4_path).getPath();
-                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-                        img4.setLayoutParams(layoutParams);  //image的布局方式
-                        layoutParams.bottomMargin = 8;
-                        img4.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                        img4.setAdjustViewBounds(true);
-                        linearLayout.addView(img4, layoutParams);
-
-                    break;
-
                 case CHAT_ACTIVITY_ACCOUNT_NAME:
                     name.setText((String) msg.obj);
                     break;

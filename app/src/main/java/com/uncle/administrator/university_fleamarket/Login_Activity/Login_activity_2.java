@@ -215,7 +215,9 @@ public class Login_activity_2 extends Activity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            m_pDialog.dismiss();// 关闭ProgressDialog
+            if (m_pDialog != null){
+                m_pDialog.dismiss();// 关闭ProgressDialog
+            }
             switch (msg.what){
                 case 555:
                     String time = (String) msg.obj;
