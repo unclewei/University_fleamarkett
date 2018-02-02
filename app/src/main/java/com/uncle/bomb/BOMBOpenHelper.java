@@ -18,7 +18,7 @@ import cn.bmob.v3.listener.UploadBatchListener;
 import cn.bmob.v3.listener.UploadFileListener;
 
 
-public class BOMB_openhelper {
+public class BOMBOpenHelper {
 
 
     private final IMConversation im = new IMConversation();
@@ -337,14 +337,14 @@ public class BOMB_openhelper {
 
 
     //查找聊天表中的聊天信息
-    public interface Find_talk_callback {
+    public interface findTalkCallback {
         public void onSuccess(List<IMConversation> list);
 
         public void onFail();
     }
 
     //寻找指定两个id聊天的数据，并返回arraylist
-    public void find_talk_data(String object_id, String target_objectID, final Find_talk_callback find_talk_callback) {
+    public void findTalkData(String object_id, String target_objectID, final findTalkCallback findTalkCallback) {
         BmobQuery<IMConversation> query = new BmobQuery<>();
         String[] names = {object_id + target_objectID, target_objectID + object_id};
         query.addWhereContainedIn("target", Arrays.asList(names));
@@ -353,10 +353,10 @@ public class BOMB_openhelper {
             public void done(List<IMConversation> list, BmobException e) {
                 if (e == null) {
                     if (list.size() != 0) {
-                        find_talk_callback.onSuccess(list);
+                        findTalkCallback.onSuccess(list);
                     }
                 } else {
-                    find_talk_callback.onFail();
+                    findTalkCallback.onFail();
                 }
 
             }
@@ -397,7 +397,7 @@ public class BOMB_openhelper {
     }
 
     //通过objectid找到指定账号的信息，名字和头像
-    public void find_account_data_alone(String objectID, final FindAccountDataAloneCallback findAccountDataAloneCallback) {
+    public void findAccountDataAlone(String objectID, final FindAccountDataAloneCallback findAccountDataAloneCallback) {
 
         BmobQuery<UserAccount> bmobQuery = new BmobQuery<UserAccount>();
         bmobQuery.getObject(objectID, new QueryListener<UserAccount>() {
@@ -452,7 +452,7 @@ public class BOMB_openhelper {
     }
 
     //更新学校的名字
-    public void Login_update_school(String objectId, String college, String organization, final LoginUpdateSchoolCallback loginUpdateSchoolCallback) {
+    public void loginUpdateSchool(String objectId, String college, String organization, final LoginUpdateSchoolCallback loginUpdateSchoolCallback) {
 
         UserAccount userAccount = new UserAccount();
         userAccount.setCollege(college);
@@ -487,7 +487,7 @@ public class BOMB_openhelper {
     }
 
     //更新头像资料，姓名，学校
-    public void updateAllData(UserAccount userAccount, String objectId, final LoginUpdateSchoolCallback loginUpdateSchoolCallback) {
+    public void updateAllData(String objectId, UserAccount userAccount, final LoginUpdateSchoolCallback loginUpdateSchoolCallback) {
         userAccount.update(objectId, new UpdateListener() {
             @Override
             public void done(BmobException e) {
@@ -499,23 +499,26 @@ public class BOMB_openhelper {
     }
 
     public void uploadHeadPortrait(final String objectId, final UserAccount userAccount
-            , final LoginUpdateSchoolCallback loginUpdateSchoolCallback) {
+            , final LoginUpdateSchoolCallback loginUpdateSchoolCallback){
         final BmobFile bmobFile = new BmobFile(new File(userAccount.getHead_portrait()));
         bmobFile.uploadblock(new UploadFileListener() {
             @Override
             public void done(BmobException e) {
-                if (e == null) {
-                    updateAllData(userAccount, objectId, loginUpdateSchoolCallback);
-                } else {
+                if(e==null){
+                    updateAllData(objectId,userAccount,loginUpdateSchoolCallback);
+                    //bmobFile.getFileUrl()--返回的上传文件的完整地址
+                }else{
                     loginUpdateSchoolCallback.fail();
                 }
             }
 
             @Override
             public void onProgress(Integer value) {
+                // 返回的上传进度（百分比）
             }
         });
     }
+
 
 }
 

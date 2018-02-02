@@ -2,14 +2,28 @@ package com.uncle.bomb;
 
 import cn.bmob.v3.BmobObject;
 
-public class comment_zan extends BmobObject {
+/**
+ * @author unclewei
+ */
+public class CommentZan extends BmobObject {
 
     private String comment;
-
-    private String taget_object;
+    private String targetObject;
     private String blogger;
-    private String uesr;
-    private int comment_reply;
+    private String user;
+    private int commentReply;
+
+    public CommentZan() {
+    }
+
+    public CommentZan(String comment, String targetObject, String blogger, String user, int commentReply) {
+
+        this.comment = comment;
+        this.targetObject = targetObject;
+        this.blogger = blogger;
+        this.user = user;
+        this.commentReply = commentReply;
+    }
 
     public String getBlogger() {
         return blogger;
@@ -27,30 +41,30 @@ public class comment_zan extends BmobObject {
         this.comment = comment;
     }
 
-    public int getComment_reply() {
-        return comment_reply;
+    public int getCommentReply() {
+        return commentReply;
     }
 
-    public void setComment_reply(int comment_reply) {
-        this.comment_reply = comment_reply;
+    public void setCommentReply(int commentReply) {
+        this.commentReply = commentReply;
     }
 
 
 
-    public String getTaget_object() {
-        return taget_object;
+    public String getTargetObject() {
+        return targetObject;
     }
 
-    public void setTaget_object(String taget_object) {
-        this.taget_object = taget_object;
+    public void setTargetObject(String targetObject) {
+        this.targetObject = targetObject;
     }
 
-    public String getUesr() {
-        return uesr;
+    public String getUser() {
+        return user;
     }
 
-    public void setUesr(String uesr) {
-        this.uesr = uesr;
+    public void setUser(String user) {
+        this.user = user;
     }
 
 

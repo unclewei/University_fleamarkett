@@ -29,7 +29,7 @@ public class goods_Dao {
         values.put("sell_detail", detail);
         values.put("sell_price", price);
         values.put("sell_img1", img1);
-        db.insert("shop_goods", null, values);
+        db.insert("shopGoods", null, values);
         db.close();
     }
 
@@ -41,7 +41,7 @@ public class goods_Dao {
     public ArrayList<HashMap<String, Object>> find() {
         ArrayList<HashMap<String, Object>> ret = new ArrayList<HashMap<String, Object>>();
         SQLiteDatabase db = helper.getWritableDatabase();
-        Cursor cursor = db.query("shop_goods", null, null, null, null, null, null);
+        Cursor cursor = db.query("shopGoods", null, null, null, null, null, null);
         int count = cursor.getCount();
         if (count == 0) {
             return null;
@@ -67,7 +67,7 @@ public class goods_Dao {
      */
     public void delete() {
         SQLiteDatabase db = helper.getWritableDatabase();
-        db.delete("shop_goods", null, null);
+        db.delete("shopGoods", null, null);
         db.close();
 
     }

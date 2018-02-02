@@ -1,4 +1,4 @@
-package com.lexing360.uibase.base;
+package com.uncle.Base;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;

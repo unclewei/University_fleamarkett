@@ -17,8 +17,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.uncle.database.Chat_data_Dao;
-import com.uncle.method.MyAdapter.AsyncImageLoader;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -80,19 +80,9 @@ public class TalkFragment extends Fragment {
         if (head_portrait.length() ==0){
             drawable2 = getContext().getDrawable(R.drawable.head);
         }else {
-            AsyncImageLoader asyncImageLoader = new AsyncImageLoader();
-            asyncImageLoader.loadDrawable(getContext(), 1, head_portrait, new AsyncImageLoader.ImageCallback() {
-                @Override
-                public void onImageLoad(Integer t, Drawable drawable) {
-                    drawable2 = drawable;
-                    add_LinearLayout_left(name, last_sentence, target_id, drawable2,time);
-                }
 
-                @Override
-                public void onError(Integer t) {
-                    drawable2 = getContext().getDrawable(R.drawable.head);
-                }
-            });
+            addLinearLayoutLeft(name, last_sentence, target_id, head_portrait,time);
+
         }
 
 
@@ -108,7 +98,7 @@ public class TalkFragment extends Fragment {
     }
 
     //增加聊天条
-    public void add_LinearLayout_left(String name, String last_sentence, String target_ID, Drawable drawable,String time) {
+    public void addLinearLayoutLeft(String name, String last_sentence, String target_ID, String  headUrl, String time) {
         linearLayout = new LinearLayout(getContext());
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -123,7 +113,7 @@ public class TalkFragment extends Fragment {
         layoutParams_image.gravity = Gravity.CENTER_VERTICAL;
         layoutParams_image.rightMargin = 15;
         imageView.setLayoutParams(layoutParams_image);
-        imageView.setImageDrawable(drawable);
+        Glide.with(this).load(headUrl).into(imageView);
         linearLayout.addView(imageView);
 
         LinearLayout linearLayout2 = new LinearLayout(getContext());

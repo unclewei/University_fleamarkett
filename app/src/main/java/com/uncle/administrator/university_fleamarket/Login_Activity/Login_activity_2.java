@@ -17,10 +17,12 @@ import android.widget.Toast;
 
 import com.uncle.administrator.university_fleamarket.MainActivity;
 import com.uncle.administrator.university_fleamarket.R;
-import com.uncle.bomb.BOMB_openhelper;
+import com.uncle.bomb.BOMBOpenHelper;
+import com.uncle.bomb.UserAccount;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import cn.bmob.sms.BmobSMS;
 import cn.bmob.sms.exception.BmobException;
@@ -38,7 +40,7 @@ public class Login_activity_2 extends Activity {
     private Button send_sms,next;
     private EditText phone_nub,verification;
     private String nub;
-    private BOMB_openhelper bomb_openhelper;
+    private BOMBOpenHelper bomb_openhelper;
     private  ProgressDialog m_pDialog; //声明进度条对话框
     private String verification_nub;//验证码
     @Override
@@ -53,7 +55,7 @@ public class Login_activity_2 extends Activity {
         next = (Button) findViewById(R.id.login_activity2_bt_next);
         phone_nub = (EditText) findViewById(R.id.login_activity2_et_phone_nub);
         verification = (EditText) findViewById(R.id.login_activity2_et_verification);
-        bomb_openhelper = new BOMB_openhelper();
+        bomb_openhelper = new BOMBOpenHelper();
         BmobSMS.initialize(Login_activity_2.this,"144dbb1fbca09ce5d3af201a05c54628");
         Bmob.initialize(Login_activity_2.this,"144dbb1fbca09ce5d3af201a05c54628");
         send_sms_onclick();
@@ -135,19 +137,19 @@ public class Login_activity_2 extends Activity {
                 // TODO Auto-generated method stub
                 if(ex==null){//短信验证码已验证成功
                     Log.i("bmob", "验证通过");
-                    bomb_openhelper.find_account(nub, new BOMB_openhelper.Find_account_callback() {
+                    bomb_openhelper.find_account(nub, new BOMBOpenHelper.FindAccountCallback() {
                         @Override
-                        public void onSuccess(ArrayList<HashMap<String, String>> arrayList) {//在数据库中已经有账号的，直接获取数据登录跳转
-                            HashMap<String ,String > hashMap = arrayList.get(0);
+                        public void onSuccess(List<UserAccount> list) {
+                            UserAccount userAccount = list.get(0);
                             SharedPreferences sharedPreferences = getSharedPreferences("account", Context.MODE_WORLD_READABLE);
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("account", nub);
-                            editor.putString("object_id", hashMap.get("object_id"));
-                            editor.putString("nick_name", hashMap.get("nick_name"));
-                            editor.putString("college", hashMap.get("college"));
-                            editor.putString("organization", hashMap.get("organization"));
+                            editor.putString("object_id", userAccount.getObjectId());
+                            editor.putString("nick_name", userAccount.getNick_name());
+                            editor.putString("college", userAccount.getCollege());
+                            editor.putString("organization", userAccount.getOrganization());
                             editor.putString("Login", "success");
-                            editor.putString("head_portrait",hashMap.get("head_portrait"));
+                            editor.putString("head_portrait",userAccount.getHead_portrait());
                             editor.putString("refresh","false");
                             editor.commit();
                             handler.sendEmptyMessage(0);
@@ -155,10 +157,11 @@ public class Login_activity_2 extends Activity {
                             startActivity (intent );
                             finish();
                         }
+
                         @Override
                         public void onFail(int fail_code) {//在数据库中找不到账号的，创建新的账号，并且登录跳转
                             if (fail_code == 9015){
-                                bomb_openhelper.add_account("无名氏",null,nub,"五邑大学","计算机学院",new BOMB_openhelper.Add_account_callback() {
+                                bomb_openhelper.add_account("无名氏",null,nub,"五邑大学","计算机学院",new BOMBOpenHelper.AddAccountCallback() {
                                     @Override
                                     public void onSuccess(String object) {
                                         String objextId =object;

@@ -3,7 +3,7 @@ package com.uncle.bomb;
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.datatype.BmobFile;
 
-public class shop_goods extends BmobObject {
+public class ShopGoods extends BmobObject {
     private String image1;
     private String image2;
     private String image3;
@@ -16,6 +16,7 @@ public class shop_goods extends BmobObject {
     private String price;
     private String variety;
     private int zan_nub;
+    private int pictureNub;
 
     private String owner;
     private String college;
@@ -23,6 +24,41 @@ public class shop_goods extends BmobObject {
     private String head_portrait;
     private String name;
 
+    public ShopGoods() {
+    }
+
+    public ShopGoods(String image1, String image2, String image3,
+                     String image4, String image5, String image6,
+                     String title, String text, String price, String variety,
+                     int zan_nub, int pictureNub, String owner, String college,
+                     String organization, String head_portrait, String name) {
+
+        this.image1 = image1;
+        this.image2 = image2;
+        this.image3 = image3;
+        this.image4 = image4;
+        this.image5 = image5;
+        this.image6 = image6;
+        this.title = title;
+        this.text = text;
+        this.price = price;
+        this.variety = variety;
+        this.zan_nub = zan_nub;
+        this.pictureNub = pictureNub;
+        this.owner = owner;
+        this.college = college;
+        this.organization = organization;
+        this.head_portrait = head_portrait;
+        this.name = name;
+    }
+
+    public int getPictureNub() {
+        return pictureNub;
+    }
+
+    public void setPictureNub(int pictureNub) {
+        this.pictureNub = pictureNub;
+    }
     public String getName() {
         return name;
     }

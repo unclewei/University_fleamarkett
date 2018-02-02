@@ -1,4 +1,4 @@
-package com.lexing360.uibase.base;
+package com.uncle.Base;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
@@ -12,7 +12,9 @@ import android.view.ViewGroup;
 import com.alibaba.android.arouter.launcher.ARouter;
 
 /**
- * Created by nnv on 2017/7/19.
+ *
+ * @author nnv
+ * @date 2017/7/19
  */
 
 public abstract class BaseBindingFragment<T extends ViewDataBinding> extends Fragment {
@@ -23,7 +25,7 @@ public abstract class BaseBindingFragment<T extends ViewDataBinding> extends Fra
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ARouter.getInstance().inject(this);
+//        ARouter.getInstance().inject(this);
     }
 
     @Override

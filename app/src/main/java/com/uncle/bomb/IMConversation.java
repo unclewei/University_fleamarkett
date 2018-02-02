@@ -6,7 +6,7 @@ import cn.bmob.v3.BmobObject;
  * Created by Administrator on 2017/4/12 0012.
  */
 
-public class IM_conversation extends BmobObject {
+public class IMConversation extends BmobObject {
 
     private String target;//目标，哪两个用户交流，两个object的结合
     private String context;//聊天内容

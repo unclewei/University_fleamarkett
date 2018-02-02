@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -20,12 +19,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.uncle.bomb.BOMB_openhelper;
-import com.uncle.method.MyAdapter.AsyncImageLoader;
-import com.uncle.method.get_internet_image;
+import com.uncle.bomb.BOMBOpenHelper;
+import com.uncle.bomb.CommentZan;
+import com.uncle.bomb.ShopGoods;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
 /**
  *
@@ -36,7 +34,6 @@ import java.util.HashMap;
 public class GoodsDetailsActivity extends Activity {
     private TextView title, price, zan_nub,organization,name;//标题，价格，点赞数，学院
     private ImageView img1, img2, img3, img4 = null, img5 = null, img6 = null,icon,call;
-    private get_internet_image internew_image;//获取网络图片的方法
     private LinearLayout linearLayout;//获取图片的LinearLayout
     private LinearLayout linearLayout_comment;//获取评论的LinearLayout
     private LinearLayout head_LinearLayout;//点击头部的LinearLayout，进入聊天页面
@@ -48,7 +45,7 @@ public class GoodsDetailsActivity extends Activity {
     private final int CHAT_ACTIVITY_ACCOUNT_NAME = 7;
     private final int CHAT_ACTIVITY_ACCOUNT_HEAD = 8;
     private String objectID, new_objectID;//1.获取的数据库中的id。2.新生成的数据的objectid。
-    private BOMB_openhelper bomb = new BOMB_openhelper();
+    private BOMBOpenHelper bomb = new BOMBOpenHelper();
     private String owner;//该条目的发出人objectid
     private String myobject,myorganization,head_portrait,myname;//本地存取的自己的objectid,学院
 
@@ -82,7 +79,6 @@ public class GoodsDetailsActivity extends Activity {
         linearLayout = (LinearLayout) findViewById(R.id.bt1_listview_intent_img_LinearLayout);
         head_LinearLayout = (LinearLayout) findViewById(R.id.bt1_listview_intent_name_LinearLayout);
         linearLayout_comment = (LinearLayout) findViewById(R.id.bt1_listview_intent_Linear_for_txet);
-        internew_image = new get_internet_image();
 
         get_data_from_shareperecence();
         get_intent_message();
@@ -107,7 +103,7 @@ public class GoodsDetailsActivity extends Activity {
     //用objectID获取用户的数据
     public void find_account_data_from_bomb(String target_object) {
         Log.i("又来试验了target_object",target_object);
-        bomb.find_account_data_alone(target_object, new BOMB_openhelper.Find_account_data_alone_callback() {
+        bomb.findAccountDataAlone(target_object, new BOMBOpenHelper.FindAccountDataAloneCallback() {
             @Override
             public void onSuccess(String name, String head) {
                 Message message = new Message();
@@ -131,18 +127,8 @@ public class GoodsDetailsActivity extends Activity {
         if (head_portrait.length() ==0){
             icon.setImageResource(R.drawable.head);
         }else {
-            AsyncImageLoader asyncImageLoader = new AsyncImageLoader();
-            asyncImageLoader.loadDrawable(this, 1, head_portrait, new AsyncImageLoader.ImageCallback() {
-                @Override
-                public void onImageLoad(Integer t, Drawable drawable) {
-                   icon.setImageDrawable(drawable);
-                }
+            Glide.with(this).load(head_portrait).into(icon);
 
-                @Override
-                public void onError(Integer t) {
-                    icon.setImageResource(R.drawable.head);
-                }
-            });
         }
 
 
@@ -233,14 +219,14 @@ public class GoodsDetailsActivity extends Activity {
                     int nub = Integer.parseInt(zan_nub.getText().toString()) + 1;
                     zan_nub.setText( nub+"");
                     zan.setBackgroundResource(R.drawable.love2);
-                    bomb.update_zan(objectID, nub);
+                    bomb.updateZan(objectID, nub);
                     zan_ro_not_zan = false;
                 }else if (zan_ro_not_zan == false) {
                     Log.i("aaa", zan_nub.getText().toString());
                     int nub = Integer.parseInt(zan_nub.getText().toString()) - 1;
                     zan_nub.setText(nub + "");
                     zan.setBackgroundResource(R.drawable.love1);
-                    bomb.update_zan(objectID, nub);
+                    bomb.updateZan(objectID, nub);
 
                     zan_ro_not_zan = true;
                 }
@@ -255,17 +241,16 @@ public class GoodsDetailsActivity extends Activity {
         if (intent != null) {
             objectID = intent.getStringExtra("objID");
             owner = intent.getStringExtra("owner_id");
-            BOMB_openhelper bomb = new BOMB_openhelper();
-
-            bomb.find_alone(objectID, new BOMB_openhelper.ImageCallback() {
+            BOMBOpenHelper bomb = new BOMBOpenHelper();
+            bomb.find_alone(objectID, new BOMBOpenHelper.ImageCallback() {
                 @Override
-                public void onImageLoad(final HashMap<String, String> map) {
-                    title.setText(map.get("title"));
-                    price.setText(map.get("price"));
-                    zan_nub.setText(map.get("zan_nub"));
-                    Glide.with(GoodsDetailsActivity.this).load(map.get("image1")).into(img1);
-                    Glide.with(GoodsDetailsActivity.this).load(map.get("image2")).into(img2);
-                    Glide.with(GoodsDetailsActivity.this).load(map.get("image3")).into(img3);
+                public void onImageLoad(ShopGoods shopGoods) {
+                    title.setText(shopGoods.getText());
+                    price.setText(shopGoods.getTitle());
+                    zan_nub.setText(shopGoods.getZan_nub());
+                    Glide.with(GoodsDetailsActivity.this).load(shopGoods.getImage1()).into(img1);
+                    Glide.with(GoodsDetailsActivity.this).load(shopGoods.getImage2()).into(img2);
+                    Glide.with(GoodsDetailsActivity.this).load(shopGoods.getImage3()).into(img3);
                 }
 
                 @Override
@@ -290,10 +275,11 @@ public class GoodsDetailsActivity extends Activity {
                     comment_text.setText(null);
                     Toast.makeText(GoodsDetailsActivity.this, "评论成功", Toast.LENGTH_SHORT).show();
                     final String finalText_context = text_context;
+                    final CommentZan commentZan = new CommentZan(finalText_context, objectID, "name1", "name2", 0);
                     new Thread() {
                         @Override
                         public void run() {
-                            bomb.add_comment_zan(finalText_context, "name1", "name2", 0, objectID);
+                            bomb.addCommentZan(commentZan);
                             super.run();
                         }
                     }.start();
@@ -310,10 +296,11 @@ public class GoodsDetailsActivity extends Activity {
                     comment_text.setText(null);
                     Toast.makeText(GoodsDetailsActivity.this, "回复成功", Toast.LENGTH_SHORT).show();
                     final String finalText_context = text_context;
+                    final CommentZan commentZan = new CommentZan(finalText_context, objectID, "name1", "name2", 1);
                     new Thread() {
                         @Override
                         public void run() {
-                            bomb.add_comment_zan(finalText_context, "name1", "name2", 1, objectID);
+                            bomb.addCommentZan(commentZan);
                             super.run();
                         }
                     }.start();
@@ -326,13 +313,13 @@ public class GoodsDetailsActivity extends Activity {
     }    //评论commemt
 
     public void get_comment() {
-        bomb.find_comment(objectID, new BOMB_openhelper.getCommentCallback() {
+        bomb.find_comment(objectID, new BOMBOpenHelper.getCommentCallback() {
             @Override
-            public void oncommentLoad(ArrayList<HashMap<String, String>> arrayList) {
+            public void onCommentLoad(List<CommentZan> arrayList) {
                 if (arrayList.size() != 0) {
                     for (int i = 0; i < arrayList.size(); i++) {
-                        HashMap<String, String> hashMap = arrayList.get(i);
-                        String comment = hashMap.get("comment");
+                        CommentZan commentZan = arrayList.get(i);
+                        String comment = commentZan.getComment();
                         get_new_textview(comment);//生成一个新的TextView，并设置点击事件
                     }
                 } else {
@@ -340,6 +327,7 @@ public class GoodsDetailsActivity extends Activity {
                     get_new_textview("还没有评论哦，快来做第一个！");
                 }
             }
+
         });
     }//获取评论呢
 

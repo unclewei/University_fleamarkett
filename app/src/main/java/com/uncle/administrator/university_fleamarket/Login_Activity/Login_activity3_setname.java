@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.uncle.administrator.university_fleamarket.MainActivity;
 import com.uncle.administrator.university_fleamarket.R;
-import com.uncle.bomb.BOMB_openhelper;
+import com.uncle.bomb.BOMBOpenHelper;
 
 /**
  * Created by Administrator on 2017/5/10 0010.
@@ -30,7 +30,7 @@ public class Login_activity3_setname extends Activity {
     private Button button;
     private Intent intent;
     private String nub;
-    private BOMB_openhelper bomb;
+    private BOMBOpenHelper bomb;
     private String college, organization;
     private String[] mItems1, mItems2, mItems3, mItems4;
     private ProgressDialog m_pDialog; //声明进度条对话框
@@ -52,7 +52,7 @@ public class Login_activity3_setname extends Activity {
         button = (Button) findViewById(R.id.login_activity3_button);
         intent = getIntent();
         nub = intent.getStringExtra("nub");
-        bomb = new BOMB_openhelper();
+        bomb = new BOMBOpenHelper();
 
         mItems1 = getResources().getStringArray(R.array.spinnername1);
         mItems2 = getResources().getStringArray(R.array.spinnername2);
@@ -97,7 +97,7 @@ public class Login_activity3_setname extends Activity {
             editor.commit();
 
             bomb.Login_update_name(nub, name);
-            bomb.Login_update_school(nub, college, organization, new BOMB_openhelper.Login_update_school_callback() {
+            bomb.loginUpdateSchool(nub, college, organization, new BOMBOpenHelper.LoginUpdateSchoolCallback() {
                 @Override
                 public void done() {
                     handler.sendEmptyMessage(0);

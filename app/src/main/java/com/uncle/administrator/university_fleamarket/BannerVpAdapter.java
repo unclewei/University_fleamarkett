@@ -1,4 +1,4 @@
-package com.lexing360.vehicle;
+package com.uncle.administrator.university_fleamarket;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -7,11 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
-import com.lexing360.comm.RouterConstant;
-import com.lexing360.comm.UpLoadClickInfo;
-import com.lexing360.storage.Banner;
 
 import java.util.List;
 
@@ -22,11 +18,11 @@ import java.util.List;
 
 public class BannerVpAdapter extends PagerAdapter {
 
-    private List<Banner> list;
+    private List<Object> list;
     private Context context;
     private ImageView[] listImageView;
 
-    public BannerVpAdapter(Context context, List<Banner> list) {
+    public BannerVpAdapter(Context context, List<Object> list) {
         this.list = list;
         this.context = context;
         initListImg();
@@ -35,18 +31,14 @@ public class BannerVpAdapter extends PagerAdapter {
     private void initListImg() {
         listImageView = new ImageView[list.size()];
         for (int i = 0; i < list.size(); i++) {
-            final Banner banner = list.get(i);
+            final int banner = (int) list.get(i);
             ImageView imageView = new ImageView(context);
             listImageView[i] = imageView;
-            Glide.with(context).load(banner.getImageUrl()).placeholder(R.mipmap.car).into(listImageView[i]);
+            Glide.with(context).load(banner).into(listImageView[i]);
             listImageView[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    UpLoadClickInfo.upLoadClickInfo(context, "主页面 跳转到 广告");
-                    ARouter.getInstance()
-                            .build(RouterConstant.WEB)
-                            .withString("url", banner.getUrl())
-                            .navigation();
+
                 }
             });
         }

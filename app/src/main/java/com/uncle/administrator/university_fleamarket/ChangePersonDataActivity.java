@@ -31,7 +31,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.uncle.bomb.BOMB_openhelper;
+import com.uncle.bomb.BOMBOpenHelper;
+import com.uncle.bomb.UserAccount;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -70,22 +71,22 @@ public class ChangePersonDataActivity extends Activity {
     }
 
     private void init() {
-        icon = (LinearLayout) findViewById(R.id.person_data_change_icon);
-        name = (LinearLayout) findViewById(R.id.person_data_change_name);
-        school = (LinearLayout) findViewById(R.id.person_data_change_school);
-        hand = (ImageView) findViewById(R.id.person_data_change_icon_hand);
-        text_name = (TextView) findViewById(R.id.person_data_change_text_name);
-        text_school = (TextView) findViewById(R.id.person_data_change_text_school);
+        icon = findViewById(R.id.person_data_change_icon);
+        name = findViewById(R.id.person_data_change_name);
+        school =  findViewById(R.id.person_data_change_school);
+        hand =  findViewById(R.id.person_data_change_icon_hand);
+        text_name =  findViewById(R.id.person_data_change_text_name);
+        text_school =  findViewById(R.id.person_data_change_text_school);
         no = (Button) findViewById(R.id.person_data_change_button_no);
         yes = (Button) findViewById(R.id.person_data_change_button_yes);
-        click_name_and_school();
-        get_data_from_sharepereference();
+        clickNameAndSchool();
+        getDataFromSharePreference();
         change_icon();
         yes_onclick();
         no_onclick();
     }
 
-    private void get_data_from_sharepereference() {
+    private void getDataFromSharePreference() {
         SharedPreferences sharedPreferences = getSharedPreferences("account", Context.MODE_WORLD_READABLE);
         myorganization = sharedPreferences.getString("organization", null);
         college = sharedPreferences.getString("college", null);
@@ -98,7 +99,7 @@ public class ChangePersonDataActivity extends Activity {
     }
 
     //姓名和 学校两栏的点击事件
-    private void click_name_and_school() {
+    private void clickNameAndSchool() {
         name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,13 +115,13 @@ public class ChangePersonDataActivity extends Activity {
     }
 
     //菊花转圈圈
-    private void wait_look(){
+    private void waitLook(){
         m_pDialog= ProgressDialog.show(ChangePersonDataActivity.this, null, "修改中…");
         new Thread(){
             @Override
             public void run() {
                 super.run();
-                updata_data_on_bomb();
+                updateDataOnBomb();
 
             }
         }.start();
@@ -133,8 +134,8 @@ public class ChangePersonDataActivity extends Activity {
         yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                wait_look();
-                change_shareperference_data();
+                waitLook();
+                changeShareSharePreferenceData();
 
             }
         });
@@ -152,7 +153,7 @@ public class ChangePersonDataActivity extends Activity {
     }
 
     //修改shareperference的数据
-    private void change_shareperference_data(){
+    private void changeShareSharePreferenceData(){
         SharedPreferences sharedPreferences = getSharedPreferences("account", Context.MODE_WORLD_READABLE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("nick_name", text_name.getText().toString().trim());
@@ -165,16 +166,20 @@ public class ChangePersonDataActivity extends Activity {
     }
 
     //联网到云端保存数据
-    private void updata_data_on_bomb(){
-        BOMB_openhelper bomb = new BOMB_openhelper();
-        bomb.upload_head_portrait(objectid, college, myorganization, urlpath, text_name.getText().toString().trim(), new BOMB_openhelper.Login_update_school_callback() {
+    private void updateDataOnBomb(){
+        UserAccount userAccount = new UserAccount();
+        userAccount.setCollege(college);
+        userAccount.setOrganization(myorganization);
+        userAccount.setHead_portrait(urlpath);
+        userAccount.setNick_name(text_name.getText().toString());
+        BOMBOpenHelper bomb = new BOMBOpenHelper();
+        bomb.uploadHeadPortrait(objectid, userAccount, new BOMBOpenHelper.LoginUpdateSchoolCallback() {
             @Override
             public void done() {
                 viewHandler.sendEmptyMessage(0);
                 Intent intent = new Intent(ChangePersonDataActivity.this,MainActivity.class);
                 startActivity(intent);
                 finish();
-
             }
 
             @Override

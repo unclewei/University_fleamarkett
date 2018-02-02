@@ -1,11 +1,13 @@
-package com.lexing360.uibase.base;
+package com.uncle.Base;
 
 import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 /**
- * Created by nnv on 2017/8/28.
+ *
+ * @author nnv
+ * @date 2017/8/28
  */
 
 public abstract class BaseBindViewHolder<T> extends RecyclerView.ViewHolder {

@@ -6,7 +6,7 @@ import cn.bmob.v3.BmobObject;
  * Created by Administrator on 2017/4/15 0015.
  */
 
-public class User_account extends BmobObject {
+public class UserAccount extends BmobObject {
 
     String account;
     String head_portrait;

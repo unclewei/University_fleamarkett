@@ -24,19 +24,22 @@ import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.uncle.administrator.university_fleamarket.Login_Activity.welcome_page;
-import com.uncle.bomb.BOMB_openhelper;
+import com.uncle.bomb.BOMBOpenHelper;
+import com.uncle.bomb.ShopGoods;
 import com.uncle.method.turns;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import cn.bmob.v3.Bmob;
 
 
 /**
- *
  * @author Administrator
  * @date 2016/12/11 0011
  */
@@ -62,8 +65,7 @@ public class SellActivity extends Activity {
     private List<HashMap<String, String>> bomb_imageItem;//把图片数据换成二进制数，存入云服务器
     private SimpleAdapter simpleAdapter;     //适配器
     private turns turn = new turns();
-    private String objectID,college,organization,head_portrait,name;//自己的id,大学名字，学院，头像,名字，买东西的时候存入数据库
-
+    private String objectID, college, organization, head_portrait, name;//自己的id,大学名字，学院，头像,名字，买东西的时候存入数据库
 
 
     @Override
@@ -88,19 +90,19 @@ public class SellActivity extends Activity {
         get_data_from_sharepreference();
     }
 
-    private void get_data_from_sharepreference(){
+    private void get_data_from_sharepreference() {
         SharedPreferences sharedPreferences = getSharedPreferences("account", Context.MODE_WORLD_READABLE);
-        if (sharedPreferences.getString("object_id","没有id").equals("没有id")){
-            Intent intent = new Intent(SellActivity.this,welcome_page.class);
+        if (sharedPreferences.getString("object_id", "没有id").equals("没有id")) {
+            Intent intent = new Intent(SellActivity.this, welcome_page.class);
             startActivity(intent);
             finish();
-        }else {
-            objectID = sharedPreferences.getString("object_id","没有id");
-            college = sharedPreferences.getString("college",null);
-            organization = sharedPreferences.getString("organization",null);
-            name = sharedPreferences.getString("nick_name",null);
-            BOMB_openhelper bomb = new BOMB_openhelper();
-            bomb.find_account_data_alone(objectID, new BOMB_openhelper.Find_account_data_alone_callback() {
+        } else {
+            objectID = sharedPreferences.getString("object_id", "没有id");
+            college = sharedPreferences.getString("college", null);
+            organization = sharedPreferences.getString("organization", null);
+            name = sharedPreferences.getString("nick_name", null);
+            BOMBOpenHelper bomb = new BOMBOpenHelper();
+            bomb.findAccountDataAlone(objectID, new BOMBOpenHelper.FindAccountDataAloneCallback() {
                 @Override
                 public void onSuccess(String name, String head) {
                     head_portrait = head;
@@ -115,7 +117,6 @@ public class SellActivity extends Activity {
         bt_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 title = ed_title.getText().toString().trim();
                 detail = ed_detail.getText().toString().trim();
                 price = ed_price.getText().toString().trim();
@@ -128,32 +129,18 @@ public class SellActivity extends Activity {
                 } else if (imageItem.size() <= 3) {
                     Toast.makeText(SellActivity.this, "要有三张以上图片才能让别人了解你哟~~", Toast.LENGTH_SHORT).show();
                 } else {//开启数据库
-                    final BOMB_openhelper bomb = new BOMB_openhelper();
-                    new Thread() {
+                    final ShopGoods shopGoods = new ShopGoods(str[0], str[1], str[2], str[3], str[4], str[5]
+                            , title, detail, price, null, 0, picture_number, objectID, college, organization, head_portrait, name);
+                    final BOMBOpenHelper bomb = new BOMBOpenHelper();
+                    ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(1, 1, 1, TimeUnit.SECONDS, new LinkedBlockingDeque<Runnable>(32));
+                    Runnable runnable = new Runnable() {
                         @Override
                         public void run() {
-                            switch (picture_number) {
-                                case 3:
-                                    bomb.upload_img(title, detail, price, null, picture_number, str[0],
-                                            str[1], str[2], null, null, null,objectID,college,organization,head_portrait,name);
-                                   break;
-                                case 4:
-                                    bomb.upload_img(title, detail, price, null, picture_number, str[0],
-                                            str[1], str[2], str[3], null, null,objectID,college,organization,head_portrait,name);
-                                    break;
-                                case 5:
-                                    bomb.upload_img(title, detail, price, null, picture_number, str[0],
-                                            str[1], str[2], str[3], str[4], null,objectID,college,organization,head_portrait,name);
-                                    break;
-                                case 6:
-                                    bomb.upload_img(title, detail, price, null, picture_number, str[0],
-                                            str[1], str[2], str[3], str[4], str[5],objectID,college,organization,head_portrait,name);
-                                    break;
-                            }
-                            super.run();
+                            bomb.uploadImg(shopGoods);
                         }
-                    }.start();
-                    Toast.makeText(SellActivity.this, "发布成功，一会儿就能看到你的信息咯~" , Toast.LENGTH_SHORT).show();
+                    };
+                    threadPoolExecutor.execute(runnable);
+                    Toast.makeText(SellActivity.this, "发布成功，一会儿就能看到你的信息咯~", Toast.LENGTH_SHORT).show();
 
 
                     Intent intent = new Intent(SellActivity.this, MainActivity.class);
@@ -162,7 +149,6 @@ public class SellActivity extends Activity {
                 }
             }
         });
-
 
 
         close.setOnClickListener(new View.OnClickListener() {
@@ -256,7 +242,7 @@ public class SellActivity extends Activity {
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inSampleSize = 4;//压缩图片质量为原来的1/2
             options.inPreferredConfig = Bitmap.Config.ARGB_4444;//用ARBG_4444色彩模式加载图片
-            add_bmp = BitmapFactory.decodeFile(pathImage,options);
+            add_bmp = BitmapFactory.decodeFile(pathImage, options);
             // 生成压缩的图片
 
             HashMap<String, Object> map = new HashMap<String, Object>();//把图片数据存入队列,通过simpleadapter显现界面
