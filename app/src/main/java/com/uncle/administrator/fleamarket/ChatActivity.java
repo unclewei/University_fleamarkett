@@ -1,4 +1,4 @@
-package com.uncle.administrator.university_fleamarket;
+package com.uncle.administrator.fleamarket;
 
 import android.app.Activity;
 import android.content.Context;
@@ -17,7 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.uncle.administrator.university_fleamarket.Login_Activity.welcome_page;
+import com.uncle.administrator.fleamarket.Login_Activity.welcome_page;
 import com.uncle.bomb.BOMBOpenHelper;
 import com.uncle.bomb.IMConversation;
 import com.uncle.database.Chat_data_Dao;
@@ -194,7 +194,7 @@ public class ChatActivity extends Activity {
 
     //找到关联聊天变化的objectID，获取，a_tell_b的objectID，和b_tell_a的objectID
     public void find_chat_change_objectID(String myobject, String target_object) {
-        bomb.find_talk_data_change_object_id_alone(myobject + target_object, new BOMBOpenHelper.Find_talk_data_change_object_id_callback() {
+        bomb.findTalkDataChangeObjectIdAlone(myobject + target_object, new BOMBOpenHelper.findTalkDataChangeObjectIdCallback() {
             @Override
             public void onSuccess(String object_id) {
                 Message message = new Message();
@@ -203,7 +203,7 @@ public class ChatActivity extends Activity {
                 handler.sendMessage(message);
             }
         });
-        bomb.find_talk_data_change_object_id_alone(target_object + myobject, new BOMBOpenHelper.Find_talk_data_change_object_id_callback() {
+        bomb.findTalkDataChangeObjectIdAlone(target_object + myobject, new BOMBOpenHelper.findTalkDataChangeObjectIdCallback() {
             @Override
             public void onSuccess(String object_id) {
                 Message message = new Message();
@@ -229,9 +229,9 @@ public class ChatActivity extends Activity {
             @Override
             public void onFail() {
                 Log.i("bmob_find_talk_data", "第一次失败");
-                bomb.add_talk_data_change(myobject, target_object, new BOMBOpenHelper.Add_talk_data_change_callback() {
+                bomb.addTalkDataChange(myobject, target_object, new BOMBOpenHelper.addTalkDataChangeCallback() {
                     @Override
-                    public void onSueecss_b_tell_a(String object) {
+                    public void onSueecssBTellA(String object) {
                         Message message = new Message();
                         message.what = CHAT_ACTIVITY_CHAT_A_TELL_B;
                         message.obj = object;
@@ -240,7 +240,7 @@ public class ChatActivity extends Activity {
                     }
 
                     @Override
-                    public void onSueecss_a_tell_b(String object) {
+                    public void onSueecssATellB(String object) {
                         Message message = new Message();
                         message.what = CHAT_ACTIVITY_CHAT_B_TELL_A;
                         message.obj = object;

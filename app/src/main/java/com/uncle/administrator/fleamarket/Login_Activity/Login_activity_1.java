@@ -1,14 +1,12 @@
-package com.uncle.administrator.university_fleamarket.Login_Activity;
+package com.uncle.administrator.fleamarket.Login_Activity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.uncle.administrator.university_fleamarket.R;
+import com.uncle.administrator.fleamarket.R;
 
 /**
  * Created by Administrator on 2017/4/15 0015.

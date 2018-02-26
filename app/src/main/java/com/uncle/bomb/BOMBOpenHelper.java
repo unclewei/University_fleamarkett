@@ -34,7 +34,7 @@ public class BOMBOpenHelper {
     /**
      * 创建一条商品信息
      */
-    public void createPerson(ShopGoods goods) {
+    public void createPerson(shop_goods goods) {
         goods.save(new SaveListener<String>() {
 
             @Override
@@ -51,13 +51,13 @@ public class BOMBOpenHelper {
 
 
     public void queryGoodsAndDoing() {
-        final List<ShopGoods> listGoods = new ArrayList<>();
-        BmobQuery<ShopGoods> bmobQuery = new BmobQuery<>();
+        final List<shop_goods> listGoods = new ArrayList<>();
+        BmobQuery<shop_goods> bmobQuery = new BmobQuery<>();
         bmobQuery.addWhereEqualTo(null, null);
 //        bmobQuery.setLimit(1);
-        bmobQuery.findObjects(new FindListener<ShopGoods>() {
+        bmobQuery.findObjects(new FindListener<shop_goods>() {
             @Override
-            public void done(List<ShopGoods> list, BmobException e) {
+            public void done(List<shop_goods> list, BmobException e) {
                 if (e == null) {
 
                 }
@@ -67,7 +67,7 @@ public class BOMBOpenHelper {
 
 
     //上传文件，上传图片进入数据库，然后创建商品，与上连用
-    public void uploadImg(final ShopGoods shopGoods) {
+    public void uploadImg(final shop_goods shopGoods) {
         final String[] filePaths = new String[shopGoods.getPictureNub()];
         temp_nub = shopGoods.getPictureNub();
         filePaths[0] = shopGoods.getImage1();
@@ -150,18 +150,18 @@ public class BOMBOpenHelper {
 
     // 图片的回调函数
     public interface ImageCallback {
-        void onImageLoad(ShopGoods shopGoods);
+        void onImageLoad(shop_goods shopGoods);
 
         void onError();
     }
 
     //通过id找到一条数据，用于点击商品之后的详细信息
     public void find_alone(String objID, final ImageCallback callback) {
-        BmobQuery<ShopGoods> query = new BmobQuery<>();
-        query.getObject(objID, new QueryListener<ShopGoods>() {
+        BmobQuery<shop_goods> query = new BmobQuery<>();
+        query.getObject(objID, new QueryListener<shop_goods>() {
 
             @Override
-            public void done(ShopGoods object, BmobException e) {
+            public void done(shop_goods object, BmobException e) {
                 if (e == null) {
                     callback.onImageLoad(object);
                 } else {
@@ -196,7 +196,7 @@ public class BOMBOpenHelper {
      * @param zan      新的赞数
      */
     public void updateZan(String objectId, int zan) {
-        ShopGoods goods = new ShopGoods();
+        shop_goods goods = new shop_goods();
         goods.setZan_nub(zan);
         goods.update(objectId, new UpdateListener() {
 
@@ -262,41 +262,41 @@ public class BOMBOpenHelper {
         });
     }
 
-    public interface Add_talk_data_change_callback {
-        public void onSueecss_b_tell_a(String object);
+    public interface addTalkDataChangeCallback {
+        public void onSueecssBTellA(String object);
 
-        public void onSueecss_a_tell_b(String object);
+        public void onSueecssATellB(String object);
     }
 
     //增加两条数据，用来当其中有一个变量变的时候，通知系统，更改ui，用于im即时通讯
-    public void add_talk_data_change(String object_a, String object_b, final Add_talk_data_change_callback add_talk_data_change_callback) {
+    public void addTalkDataChange(String objectA, String objectB, final addTalkDataChangeCallback addTalkDataChangeCallback) {
         im2.setName_a(0);
-        im2.setConversation_target(object_a + object_b);
+        im2.setConversation_target(objectA + objectB);
         im2.save(new SaveListener<String>() {
             @Override
             public void done(String s, BmobException e) {
                 if (e == null) {
-                    add_talk_data_change_callback.onSueecss_a_tell_b(s);
+                    addTalkDataChangeCallback.onSueecssATellB(s);
                 }
             }
         });
         im3.setName_b(0);
-        im3.setConversation_target(object_b + object_a);
+        im3.setConversation_target(objectB + objectA);
         im3.save(new SaveListener<String>() {
             @Override
             public void done(String s, BmobException e) {
                 if (e == null) {
-                    add_talk_data_change_callback.onSueecss_b_tell_a(s);
+                    addTalkDataChangeCallback.onSueecssBTellA(s);
                 }
             }
         });
     }
 
-    public interface Find_talk_data_change_object_id_callback {
+    public interface findTalkDataChangeObjectIdCallback {
         public void onSuccess(String object_id);
     }
 
-    public void find_talk_data_change_object_id_alone(String objectid, final Find_talk_data_change_object_id_callback find_talk_data_change_object_id_callback) {
+    public void findTalkDataChangeObjectIdAlone(String objectid, final findTalkDataChangeObjectIdCallback findTalkDataChangeObjectIdCallback) {
         BmobQuery<IMConversation> query = new BmobQuery<>();
         query.addWhereEqualTo("conversation_target", objectid);//查询conversation_target叫“objectid”的数据
         query.findObjects(new FindListener<IMConversation>() {
@@ -305,7 +305,7 @@ public class BOMBOpenHelper {
                 if (e == null) {
                     for (IMConversation im : list) {
                         String object_ID = im.getObjectId();
-                        find_talk_data_change_object_id_callback.onSuccess(object_ID);
+                        findTalkDataChangeObjectIdCallback.onSuccess(object_ID);
                     }
                 }
             }
@@ -367,7 +367,7 @@ public class BOMBOpenHelper {
     public interface FindAccountCallback {
         void onSuccess(List<UserAccount> list);
 
-        void onFail(int fail_code);
+        void onFail(int failCode);
 
     }
 
@@ -375,7 +375,7 @@ public class BOMBOpenHelper {
     //```````账号的数据表```````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````
 
     //通过id找到一个账号
-    public void find_account(final String account, final FindAccountCallback accountCallback) {
+    public void findAccount(final String account, final FindAccountCallback accountCallback) {
         BmobQuery<UserAccount> query = new BmobQuery<>();
         query.addWhereEqualTo("account", account);
         query.findObjects(new FindListener<UserAccount>() {

@@ -1,4 +1,4 @@
-package com.uncle.administrator.university_fleamarket.Login_Activity;
+package com.uncle.administrator.fleamarket.Login_Activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -16,8 +16,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.uncle.administrator.university_fleamarket.MainActivity;
-import com.uncle.administrator.university_fleamarket.R;
+import com.uncle.administrator.fleamarket.MainActivity;
+import com.uncle.administrator.fleamarket.R;
 import com.uncle.bomb.BOMBOpenHelper;
 
 /**

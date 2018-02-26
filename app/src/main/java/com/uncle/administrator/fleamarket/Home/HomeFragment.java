@@ -1,17 +1,23 @@
-package com.uncle.administrator.university_fleamarket;
+package com.uncle.administrator.fleamarket.Home;
 
 
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
+import android.view.MotionEvent;
+import android.view.View;
 
 import com.uncle.Base.BaseBindAdapter;
 import com.uncle.Base.BaseBindingFragment;
-import com.uncle.administrator.university_fleamarket.databinding.TheBaseButton1Binding;
-import com.uncle.bomb.ShopGoods;
-import com.uncle.method.MyAdapter.MyListAdapter;
+import com.uncle.administrator.fleamarket.GoodsDetailsActivity;
+import com.uncle.administrator.fleamarket.NullActivity;
+import com.uncle.administrator.fleamarket.R;
+import com.uncle.administrator.fleamarket.databinding.TheBaseButton1Binding;
+import com.uncle.bomb.shop_goods;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,21 +31,20 @@ import cn.bmob.v3.listener.FindListener;
  * @author Administrator
  * @date 2016/11/22 0022
  */
-public class HomeFragment extends BaseBindingFragment<TheBaseButton1Binding> implements  BaseBindAdapter.OnItemClickListener<ShopGoods>, SwipeRefreshLayout.OnRefreshListener {
+public class HomeFragment extends BaseBindingFragment<TheBaseButton1Binding> implements BaseBindAdapter.OnItemClickListener<shop_goods>, SwipeRefreshLayout.OnRefreshListener {
 
     private int setSkipNumber = 0;
-    private MyListAdapter myListAdapter;
+    private HomeListAdapter homeListAdapter;
 
 
     @Override
     protected void bindData(TheBaseButton1Binding dataBinding) {
         Bmob.initialize(getContext(), "144dbb1fbca09ce5d3af201a05c54628");
-        initAdapter();
-        init();
+        initWidget();
         initViewPager();
         queryGoods(0, new QueryCallBack() {
             @Override
-            public void onImageLoad(List<ShopGoods> list) {
+            public void onImageLoad(List<shop_goods> list) {
                 getDataFromSQL(list);
             }
         });
@@ -50,18 +55,15 @@ public class HomeFragment extends BaseBindingFragment<TheBaseButton1Binding> imp
         return R.layout.the_base_button_1;
     }
 
-    public void init() { //各类初始化
-        binding.refresh.setOnRefreshListener(this);
-    }
 
-    public void queryGoods(int setSkip_number, final QueryCallBack queryCallBack) {
-        BmobQuery<ShopGoods> query = new BmobQuery<>();
+    public void queryGoods(int setSkipNumber, final QueryCallBack queryCallBack) {
+        BmobQuery<shop_goods> query = new BmobQuery<>();
         query.setLimit(10);
-        query.setSkip(10 * setSkip_number); // 忽略前10条数据（即第一页数据结果）
+        query.setSkip(10 * setSkipNumber); // 忽略前10条数据（即第一页数据结果）
         query.order("-updatedAt");//以时间来降序排列
-        query.findObjects(new FindListener<ShopGoods>() {
+        query.findObjects(new FindListener<shop_goods>() {
             @Override
-            public void done(List<ShopGoods> list, BmobException e) {
+            public void done(List<shop_goods> list, BmobException e) {
                 if (e == null) {
                     queryCallBack.onImageLoad(list);
                 }
@@ -69,15 +71,30 @@ public class HomeFragment extends BaseBindingFragment<TheBaseButton1Binding> imp
         });
     }
 
-    public void initAdapter() {
-        myListAdapter = new MyListAdapter(getActivity());
-        myListAdapter.setOnItemClickListener(this);
-        binding.recylerview.setAdapter(myListAdapter);
+    public void initWidget() {
+        homeListAdapter = new HomeListAdapter(getActivity());
+        homeListAdapter.setOnItemClickListener(this);
+        binding.recylerview.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        binding.recylerview.setAdapter(homeListAdapter);
+        binding.refresh.setOnRefreshListener(this);
+        binding.appBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                binding.refresh.setEnabled(Math.abs(verticalOffset) == 0);
+                if (binding.refresh.isRefreshing() && Math.abs(verticalOffset) > 3) {
+                    binding.refresh.setRefreshing(false);
+                }
+            }
+        });
     }
-    public void getDataFromSQL(List<ShopGoods> list) {
-        myListAdapter.setList(list);
-        myListAdapter.notifyDataSetChanged();
+
+    public void getDataFromSQL(List<shop_goods> list) {
+        homeListAdapter.setList(list);
+        homeListAdapter.notifyDataSetChanged();
         setSkipNumber++;
+        if (binding.refresh.isRefreshing()) {
+            binding.refresh.setRefreshing(false);
+        }
     }
 
 
@@ -87,7 +104,7 @@ public class HomeFragment extends BaseBindingFragment<TheBaseButton1Binding> imp
     }
 
     @Override
-    public void onItemClick(ShopGoods data) {
+    public void onItemClick(shop_goods data) {
         Intent intent = new Intent(getContext(), GoodsDetailsActivity.class);
         intent.putExtra("objID", data.getObjectId());
         intent.putExtra("owner_id", data.getOwner());
@@ -99,7 +116,7 @@ public class HomeFragment extends BaseBindingFragment<TheBaseButton1Binding> imp
         setSkipNumber = 0;
         queryGoods(setSkipNumber, new QueryCallBack() {
             @Override
-            public void onImageLoad(List<ShopGoods> list) {
+            public void onImageLoad(List<shop_goods> list) {
                 getDataFromSQL(list);
 
             }
@@ -108,7 +125,7 @@ public class HomeFragment extends BaseBindingFragment<TheBaseButton1Binding> imp
 
 
     public interface QueryCallBack {
-        void onImageLoad(List<ShopGoods> list);
+        void onImageLoad(List<shop_goods> list);
     }
 
 
@@ -117,6 +134,7 @@ public class HomeFragment extends BaseBindingFragment<TheBaseButton1Binding> imp
 //---------------------------------------广告-------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------
+
     private int scrollTime = 0;
     public static final int AUTO_BANNER_CODE = 0X1001;
     private List<Object> bannerList;
@@ -152,10 +170,24 @@ public class HomeFragment extends BaseBindingFragment<TheBaseButton1Binding> imp
         bannerList.add(R.drawable.d);
         BannerVpAdapter adapter = new BannerVpAdapter(getContext(), bannerList);
         binding.advPager.setAdapter(adapter);
+
+        binding.refresh.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View view, int i, int i1, int i2, int i3, int i4, int i5, int i6, int i7) {
+
+            }
+        });
+        startBannerTimer();
+        binding.advPager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                scrollTime = 0;
+                return false;
+            }
+        });
         if (adapter.getCount() > 1) {
             binding.indicator.setViewPager(binding.advPager);
         }
-
     }
 
     private void startBannerTimer() {

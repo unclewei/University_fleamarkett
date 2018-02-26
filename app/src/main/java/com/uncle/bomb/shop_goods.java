@@ -3,7 +3,7 @@ package com.uncle.bomb;
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.datatype.BmobFile;
 
-public class ShopGoods extends BmobObject {
+public class shop_goods extends BmobObject {
     private String image1;
     private String image2;
     private String image3;
@@ -24,14 +24,14 @@ public class ShopGoods extends BmobObject {
     private String head_portrait;
     private String name;
 
-    public ShopGoods() {
+    public shop_goods() {
     }
 
-    public ShopGoods(String image1, String image2, String image3,
-                     String image4, String image5, String image6,
-                     String title, String text, String price, String variety,
-                     int zan_nub, int pictureNub, String owner, String college,
-                     String organization, String head_portrait, String name) {
+    public shop_goods(String image1, String image2, String image3,
+                      String image4, String image5, String image6,
+                      String title, String text, String price, String variety,
+                      int zan_nub, int pictureNub, String owner, String college,
+                      String organization, String head_portrait, String name) {
 
         this.image1 = image1;
         this.image2 = image2;

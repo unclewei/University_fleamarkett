@@ -22,13 +22,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#FFF"
-                    app:elevation="0dp">
+                    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
                     <RelativeLayout
                         android:id="@+id/banner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal">
+                        android:layout_gravity="center_horizontal"
+                        app:layout_scrollFlags="scroll">
 
                         <android.support.v4.view.ViewPager
                             android:id="@+id/adv_pager"
@@ -42,14 +43,13 @@
                             android:layout_alignParentBottom="true" />
                     </RelativeLayout>
 
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recylerview"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-
                 </android.support.design.widget.AppBarLayout>
 
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recylerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
             </android.support.design.widget.CoordinatorLayout>
         </com.uncle.layout.VpSwipeRefreshLayout>
     </LinearLayout>

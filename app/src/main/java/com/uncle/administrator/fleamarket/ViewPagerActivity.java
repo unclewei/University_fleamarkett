@@ -1,4 +1,4 @@
-package com.uncle.administrator.university_fleamarket;
+package com.uncle.administrator.fleamarket;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,9 +9,6 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-
-import com.uncle.method.PhotoView;
 
 
 /**
@@ -54,13 +51,8 @@ public class ViewPagerActivity extends Activity {
 
             @Override
             public Object instantiateItem(ViewGroup container, int position) {
-                PhotoView view = new PhotoView(ViewPagerActivity.this);
-                view.enable();
-                view.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
-                view.setImageBitmap(turn_low_image(imgsId[position]));
-                container.addView(view);
-                return view;
+                return null;
             }
 
             @Override

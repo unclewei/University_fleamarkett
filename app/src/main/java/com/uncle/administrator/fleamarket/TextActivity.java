@@ -1,11 +1,7 @@
-package com.uncle.administrator.university_fleamarket;
+package com.uncle.administrator.fleamarket;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Base64;
 import android.widget.ImageView;
 
 /**

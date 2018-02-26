@@ -1,9 +1,7 @@
-package com.uncle.administrator.university_fleamarket;
+package com.uncle.administrator.fleamarket;
 
 import android.app.Activity;
 import android.os.Bundle;
-
-import com.uncle.administrator.university_fleamarket.R;
 
 /**
  * Created by Administrator on 2017/6/7 0007.

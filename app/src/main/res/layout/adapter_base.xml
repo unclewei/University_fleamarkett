@@ -1,175 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-             >
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="5dp"
+        android:layout_width="170dp"
+        android:layout_height="250dp"
+        android:layout_margin="5dp"
         android:background="#fffefe"
         app:cardPreventCornerOverlap="true"
         app:cardUseCompatPadding="true">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#fffffe"
+            android:layout_height="match_parent"
             android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/base_item_img"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFF"
+                android:minHeight="200dp"
+                android:scaleType="centerCrop" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp">
-
-                    <ImageView
-                        android:id="@+id/adapter_head_portrait"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginRight="15dp"
-                        android:background="@drawable/head"/>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/adapter_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
-                            android:text="卖家名字"
-                            android:textColor="#000000"
-                            android:textSize="13dp"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="7min前活跃过"
-                            android:textSize="8dp"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:gravity="right">
-
-                        <TextView
-                            android:id="@+id/adapter_price"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="$500"
-                            android:textColor="#FF4500"
-                            android:textSize="12dp"/>
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:layout_marginTop="5dp">
-
-                    <ImageView
-                        android:id="@+id/adapter_img1"
-                        android:layout_width="0dp"
-                        android:layout_height="150dp"
-                        android:layout_gravity="center"
-                        android:layout_marginRight="5dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/img_loading"
-                        android:scaleType="centerCrop"/>
-
-                    <ImageView
-                        android:id="@+id/adapter_img2"
-                        android:layout_width="0dp"
-                        android:layout_height="150dp"
-                        android:layout_gravity="center"
-                        android:layout_marginRight="5dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/img_loading"
-                        android:scaleType="centerCrop"/>
-
-                    <ImageView
-                        android:id="@+id/adapter_img3"
-                        android:layout_width="0dp"
-                        android:layout_height="150dp"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:background="@drawable/img_loading"
-                        android:scaleType="centerCrop"/>
-                </LinearLayout>
+                android:gravity="center_vertical">
 
                 <TextView
-                    android:id="@+id/adapter_title"
+                    android:id="@+id/base_item_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="Name"
+                    android:textColor="#000"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/base_item_college"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:lines="1"
+                    android:text="college"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/base_item_price"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="10dp"
-                    android:maxLines="2"
-                    android:text="描述此产品：联想X131E笔记本，八成新，一首好资源"
-                    android:textColor="#000000"/>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="5dp"
-                    android:background="#666999"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp">
-
-                    <TextView
-                        android:id="@+id/adapter_base_organization"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="来自五邑大学计算机学院"
-                        android:textColor="#20B2AA"/>
-
-                    <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:gravity="right">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="点赞·"/>
-
-                        <TextView
-                            android:id="@+id/adapter_base_zan"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="`"/>
-                    </LinearLayout>
-                </LinearLayout>
-
-
+                    android:gravity="end|center_vertical"
+                    android:text="price"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="12sp" />
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/base_item_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:ellipsize="end"
+                android:lines="2"
+                android:text="description"
+                android:textSize="10sp" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
-    </LinearLayout>
 </layout>
 
 

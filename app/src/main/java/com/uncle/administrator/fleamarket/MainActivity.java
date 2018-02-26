@@ -1,4 +1,4 @@
-package com.uncle.administrator.university_fleamarket;
+package com.uncle.administrator.fleamarket;
 
 
 import android.content.Intent;
@@ -17,6 +17,8 @@ import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import com.uncle.administrator.fleamarket.Home.HomeFragment;
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
 

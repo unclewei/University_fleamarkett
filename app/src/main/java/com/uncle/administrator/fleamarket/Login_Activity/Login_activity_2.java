@@ -1,4 +1,4 @@
-package com.uncle.administrator.university_fleamarket.Login_Activity;
+package com.uncle.administrator.fleamarket.Login_Activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -15,13 +15,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.uncle.administrator.university_fleamarket.MainActivity;
-import com.uncle.administrator.university_fleamarket.R;
+import com.uncle.administrator.fleamarket.MainActivity;
+import com.uncle.administrator.fleamarket.R;
 import com.uncle.bomb.BOMBOpenHelper;
 import com.uncle.bomb.UserAccount;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import cn.bmob.sms.BmobSMS;
@@ -137,7 +135,7 @@ public class Login_activity_2 extends Activity {
                 // TODO Auto-generated method stub
                 if(ex==null){//短信验证码已验证成功
                     Log.i("bmob", "验证通过");
-                    bomb_openhelper.find_account(nub, new BOMBOpenHelper.FindAccountCallback() {
+                    bomb_openhelper.findAccount(nub, new BOMBOpenHelper.FindAccountCallback() {
                         @Override
                         public void onSuccess(List<UserAccount> list) {
                             UserAccount userAccount = list.get(0);
@@ -159,8 +157,8 @@ public class Login_activity_2 extends Activity {
                         }
 
                         @Override
-                        public void onFail(int fail_code) {//在数据库中找不到账号的，创建新的账号，并且登录跳转
-                            if (fail_code == 9015){
+                        public void onFail(int failCode) {//在数据库中找不到账号的，创建新的账号，并且登录跳转
+                            if (failCode == 9015){
                                 bomb_openhelper.add_account("无名氏",null,nub,"五邑大学","计算机学院",new BOMBOpenHelper.AddAccountCallback() {
                                     @Override
                                     public void onSuccess(String object) {

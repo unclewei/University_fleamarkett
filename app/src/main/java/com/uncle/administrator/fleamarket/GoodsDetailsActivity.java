@@ -1,4 +1,4 @@
-package com.uncle.administrator.university_fleamarket;
+package com.uncle.administrator.fleamarket;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -21,7 +21,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.uncle.bomb.BOMBOpenHelper;
 import com.uncle.bomb.CommentZan;
-import com.uncle.bomb.ShopGoods;
+import com.uncle.bomb.shop_goods;
 
 import java.util.List;
 
@@ -244,7 +244,7 @@ public class GoodsDetailsActivity extends Activity {
             BOMBOpenHelper bomb = new BOMBOpenHelper();
             bomb.find_alone(objectID, new BOMBOpenHelper.ImageCallback() {
                 @Override
-                public void onImageLoad(ShopGoods shopGoods) {
+                public void onImageLoad(shop_goods shopGoods) {
                     title.setText(shopGoods.getText());
                     price.setText(shopGoods.getTitle());
                     zan_nub.setText(shopGoods.getZan_nub());

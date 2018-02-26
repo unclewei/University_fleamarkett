@@ -1,4 +1,4 @@
-package com.uncle.administrator.university_fleamarket;
+package com.uncle.administrator.fleamarket;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -23,9 +23,9 @@ import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
-import com.uncle.administrator.university_fleamarket.Login_Activity.welcome_page;
+import com.uncle.administrator.fleamarket.Login_Activity.welcome_page;
 import com.uncle.bomb.BOMBOpenHelper;
-import com.uncle.bomb.ShopGoods;
+import com.uncle.bomb.shop_goods;
 import com.uncle.method.turns;
 
 import java.io.ByteArrayOutputStream;
@@ -129,7 +129,7 @@ public class SellActivity extends Activity {
                 } else if (imageItem.size() <= 3) {
                     Toast.makeText(SellActivity.this, "要有三张以上图片才能让别人了解你哟~~", Toast.LENGTH_SHORT).show();
                 } else {//开启数据库
-                    final ShopGoods shopGoods = new ShopGoods(str[0], str[1], str[2], str[3], str[4], str[5]
+                    final shop_goods shopGoods = new shop_goods(str[0], str[1], str[2], str[3], str[4], str[5]
                             , title, detail, price, null, 0, picture_number, objectID, college, organization, head_portrait, name);
                     final BOMBOpenHelper bomb = new BOMBOpenHelper();
                     ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(1, 1, 1, TimeUnit.SECONDS, new LinkedBlockingDeque<Runnable>(32));

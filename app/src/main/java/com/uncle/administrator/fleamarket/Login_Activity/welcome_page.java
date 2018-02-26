@@ -1,4 +1,4 @@
-package com.uncle.administrator.university_fleamarket.Login_Activity;
+package com.uncle.administrator.fleamarket.Login_Activity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,11 +9,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.TextView;
 
-import com.uncle.administrator.university_fleamarket.MainActivity;
-import com.uncle.administrator.university_fleamarket.R;
+import com.uncle.administrator.fleamarket.MainActivity;
+import com.uncle.administrator.fleamarket.R;
 
 /**
  * Created by Administrator on 2017/4/15 0015.

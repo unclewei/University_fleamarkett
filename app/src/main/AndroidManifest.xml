@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.uncle.administrator.university_fleamarket">
+    package="com.uncle.administrator.fleamarket">
 
     <!--允许联网 -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -23,7 +23,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="com.uncle.administrator.fleamarket.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar">
@@ -33,17 +33,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TextActivity" />
-        <activity android:name=".SellActivity" />
-        <activity android:name=".GoodsDetailsActivity" />
-        <activity android:name=".ViewPagerActivity" />
-        <activity android:name=".ChatActivity" />
-        <activity android:name=".Login_Activity.Login_activity_2" />
-        <activity android:name=".Login_Activity.Login_activity_1" />
-        <activity android:name=".Login_Activity.Login_activity3_setname" />
-        <activity android:name=".ChangePersonDataActivity" />
-        <activity android:name=".NullActivity" />
-        <activity android:name=".Login_Activity.welcome_page"/>
+        <activity android:name="com.uncle.administrator.fleamarket.TextActivity" />
+        <activity android:name="com.uncle.administrator.fleamarket.SellActivity" />
+        <activity android:name="com.uncle.administrator.fleamarket.GoodsDetailsActivity" />
+        <activity android:name="com.uncle.administrator.fleamarket.ViewPagerActivity" />
+        <activity android:name="com.uncle.administrator.fleamarket.ChatActivity" />
+        <activity android:name="com.uncle.administrator.fleamarket.Login_Activity.Login_activity_2" />
+        <activity android:name="com.uncle.administrator.fleamarket.Login_Activity.Login_activity_1" />
+        <activity android:name="com.uncle.administrator.fleamarket.Login_Activity.Login_activity3_setname" />
+        <activity android:name="com.uncle.administrator.fleamarket.ChangePersonDataActivity" />
+        <activity android:name="com.uncle.administrator.fleamarket.NullActivity" />
+        <activity android:name="com.uncle.administrator.fleamarket.Login_Activity.welcome_page"/>
 
 
     </application>

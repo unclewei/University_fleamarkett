@@ -42,4 +42,5 @@ dependencies {
     compile 'com.android.support:support-v4:26.1.0'
     compile 'com.alibaba:arouter-api:1.2.4'
     compile 'me.relex:circleindicator:1.2.2@aar'
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha2'
 }
