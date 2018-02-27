@@ -8,6 +8,8 @@ import android.os.Message;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -31,9 +33,13 @@ import cn.bmob.v3.listener.FindListener;
  * @author Administrator
  * @date 2016/11/22 0022
  */
-public class HomeFragment extends BaseBindingFragment<TheBaseButton1Binding> implements BaseBindAdapter.OnItemClickListener<shop_goods>, SwipeRefreshLayout.OnRefreshListener {
+public class HomeFragment extends BaseBindingFragment<TheBaseButton1Binding> implements
+        BaseBindAdapter.OnItemClickListener<shop_goods>,
+        SwipeRefreshLayout.OnRefreshListener,
+        BaseBindAdapter.OnLoadListener {
 
     private int setSkipNumber = 0;
+    private boolean isLast = false;
     private HomeListAdapter homeListAdapter;
 
 
@@ -59,13 +65,14 @@ public class HomeFragment extends BaseBindingFragment<TheBaseButton1Binding> imp
     public void queryGoods(int setSkipNumber, final QueryCallBack queryCallBack) {
         BmobQuery<shop_goods> query = new BmobQuery<>();
         query.setLimit(10);
-        query.setSkip(10 * setSkipNumber); // 忽略前10条数据（即第一页数据结果）
-        query.order("-updatedAt");//以时间来降序排列
+        query.setSkip(10 * setSkipNumber);
+        query.order("-updatedAt");
         query.findObjects(new FindListener<shop_goods>() {
             @Override
             public void done(List<shop_goods> list, BmobException e) {
                 if (e == null) {
                     queryCallBack.onImageLoad(list);
+                    Log.e("william",list.toString());
                 }
             }
         });
@@ -74,6 +81,9 @@ public class HomeFragment extends BaseBindingFragment<TheBaseButton1Binding> imp
     public void initWidget() {
         homeListAdapter = new HomeListAdapter(getActivity());
         homeListAdapter.setOnItemClickListener(this);
+        homeListAdapter.setLoadingView(LayoutInflater.from(getContext()).inflate(R.layout.load_more_view, null));
+        homeListAdapter.setOpenLoadMore(true);
+        homeListAdapter.setOnLoadListener(this);
         binding.recylerview.setLayoutManager(new GridLayoutManager(getContext(), 2));
         binding.recylerview.setAdapter(homeListAdapter);
         binding.refresh.setOnRefreshListener(this);
@@ -97,12 +107,6 @@ public class HomeFragment extends BaseBindingFragment<TheBaseButton1Binding> imp
         }
     }
 
-
-    private void intentToNullActivity() {
-        Intent intent = new Intent(getContext(), NullActivity.class);
-        startActivity(intent);
-    }
-
     @Override
     public void onItemClick(shop_goods data) {
         Intent intent = new Intent(getContext(), GoodsDetailsActivity.class);
@@ -118,7 +122,28 @@ public class HomeFragment extends BaseBindingFragment<TheBaseButton1Binding> imp
             @Override
             public void onImageLoad(List<shop_goods> list) {
                 getDataFromSQL(list);
+                isLast = false;
+                homeListAdapter.setCanLoadMore(true);
 
+            }
+        });
+    }
+
+    @Override
+    public void onLoadMore() {
+        Log.e("william","加载更多");
+        queryGoods(setSkipNumber, new QueryCallBack() {
+            @Override
+            public void onImageLoad(List<shop_goods> list) {
+                homeListAdapter.addAll(list);
+                setSkipNumber++;
+                homeListAdapter.isLoading = false;
+                homeListAdapter.notifyDataSetChanged();
+                if (list.size() < 10) {
+                    homeListAdapter.removeLoadingView();
+                    isLast = true;
+                }
+                homeListAdapter.setCanLoadMore(!isLast);
             }
         });
     }

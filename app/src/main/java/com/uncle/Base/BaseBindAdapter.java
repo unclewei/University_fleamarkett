@@ -24,7 +24,7 @@ public abstract class BaseBindAdapter<T> extends RecyclerView.Adapter<BaseBindVi
     protected Context mContext;
 
     private boolean openLoadMore = false;
-    private boolean isLoading = false;
+    public boolean isLoading = false;
     private boolean canLoadMore = true;
 
     private View emptyView;
