@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#e7e7e7"
+        android:orientation="vertical">
+
+        <com.uncle.layout.VpSwipeRefreshLayout
+            android:id="@+id/refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.design.widget.CoordinatorLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.design.widget.AppBarLayout
+                    android:id="@+id/app_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#FFF"
+                    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+                    <RelativeLayout
+                        android:id="@+id/banner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        app:layout_scrollFlags="scroll|enterAlways">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginTop="20dp">
+
+                            <ImageView
+                                android:id="@+id/bt1_listview_intent_icon"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_marginRight="5dp"
+                                android:background="@color/cardview_dark_background"/>
+
+                            <LinearLayout
+                                android:id="@+id/bt1_listview_intent_name_LinearLayout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/bt1_listview_intent_name"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="10dp"
+                                    android:text="卖家名字"
+                                    android:textColor="#000000"
+                                    android:textSize="20dp" />
+
+                                <TextView
+                                    android:id="@+id/bt1_listview_intent_organization"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="学院" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="10dp"
+                                android:gravity="right">
+                                <TextView
+                                    android:layout_width="50dp"
+                                    android:layout_height="25dp"
+                                    android:background="@color/cardview_dark_background"
+                                    android:layout_marginRight="40dp"
+                                    android:gravity="center"
+                                    android:text="打招呼"/>
+                                <TextView
+                                    android:id="@+id/bt1_listview_intent_price"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="$500"
+                                    android:textColor="#FF4500"
+                                    android:textSize="20dp" />
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+                        <me.relex.circleindicator.CircleIndicator
+                            android:id="@+id/indicator"
+                            android:layout_width="match_parent"
+                            android:layout_height="20dp"
+                            android:layout_alignParentBottom="true" />
+                    </RelativeLayout>
+
+                </android.support.design.widget.AppBarLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recylerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            </android.support.design.widget.CoordinatorLayout>
+        </com.uncle.layout.VpSwipeRefreshLayout>
+    </LinearLayout>
+</layout>

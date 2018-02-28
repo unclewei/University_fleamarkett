@@ -3,9 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.v7.widget.CardView
-        android:layout_width="170dp"
-        android:layout_height="250dp"
-        android:layout_margin="5dp"
+        android:layout_width="180dp"
+        android:layout_height="260dp"
         android:background="#fffefe"
         app:cardPreventCornerOverlap="true"
         app:cardUseCompatPadding="true">
@@ -26,6 +25,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginStart="5dp"
                 android:gravity="center_vertical">
 
                 <TextView
@@ -62,6 +63,8 @@
                 android:id="@+id/base_item_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
                 android:ellipsize="end"
                 android:lines="2"

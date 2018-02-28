@@ -25,7 +25,7 @@ public class HomeListAdapter extends BaseAdapter<shop_goods> {
 
     @Override
     protected int getItemLayout(int position) {
-        return R.layout.adapter_base;
+        return R.layout.adapter_home;
     }
 
     @Override

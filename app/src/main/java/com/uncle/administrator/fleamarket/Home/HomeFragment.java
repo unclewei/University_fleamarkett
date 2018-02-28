@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import com.uncle.Base.BaseBindAdapter;
 import com.uncle.Base.BaseBindingFragment;
@@ -123,6 +124,8 @@ public class HomeFragment extends BaseBindingFragment<TheBaseButton1Binding> imp
             public void onImageLoad(List<shop_goods> list) {
                 getDataFromSQL(list);
                 isLast = false;
+                homeListAdapter.setLoadingView(LayoutInflater.from(getContext()).inflate(R.layout.load_more_view, null));
+                homeListAdapter.setOpenLoadMore(true);
                 homeListAdapter.setCanLoadMore(true);
 
             }
@@ -142,6 +145,7 @@ public class HomeFragment extends BaseBindingFragment<TheBaseButton1Binding> imp
                 if (list.size() < 10) {
                     homeListAdapter.removeLoadingView();
                     isLast = true;
+                    Toast.makeText(getContext(),"没有更多货物啦",Toast.LENGTH_SHORT).show();
                 }
                 homeListAdapter.setCanLoadMore(!isLast);
             }

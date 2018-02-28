@@ -80,17 +80,17 @@ public class GoodsDetailsActivity extends Activity {
         head_LinearLayout = (LinearLayout) findViewById(R.id.bt1_listview_intent_name_LinearLayout);
         linearLayout_comment = (LinearLayout) findViewById(R.id.bt1_listview_intent_Linear_for_txet);
 
-        get_data_from_shareperecence();
-        get_intent_message();
-        find_account_data_from_bomb(owner);
+        getDataFromShareperecence();
+        getIntentMessage();
+        findAccountDataFromBomb(owner);
 
         img_click();
-        ComMent();
-        zan_click();
-        head_click();
+        comMent();
+        zanClick();
+        headClick();
     }
 
-    private void get_data_from_shareperecence(){
+    private void getDataFromShareperecence(){
         SharedPreferences sharedPreferences = getSharedPreferences("account", Context.MODE_WORLD_READABLE);
         myobject = sharedPreferences.getString("object_id", "没有id");
         myorganization = sharedPreferences.getString("organization",null);
@@ -101,7 +101,7 @@ public class GoodsDetailsActivity extends Activity {
     }
 
     //用objectID获取用户的数据
-    public void find_account_data_from_bomb(String target_object) {
+    public void findAccountDataFromBomb(String target_object) {
         Log.i("又来试验了target_object",target_object);
         bomb.findAccountDataAlone(target_object, new BOMBOpenHelper.FindAccountDataAloneCallback() {
             @Override
@@ -123,18 +123,18 @@ public class GoodsDetailsActivity extends Activity {
 
 
     //获取头像
-    private void get_head_protrait( String head_portrait){
-        if (head_portrait.length() ==0){
+    private void getHeadProtrait(String headPortrait){
+        if (headPortrait.length() ==0){
             icon.setImageResource(R.drawable.head);
         }else {
-            Glide.with(this).load(head_portrait).into(icon);
+            Glide.with(this).load(headPortrait).into(icon);
 
         }
 
 
     }
 
-    private void head_click(){
+    private void headClick(){
         icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -209,7 +209,7 @@ public class GoodsDetailsActivity extends Activity {
         });
     }//图片的点击方法，跳转到viewpagerActivity
 
-    public void zan_click() {
+    public void zanClick() {
         zan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -236,7 +236,7 @@ public class GoodsDetailsActivity extends Activity {
 
 
     //从上一个页面获得信息，intent
-    public void get_intent_message() {
+    public void getIntentMessage() {
         Intent intent = getIntent();
         if (intent != null) {
             objectID = intent.getStringExtra("objID");
@@ -257,11 +257,11 @@ public class GoodsDetailsActivity extends Activity {
                 public void onError() {
                 }
             });
-            get_comment();//获取评论
+            getComment();//获取评论
         }
     }//从互联网中获取图片，评论。
 
-    public void ComMent() {
+    public void comMent() {
         commemt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -269,13 +269,13 @@ public class GoodsDetailsActivity extends Activity {
                     comment_text.setHint("快点就下你的评论吧");
                     String text_context = comment_text.getText().toString();
                     text_context = myname+" ：“" + text_context + "”";
-                    get_new_textview(text_context);//生成一个新的TextView，并设置点击事件
+                    getNewTextView(text_context);//生成一个新的TextView，并设置点击事件
                     InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(comment_text.getWindowToken(), 0); // 关闭软键盘
                     comment_text.setText(null);
                     Toast.makeText(GoodsDetailsActivity.this, "评论成功", Toast.LENGTH_SHORT).show();
-                    final String finalText_context = text_context;
-                    final CommentZan commentZan = new CommentZan(finalText_context, objectID, "name1", "name2", 0);
+                    final String finalTextContext = text_context;
+                    final CommentZan commentZan = new CommentZan(finalTextContext, objectID, "name1", "name2", 0);
                     new Thread() {
                         @Override
                         public void run() {
@@ -290,7 +290,7 @@ public class GoodsDetailsActivity extends Activity {
                     String text_context = comment_text.getText().toString();
                     text_context = "   " +myname+ "  回复了" + "上面的用户" + ":“" + text_context + "”";
 
-                    get_new_textview(text_context);//生成一个新的TextView，并设置点击事件
+                    getNewTextView(text_context);//生成一个新的TextView，并设置点击事件
                     InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(comment_text.getWindowToken(), 0); // 关闭软键盘
                     comment_text.setText(null);
@@ -312,7 +312,7 @@ public class GoodsDetailsActivity extends Activity {
         });
     }    //评论commemt
 
-    public void get_comment() {
+    public void getComment() {
         bomb.find_comment(objectID, new BOMBOpenHelper.getCommentCallback() {
             @Override
             public void onCommentLoad(List<CommentZan> arrayList) {
@@ -320,18 +320,18 @@ public class GoodsDetailsActivity extends Activity {
                     for (int i = 0; i < arrayList.size(); i++) {
                         CommentZan commentZan = arrayList.get(i);
                         String comment = commentZan.getComment();
-                        get_new_textview(comment);//生成一个新的TextView，并设置点击事件
+                        getNewTextView(comment);//生成一个新的TextView，并设置点击事件
                     }
                 } else {
 
-                    get_new_textview("还没有评论哦，快来做第一个！");
+                    getNewTextView("还没有评论哦，快来做第一个！");
                 }
             }
 
         });
     }//获取评论呢
 
-    public void get_new_textview(String context) {
+    public void getNewTextView(String context) {
         TextView textView = new TextView(GoodsDetailsActivity.this);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -367,7 +367,7 @@ public class GoodsDetailsActivity extends Activity {
                     break;
                 case CHAT_ACTIVITY_ACCOUNT_HEAD:
                     head_portrait = (String) msg.obj;
-                    get_head_protrait(head_portrait);
+                    getHeadProtrait(head_portrait);
                     break;
                 default:
                     break;
