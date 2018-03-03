@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide;
 import com.uncle.Base.BaseAdapter;
 import com.uncle.Base.BaseBindViewHolder;
 import com.uncle.administrator.fleamarket.R;
-import com.uncle.administrator.fleamarket.databinding.AdapterBaseBinding;
+import com.uncle.administrator.fleamarket.databinding.AdapterHomeBinding;
 import com.uncle.bomb.shop_goods;
 
 /**
@@ -33,7 +33,7 @@ public class HomeListAdapter extends BaseAdapter<shop_goods> {
         return new BaseBindViewHolder<shop_goods>(binding) {
             @Override
             public void bindTo(BaseBindViewHolder<shop_goods> holder, shop_goods item) {
-                AdapterBaseBinding baseBinding = (AdapterBaseBinding) binding;
+                AdapterHomeBinding baseBinding = (AdapterHomeBinding) binding;
                 baseBinding.baseItemName.setText(item.getName());
                 baseBinding.baseItemCollege.setText(item.getCollege());
                 baseBinding.baseItemDescription.setText(item.getText());
