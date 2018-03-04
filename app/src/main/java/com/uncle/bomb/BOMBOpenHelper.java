@@ -34,7 +34,7 @@ public class BOMBOpenHelper {
     /**
      * 创建一条商品信息
      */
-    public void createPerson(shop_goods goods) {
+    public void createPerson(ShopGoods goods) {
         goods.save(new SaveListener<String>() {
 
             @Override
@@ -51,13 +51,13 @@ public class BOMBOpenHelper {
 
 
     public void queryGoodsAndDoing() {
-        final List<shop_goods> listGoods = new ArrayList<>();
-        BmobQuery<shop_goods> bmobQuery = new BmobQuery<>();
+        final List<ShopGoods> listGoods = new ArrayList<>();
+        BmobQuery<ShopGoods> bmobQuery = new BmobQuery<>();
         bmobQuery.addWhereEqualTo(null, null);
 //        bmobQuery.setLimit(1);
-        bmobQuery.findObjects(new FindListener<shop_goods>() {
+        bmobQuery.findObjects(new FindListener<ShopGoods>() {
             @Override
-            public void done(List<shop_goods> list, BmobException e) {
+            public void done(List<ShopGoods> list, BmobException e) {
                 if (e == null) {
 
                 }
@@ -67,7 +67,7 @@ public class BOMBOpenHelper {
 
 
     //上传文件，上传图片进入数据库，然后创建商品，与上连用
-    public void uploadImg(final shop_goods shopGoods) {
+    public void uploadImg(final ShopGoods shopGoods) {
         final String[] filePaths = new String[shopGoods.getPictureNub()];
         temp_nub = shopGoods.getPictureNub();
         filePaths[0] = shopGoods.getImage1();
@@ -150,18 +150,18 @@ public class BOMBOpenHelper {
 
     // 图片的回调函数
     public interface ImageCallback {
-        void onImageLoad(shop_goods shopGoods);
+        void onImageLoad(ShopGoods shopGoods);
 
         void onError();
     }
 
     //通过id找到一条数据，用于点击商品之后的详细信息
     public void find_alone(String objID, final ImageCallback callback) {
-        BmobQuery<shop_goods> query = new BmobQuery<>();
-        query.getObject(objID, new QueryListener<shop_goods>() {
+        BmobQuery<ShopGoods> query = new BmobQuery<>();
+        query.getObject(objID, new QueryListener<ShopGoods>() {
 
             @Override
-            public void done(shop_goods object, BmobException e) {
+            public void done(ShopGoods object, BmobException e) {
                 if (e == null) {
                     callback.onImageLoad(object);
                 } else {
@@ -196,7 +196,7 @@ public class BOMBOpenHelper {
      * @param zan      新的赞数
      */
     public void updateZan(String objectId, int zan) {
-        shop_goods goods = new shop_goods();
+        ShopGoods goods = new ShopGoods();
         goods.setZan_nub(zan);
         goods.update(objectId, new UpdateListener() {
 

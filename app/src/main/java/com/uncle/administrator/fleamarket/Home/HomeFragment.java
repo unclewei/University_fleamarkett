@@ -17,10 +17,9 @@ import android.widget.Toast;
 import com.uncle.Base.BaseBindAdapter;
 import com.uncle.Base.BaseBindingFragment;
 import com.uncle.administrator.fleamarket.GoodsDetailsActivity;
-import com.uncle.administrator.fleamarket.NullActivity;
 import com.uncle.administrator.fleamarket.R;
 import com.uncle.administrator.fleamarket.databinding.TheBaseButton1Binding;
-import com.uncle.bomb.shop_goods;
+import com.uncle.bomb.ShopGoods;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +34,7 @@ import cn.bmob.v3.listener.FindListener;
  * @date 2016/11/22 0022
  */
 public class HomeFragment extends BaseBindingFragment<TheBaseButton1Binding> implements
-        BaseBindAdapter.OnItemClickListener<shop_goods>,
+        BaseBindAdapter.OnItemClickListener<ShopGoods>,
         SwipeRefreshLayout.OnRefreshListener,
         BaseBindAdapter.OnLoadListener {
 
@@ -51,7 +50,7 @@ public class HomeFragment extends BaseBindingFragment<TheBaseButton1Binding> imp
         initViewPager();
         queryGoods(0, new QueryCallBack() {
             @Override
-            public void onImageLoad(List<shop_goods> list) {
+            public void onImageLoad(List<ShopGoods> list) {
                 getDataFromSQL(list);
             }
         });
@@ -64,13 +63,13 @@ public class HomeFragment extends BaseBindingFragment<TheBaseButton1Binding> imp
 
 
     public void queryGoods(int setSkipNumber, final QueryCallBack queryCallBack) {
-        BmobQuery<shop_goods> query = new BmobQuery<>();
+        BmobQuery<ShopGoods> query = new BmobQuery<>();
         query.setLimit(10);
         query.setSkip(10 * setSkipNumber);
         query.order("-updatedAt");
-        query.findObjects(new FindListener<shop_goods>() {
+        query.findObjects(new FindListener<ShopGoods>() {
             @Override
-            public void done(List<shop_goods> list, BmobException e) {
+            public void done(List<ShopGoods> list, BmobException e) {
                 if (e == null) {
                     queryCallBack.onImageLoad(list);
                     Log.e("william",list.toString());
@@ -99,7 +98,7 @@ public class HomeFragment extends BaseBindingFragment<TheBaseButton1Binding> imp
         });
     }
 
-    public void getDataFromSQL(List<shop_goods> list) {
+    public void getDataFromSQL(List<ShopGoods> list) {
         homeListAdapter.setList(list);
         homeListAdapter.notifyDataSetChanged();
         setSkipNumber++;
@@ -109,7 +108,7 @@ public class HomeFragment extends BaseBindingFragment<TheBaseButton1Binding> imp
     }
 
     @Override
-    public void onItemClick(shop_goods data) {
+    public void onItemClick(ShopGoods data) {
         Intent intent = new Intent(getContext(), GoodsDetailsActivity.class);
         intent.putExtra("objID", data.getObjectId());
         intent.putExtra("owner_id", data.getOwner());
@@ -121,7 +120,7 @@ public class HomeFragment extends BaseBindingFragment<TheBaseButton1Binding> imp
         setSkipNumber = 0;
         queryGoods(setSkipNumber, new QueryCallBack() {
             @Override
-            public void onImageLoad(List<shop_goods> list) {
+            public void onImageLoad(List<ShopGoods> list) {
                 getDataFromSQL(list);
                 isLast = false;
                 homeListAdapter.setLoadingView(LayoutInflater.from(getContext()).inflate(R.layout.load_more_view, null));
@@ -137,7 +136,7 @@ public class HomeFragment extends BaseBindingFragment<TheBaseButton1Binding> imp
         Log.e("william","加载更多");
         queryGoods(setSkipNumber, new QueryCallBack() {
             @Override
-            public void onImageLoad(List<shop_goods> list) {
+            public void onImageLoad(List<ShopGoods> list) {
                 homeListAdapter.addAll(list);
                 setSkipNumber++;
                 homeListAdapter.isLoading = false;
@@ -154,7 +153,7 @@ public class HomeFragment extends BaseBindingFragment<TheBaseButton1Binding> imp
 
 
     public interface QueryCallBack {
-        void onImageLoad(List<shop_goods> list);
+        void onImageLoad(List<ShopGoods> list);
     }
 
 

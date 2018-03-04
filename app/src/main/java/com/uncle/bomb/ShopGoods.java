@@ -1,15 +1,20 @@
 package com.uncle.bomb;
 
-import cn.bmob.v3.BmobObject;
-import cn.bmob.v3.datatype.BmobFile;
+import java.util.ArrayList;
+import java.util.List;
 
-public class shop_goods extends BmobObject {
+import cn.bmob.v3.BmobObject;
+
+public class ShopGoods extends BmobObject {
     private String image1;
     private String image2;
     private String image3;
     private String image4;
     private String image5;
     private String image6;
+    private String image7;
+    private String image8;
+    private String image9;
 
     private String title;
     private String text;
@@ -24,14 +29,15 @@ public class shop_goods extends BmobObject {
     private String head_portrait;
     private String name;
 
-    public shop_goods() {
+    public ShopGoods() {
     }
 
-    public shop_goods(String image1, String image2, String image3,
-                      String image4, String image5, String image6,
-                      String title, String text, String price, String variety,
-                      int zan_nub, int pictureNub, String owner, String college,
-                      String organization, String head_portrait, String name) {
+    public ShopGoods(String image1, String image2, String image3,
+                     String image4, String image5, String image6,
+                     String image7,String image8,String image9,
+                     String title, String text, String price, String variety,
+                     int zan_nub, int pictureNub, String owner, String college,
+                     String organization, String head_portrait, String name) {
 
         this.image1 = image1;
         this.image2 = image2;
@@ -59,6 +65,7 @@ public class shop_goods extends BmobObject {
     public void setPictureNub(int pictureNub) {
         this.pictureNub = pictureNub;
     }
+
     public String getName() {
         return name;
     }
@@ -185,5 +192,55 @@ public class shop_goods extends BmobObject {
 
     public void setVariety(String variety) {
         this.variety = variety;
+    }
+
+    public String getImage7() {
+        return image7;
+    }
+
+    public void setImage7(String image7) {
+        this.image7 = image7;
+    }
+
+    public String getImage8() {
+        return image8;
+    }
+
+    public void setImage8(String image8) {
+        this.image8 = image8;
+    }
+
+    public String getImage9() {
+        return image9;
+    }
+
+    public void setImage9(String image9) {
+        this.image9 = image9;
+    }
+
+    public List<String> ImageList() {
+        List<String> list = new ArrayList<>();
+        int nub = getPictureNub();
+        list.add(image1);
+        list.add(image2);
+        list.add(image3);
+        switch (nub) {
+            case 9:
+                list.add(image9);
+            case 8:
+                list.add(image8);
+            case 7:
+                list.add(image7);
+            case 6:
+                list.add(image6);
+            case 5:
+                list.add(image5);
+            case 4:
+                list.add(image4);
+                break;
+            default:
+                break;
+        }
+        return list;
     }
 }

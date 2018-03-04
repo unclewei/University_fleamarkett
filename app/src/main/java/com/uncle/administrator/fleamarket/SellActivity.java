@@ -25,16 +25,13 @@ import android.widget.Toast;
 
 import com.uncle.administrator.fleamarket.Login_Activity.welcome_page;
 import com.uncle.bomb.BOMBOpenHelper;
-import com.uncle.bomb.shop_goods;
+import com.uncle.bomb.ShopGoods;
 import com.uncle.method.turns;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 import cn.bmob.v3.Bmob;
 
@@ -129,17 +126,19 @@ public class SellActivity extends Activity {
                 } else if (imageItem.size() <= 3) {
                     Toast.makeText(SellActivity.this, "要有三张以上图片才能让别人了解你哟~~", Toast.LENGTH_SHORT).show();
                 } else {//开启数据库
-                    final shop_goods shopGoods = new shop_goods(str[0], str[1], str[2], str[3], str[4], str[5]
-                            , title, detail, price, null, 0, picture_number, objectID, college, organization, head_portrait, name);
+                    final ShopGoods shopGoods = new ShopGoods(str[0], str[1], str[2], str[3], str[4], str[5]
+                            , str[6], str[7], str[8]
+                            , title, detail, price, null, 0,
+                            picture_number, objectID, college,
+                            organization, head_portrait, name);
                     final BOMBOpenHelper bomb = new BOMBOpenHelper();
-                    ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(1, 1, 1, TimeUnit.SECONDS, new LinkedBlockingDeque<Runnable>(32));
                     Runnable runnable = new Runnable() {
                         @Override
                         public void run() {
                             bomb.uploadImg(shopGoods);
                         }
                     };
-                    threadPoolExecutor.execute(runnable);
+                    runnable.run();
                     Toast.makeText(SellActivity.this, "发布成功，一会儿就能看到你的信息咯~", Toast.LENGTH_SHORT).show();
 
 
