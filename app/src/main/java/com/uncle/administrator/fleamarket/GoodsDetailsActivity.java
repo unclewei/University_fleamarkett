@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -200,7 +199,7 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
                     binding.etCommentInput.setHint("快点就下你的评论吧");
                     textContext = myname + " ：“" + textContext + "”";
                     getNewTextView(textContext);
-                    KeyboardUtil.closeKeyBoard(GoodsDetailsActivity.this,binding.etCommentInput);
+                    KeyboardUtil.closeKeyBoard(GoodsDetailsActivity.this, binding.etCommentInput);
                     binding.etCommentInput.setText(null);
                     Toast.makeText(GoodsDetailsActivity.this, "评论成功", Toast.LENGTH_SHORT).show();
                     final CommentZan commentZan = new CommentZan(textContext, objectID, "name1", "name2", 0);
@@ -216,7 +215,7 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
                     binding.etCommentInput.setHint("回复用户");
                     textContext = "   " + myname + "  回复了" + "上面的用户" + ":“" + textContext + "”";
                     getNewTextView(textContext);
-                    KeyboardUtil.closeKeyBoard(GoodsDetailsActivity.this,binding.etCommentInput);
+                    KeyboardUtil.closeKeyBoard(GoodsDetailsActivity.this, binding.etCommentInput);
                     binding.etCommentInput.setText(null);
                     Toast.makeText(GoodsDetailsActivity.this, "回复成功", Toast.LENGTH_SHORT).show();
                     final CommentZan commentZan = new CommentZan(textContext, objectID, "name1", "name2", 1);
@@ -288,6 +287,11 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
                     break;
                 case CHAT_ACTIVITY_ACCOUNT_HEAD:
                     zanList = (ArrayList) msg.obj;
+                    if (zanList == null) {
+                        zanList = new ArrayList();
+                        isZan = false;
+                        return;
+                    }
                     isZan = zanList.contains(objectID);
                     break;
                 default:

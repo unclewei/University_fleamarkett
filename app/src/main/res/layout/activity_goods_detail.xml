@@ -13,73 +13,79 @@
             android:background="#FFF"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-            <LinearLayout
+            <android.support.design.widget.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="20dp"
-                app:layout_scrollFlags="scroll">
-
-                <ImageView
-                    android:id="@+id/img_head"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_marginRight="5dp"
-                    android:src="@drawable/head_yard" />
+                app:expandedTitleMarginEnd="64dp"
+                app:expandedTitleMarginStart="48dp"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="20dp">
 
-                    <TextView
-                        android:id="@+id/tv_name"
+                    <ImageView
+                        android:id="@+id/img_head"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_marginRight="5dp"
+                        android:src="@drawable/head_yard" />
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:text="卖家名字"
-                        android:textColor="#000000"
-                        android:textSize="20dp" />
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/tv_organization"
-                        android:layout_width="wrap_content"
+                        <TextView
+                            android:id="@+id/tv_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:text="卖家名字"
+                            android:textColor="#000000"
+                            android:textSize="20dp" />
+
+                        <TextView
+                            android:id="@+id/tv_organization"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="学院" />
+                    </LinearLayout>
+
+                    <LinearLayout
+
+                        android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:text="学院" />
+                        android:layout_marginRight="10dp"
+                        android:gravity="right">
+
+                        <TextView
+                            android:id="@+id/tv_contact"
+                            android:layout_width="50dp"
+                            android:layout_height="25dp"
+                            android:layout_marginRight="40dp"
+                            android:background="@color/colorPrimaryDark"
+                            android:gravity="center"
+                            android:text="打招呼"
+                            android:textColor="#FFF" />
+
+                        <TextView
+                            android:id="@+id/tv_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="$500"
+                            android:textColor="#FF4500"
+                            android:textSize="20dp" />
+                    </LinearLayout>
                 </LinearLayout>
-
-                <LinearLayout
-
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:gravity="right">
-
-                    <TextView
-                        android:id="@+id/tv_contact"
-                        android:layout_width="50dp"
-                        android:layout_height="25dp"
-                        android:layout_marginRight="40dp"
-                        android:background="@color/colorPrimaryDark"
-                        android:gravity="center"
-                        android:text="打招呼"
-                        android:textColor="#FFF" />
-
-                    <TextView
-                        android:id="@+id/tv_price"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="$500"
-                        android:textColor="#FF4500"
-                        android:textSize="20dp" />
-                </LinearLayout>
-            </LinearLayout>
-
+            </android.support.design.widget.CollapsingToolbarLayout>
         </android.support.design.widget.AppBarLayout>
 
-        <ScrollView
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -257,6 +263,6 @@
                         android:orientation="vertical" />
                 </LinearLayout>
             </LinearLayout>
-        </ScrollView>
+        </android.support.v4.widget.NestedScrollView>
     </android.support.design.widget.CoordinatorLayout>
 </layout>
