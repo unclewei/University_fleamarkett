@@ -34,7 +34,7 @@ public class BOMBOpenHelper {
     /**
      * 创建一条商品信息
      */
-    public void createPerson(ShopGoods goods) {
+    public void createPerson(shop_goods goods) {
         goods.save(new SaveListener<String>() {
 
             @Override
@@ -51,13 +51,13 @@ public class BOMBOpenHelper {
 
 
     public void queryGoodsAndDoing() {
-        final List<ShopGoods> listGoods = new ArrayList<>();
-        BmobQuery<ShopGoods> bmobQuery = new BmobQuery<>();
+        final List<shop_goods> listGoods = new ArrayList<>();
+        BmobQuery<shop_goods> bmobQuery = new BmobQuery<>();
         bmobQuery.addWhereEqualTo(null, null);
 //        bmobQuery.setLimit(1);
-        bmobQuery.findObjects(new FindListener<ShopGoods>() {
+        bmobQuery.findObjects(new FindListener<shop_goods>() {
             @Override
-            public void done(List<ShopGoods> list, BmobException e) {
+            public void done(List<shop_goods> list, BmobException e) {
                 if (e == null) {
 
                 }
@@ -67,26 +67,26 @@ public class BOMBOpenHelper {
 
 
     //上传文件，上传图片进入数据库，然后创建商品，与上连用
-    public void uploadImg(final ShopGoods shopGoods) {
-        final String[] filePaths = new String[shopGoods.getPictureNub()];
-        temp_nub = shopGoods.getPictureNub();
-        filePaths[0] = shopGoods.getImage1();
-        filePaths[1] = shopGoods.getImage2();
-        filePaths[2] = shopGoods.getImage3();
-        switch (shopGoods.getPictureNub()) {
+    public void uploadImg(final shop_goods shopgoods) {
+        final String[] filePaths = new String[shopgoods.getPictureNub()];
+        temp_nub = shopgoods.getPictureNub();
+        filePaths[0] = shopgoods.getImage1();
+        filePaths[1] = shopgoods.getImage2();
+        filePaths[2] = shopgoods.getImage3();
+        switch (shopgoods.getPictureNub()) {
             case 3:
                 break;
             case 4:
-                filePaths[3] = shopGoods.getImage4();
+                filePaths[3] = shopgoods.getImage4();
                 break;
             case 5:
-                filePaths[3] = shopGoods.getImage4();
-                filePaths[4] = shopGoods.getImage5();
+                filePaths[3] = shopgoods.getImage4();
+                filePaths[4] = shopgoods.getImage5();
                 break;
             case 6:
-                filePaths[3] = shopGoods.getImage3();
-                filePaths[4] = shopGoods.getImage4();
-                filePaths[5] = shopGoods.getImage5();
+                filePaths[3] = shopgoods.getImage3();
+                filePaths[4] = shopgoods.getImage4();
+                filePaths[5] = shopgoods.getImage5();
                 break;
             default:
                 break;
@@ -99,7 +99,7 @@ public class BOMBOpenHelper {
                 //2、urls-上传文件的完整url地址
                 //注：有多少个文件上传，onSuccess方法就会执行多少次;
                 if (urls.size() == temp_nub && temp_nub_image == 0) {//如果数量相等，则代表文件全部上传完成
-                    createPerson(shopGoods);
+                    createPerson(shopgoods);
                     temp_nub_image = 1;
                     temp_nub++;//防止重复上传文件。
                 }
@@ -150,18 +150,18 @@ public class BOMBOpenHelper {
 
     // 图片的回调函数
     public interface ImageCallback {
-        void onImageLoad(ShopGoods shopGoods);
+        void onImageLoad(shop_goods shopgoods);
 
         void onError();
     }
 
     //通过id找到一条数据，用于点击商品之后的详细信息
     public void find_alone(String objID, final ImageCallback callback) {
-        BmobQuery<ShopGoods> query = new BmobQuery<>();
-        query.getObject(objID, new QueryListener<ShopGoods>() {
+        BmobQuery<shop_goods> query = new BmobQuery<>();
+        query.getObject(objID, new QueryListener<shop_goods>() {
 
             @Override
-            public void done(ShopGoods object, BmobException e) {
+            public void done(shop_goods object, BmobException e) {
                 if (e == null) {
                     callback.onImageLoad(object);
                 } else {
@@ -195,8 +195,8 @@ public class BOMBOpenHelper {
      * @param objectId 确定商品id
      * @param zan      新的赞数
      */
-    public void updateZan(String objectId, int zan) {
-        ShopGoods goods = new ShopGoods();
+    public void updateZan(String objectId, ArrayList zanList, int zan) {
+        shop_goods goods = new shop_goods();
         goods.setZan_nub(zan);
         goods.update(objectId, new UpdateListener() {
 
@@ -204,6 +204,14 @@ public class BOMBOpenHelper {
             public void done(BmobException e) {
                 if (e == null) {
                 }
+            }
+        });
+        User_account userAccount = new User_account();
+        userAccount.setZanList(zanList);
+        userAccount.update(objectId, new UpdateListener() {
+            @Override
+            public void done(BmobException e) {
+
             }
         });
     }
@@ -365,7 +373,7 @@ public class BOMBOpenHelper {
     }
 
     public interface FindAccountCallback {
-        void onSuccess(List<UserAccount> list);
+        void onSuccess(List<User_account> list);
 
         void onFail(int failCode);
 
@@ -376,11 +384,11 @@ public class BOMBOpenHelper {
 
     //通过id找到一个账号
     public void findAccount(final String account, final FindAccountCallback accountCallback) {
-        BmobQuery<UserAccount> query = new BmobQuery<>();
+        BmobQuery<User_account> query = new BmobQuery<>();
         query.addWhereEqualTo("account", account);
-        query.findObjects(new FindListener<UserAccount>() {
+        query.findObjects(new FindListener<User_account>() {
             @Override
-            public void done(List<UserAccount> list, BmobException e) {
+            public void done(List<User_account> list, BmobException e) {
                 if (e == null) {
 
                     accountCallback.onSuccess(list);
@@ -393,18 +401,18 @@ public class BOMBOpenHelper {
 
 
     public interface FindAccountDataAloneCallback {
-        void onSuccess(String name, String head);
+        void onSuccess(User_account object);
     }
 
     //通过objectid找到指定账号的信息，名字和头像
     public void findAccountDataAlone(String objectID, final FindAccountDataAloneCallback findAccountDataAloneCallback) {
 
-        BmobQuery<UserAccount> bmobQuery = new BmobQuery<UserAccount>();
-        bmobQuery.getObject(objectID, new QueryListener<UserAccount>() {
+        BmobQuery<User_account> bmobQuery = new BmobQuery<User_account>();
+        bmobQuery.getObject(objectID, new QueryListener<User_account>() {
             @Override
-            public void done(UserAccount object, BmobException e) {
+            public void done(User_account object, BmobException e) {
                 if (e == null) {
-                    findAccountDataAloneCallback.onSuccess(object.getNick_name(), object.getHead_portrait());
+                    findAccountDataAloneCallback.onSuccess(object);
                 }
             }
         });
@@ -417,7 +425,7 @@ public class BOMBOpenHelper {
 
     //增加一个账号信息
     public void add_account(String name, String head_portrait_adress, String account, String college, String organization, final AddAccountCallback addAccountCallback) {
-        UserAccount user_account = new UserAccount();
+        User_account user_account = new User_account();
         user_account.setAccount(account);
         user_account.setNick_name(name);
         user_account.setHead_portrait(head_portrait_adress);
@@ -435,7 +443,7 @@ public class BOMBOpenHelper {
 
     //登录界面设置名字的时候更新数据库的名字
     public void Login_update_name(String objectId, String name) {
-        UserAccount userAccount = new UserAccount();
+        User_account userAccount = new User_account();
         userAccount.setNick_name(name);
         userAccount.update(objectId, new UpdateListener() {
             @Override
@@ -454,7 +462,7 @@ public class BOMBOpenHelper {
     //更新学校的名字
     public void loginUpdateSchool(String objectId, String college, String organization, final LoginUpdateSchoolCallback loginUpdateSchoolCallback) {
 
-        UserAccount userAccount = new UserAccount();
+        User_account userAccount = new User_account();
         userAccount.setCollege(college);
         userAccount.setOrganization(organization);
         userAccount.update(objectId, new UpdateListener() {
@@ -487,7 +495,7 @@ public class BOMBOpenHelper {
     }
 
     //更新头像资料，姓名，学校
-    public void updateAllData(String objectId, UserAccount userAccount, final LoginUpdateSchoolCallback loginUpdateSchoolCallback) {
+    public void updateAllData(String objectId, User_account userAccount, final LoginUpdateSchoolCallback loginUpdateSchoolCallback) {
         userAccount.update(objectId, new UpdateListener() {
             @Override
             public void done(BmobException e) {
@@ -498,16 +506,16 @@ public class BOMBOpenHelper {
 
     }
 
-    public void uploadHeadPortrait(final String objectId, final UserAccount userAccount
-            , final LoginUpdateSchoolCallback loginUpdateSchoolCallback){
+    public void uploadHeadPortrait(final String objectId, final User_account userAccount
+            , final LoginUpdateSchoolCallback loginUpdateSchoolCallback) {
         final BmobFile bmobFile = new BmobFile(new File(userAccount.getHead_portrait()));
         bmobFile.uploadblock(new UploadFileListener() {
             @Override
             public void done(BmobException e) {
-                if(e==null){
-                    updateAllData(objectId,userAccount,loginUpdateSchoolCallback);
+                if (e == null) {
+                    updateAllData(objectId, userAccount, loginUpdateSchoolCallback);
                     //bmobFile.getFileUrl()--返回的上传文件的完整地址
-                }else{
+                } else {
                     loginUpdateSchoolCallback.fail();
                 }
             }

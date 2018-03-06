@@ -18,7 +18,7 @@ import android.widget.Toast;
 import com.uncle.administrator.fleamarket.MainActivity;
 import com.uncle.administrator.fleamarket.R;
 import com.uncle.bomb.BOMBOpenHelper;
-import com.uncle.bomb.UserAccount;
+import com.uncle.bomb.User_account;
 
 import java.util.List;
 
@@ -137,8 +137,8 @@ public class Login_activity_2 extends Activity {
                     Log.i("bmob", "验证通过");
                     bomb_openhelper.findAccount(nub, new BOMBOpenHelper.FindAccountCallback() {
                         @Override
-                        public void onSuccess(List<UserAccount> list) {
-                            UserAccount userAccount = list.get(0);
+                        public void onSuccess(List<User_account> list) {
+                            User_account userAccount = list.get(0);
                             SharedPreferences sharedPreferences = getSharedPreferences("account", Context.MODE_WORLD_READABLE);
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("account", nub);

@@ -19,7 +19,8 @@ import com.uncle.Base.BaseBindingFragment;
 import com.uncle.administrator.fleamarket.GoodsDetailsActivity;
 import com.uncle.administrator.fleamarket.R;
 import com.uncle.administrator.fleamarket.databinding.TheBaseButton1Binding;
-import com.uncle.bomb.ShopGoods;
+import com.uncle.bomb.shop_goods;
+import com.uncle.method.SHandlerThread;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,7 @@ import cn.bmob.v3.listener.FindListener;
  * @date 2016/11/22 0022
  */
 public class HomeFragment extends BaseBindingFragment<TheBaseButton1Binding> implements
-        BaseBindAdapter.OnItemClickListener<ShopGoods>,
+        BaseBindAdapter.OnItemClickListener<shop_goods>,
         SwipeRefreshLayout.OnRefreshListener,
         BaseBindAdapter.OnLoadListener {
 
@@ -50,7 +51,7 @@ public class HomeFragment extends BaseBindingFragment<TheBaseButton1Binding> imp
         initViewPager();
         queryGoods(0, new QueryCallBack() {
             @Override
-            public void onImageLoad(List<ShopGoods> list) {
+            public void onImageLoad(List<shop_goods> list) {
                 getDataFromSQL(list);
             }
         });
@@ -63,13 +64,13 @@ public class HomeFragment extends BaseBindingFragment<TheBaseButton1Binding> imp
 
 
     public void queryGoods(int setSkipNumber, final QueryCallBack queryCallBack) {
-        BmobQuery<ShopGoods> query = new BmobQuery<>();
+        BmobQuery<shop_goods> query = new BmobQuery<>();
         query.setLimit(10);
         query.setSkip(10 * setSkipNumber);
         query.order("-updatedAt");
-        query.findObjects(new FindListener<ShopGoods>() {
+        query.findObjects(new FindListener<shop_goods>() {
             @Override
-            public void done(List<ShopGoods> list, BmobException e) {
+            public void done(List<shop_goods> list, BmobException e) {
                 if (e == null) {
                     queryCallBack.onImageLoad(list);
                     Log.e("william",list.toString());
@@ -98,7 +99,7 @@ public class HomeFragment extends BaseBindingFragment<TheBaseButton1Binding> imp
         });
     }
 
-    public void getDataFromSQL(List<ShopGoods> list) {
+    public void getDataFromSQL(List<shop_goods> list) {
         homeListAdapter.setList(list);
         homeListAdapter.notifyDataSetChanged();
         setSkipNumber++;
@@ -108,7 +109,7 @@ public class HomeFragment extends BaseBindingFragment<TheBaseButton1Binding> imp
     }
 
     @Override
-    public void onItemClick(ShopGoods data) {
+    public void onItemClick(shop_goods data) {
         Intent intent = new Intent(getContext(), GoodsDetailsActivity.class);
         intent.putExtra("objID", data.getObjectId());
         intent.putExtra("owner_id", data.getOwner());
@@ -120,7 +121,7 @@ public class HomeFragment extends BaseBindingFragment<TheBaseButton1Binding> imp
         setSkipNumber = 0;
         queryGoods(setSkipNumber, new QueryCallBack() {
             @Override
-            public void onImageLoad(List<ShopGoods> list) {
+            public void onImageLoad(List<shop_goods> list) {
                 getDataFromSQL(list);
                 isLast = false;
                 homeListAdapter.setLoadingView(LayoutInflater.from(getContext()).inflate(R.layout.load_more_view, null));
@@ -136,7 +137,7 @@ public class HomeFragment extends BaseBindingFragment<TheBaseButton1Binding> imp
         Log.e("william","加载更多");
         queryGoods(setSkipNumber, new QueryCallBack() {
             @Override
-            public void onImageLoad(List<ShopGoods> list) {
+            public void onImageLoad(List<shop_goods> list) {
                 homeListAdapter.addAll(list);
                 setSkipNumber++;
                 homeListAdapter.isLoading = false;
@@ -153,7 +154,7 @@ public class HomeFragment extends BaseBindingFragment<TheBaseButton1Binding> imp
 
 
     public interface QueryCallBack {
-        void onImageLoad(List<ShopGoods> list);
+        void onImageLoad(List<shop_goods> list);
     }
 
 

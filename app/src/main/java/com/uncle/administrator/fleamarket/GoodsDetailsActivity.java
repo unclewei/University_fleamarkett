@@ -1,28 +1,29 @@
 package com.uncle.administrator.fleamarket;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.uncle.Base.BaseBindingActivity;
+import com.uncle.administrator.fleamarket.databinding.ActivityGoodsDetailBinding;
 import com.uncle.bomb.BOMBOpenHelper;
 import com.uncle.bomb.CommentZan;
-import com.uncle.bomb.ShopGoods;
+import com.uncle.bomb.User_account;
+import com.uncle.bomb.shop_goods;
+import com.uncle.method.KeyboardUtil;
+import com.uncle.method.SHandlerThread;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,54 +31,35 @@ import java.util.List;
  * @date 2017/3/11 0011
  */
 
-public class GoodsDetailsActivity extends Activity {
-    private TextView title, price, zan_nub, organization, name;//标题，价格，点赞数，学院
-    private ImageView img1, img2, img3, img4 = null, img5 = null, img6 = null, icon, call;
-    private LinearLayout linearLayout;//获取图片的LinearLayout
-    private LinearLayout linearLayout_comment;//获取评论的LinearLayout
-    private LinearLayout head_LinearLayout;//点击头部的LinearLayout，进入聊天页面
-    private Button commemt, zan;//评论的按钮,聊天的按钮
-    private EditText comment_text;//评论内容
-    private Boolean comment_reply = true;//评论和回复的判断，true是评论，false是回复。
-    private Boolean zan_ro_not_zan = true;//判断有没有赞。true是没有赞， false是已经赞了
+public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetailBinding> {
+    private String replyUser = null;
+    private Boolean isZan = false;
     private final int DEAL_WITH_IMAGE = 5;
     private final int CHAT_ACTIVITY_ACCOUNT_NAME = 7;
     private final int CHAT_ACTIVITY_ACCOUNT_HEAD = 8;
     private String objectID, new_objectID;//1.获取的数据库中的id。2.新生成的数据的objectid。
     private BOMBOpenHelper bomb = new BOMBOpenHelper();
     private String owner;//该条目的发出人objectid
-    private String myobject, myorganization, head_portrait, myname;//本地存取的自己的objectid,学院
+    private String myobject, myorganization, head_portrait, myname;
+    private ArrayList zanList = null;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
 
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_goods_detail);
+    protected void bindData(ActivityGoodsDetailBinding dataBinding) {
         init();
     }
 
-    public void init() {
-        comment_text = (EditText) findViewById(R.id.bt1_listview_intent_comment_text);
-        commemt = (Button) findViewById(R.id.bt1_listview_intent_comment_bt);
-        zan = (Button) findViewById(R.id.bt1_listview_intent_zan_bt);
-        call = (ImageView) findViewById(R.id.bt1_listview_intent_call);
-        zan_nub = (TextView) findViewById(R.id.bt1_listView_intent_zan_nub);
-        title = (TextView) findViewById(R.id.bt1_listview_intent_title);
-        price = (TextView) findViewById(R.id.bt1_listview_intent_price);
-        name = (TextView) findViewById(R.id.bt1_listview_intent_name);
-        organization = (TextView) findViewById(R.id.bt1_listview_intent_organization);
-        img1 = (ImageView) findViewById(R.id.bt1_listview_intent_bt1);
-        img2 = (ImageView) findViewById(R.id.bt1_listview_intent_bt2);
-        img3 = (ImageView) findViewById(R.id.bt1_listview_intent_bt3);
-        icon = (ImageView) findViewById(R.id.bt1_listview_intent_icon);
-        linearLayout = (LinearLayout) findViewById(R.id.ll_images);
-        head_LinearLayout = (LinearLayout) findViewById(R.id.bt1_listview_intent_name_LinearLayout);
-        linearLayout_comment = (LinearLayout) findViewById(R.id.bt1_listview_intent_Linear_for_txet);
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_goods_detail;
+    }
 
+    public void init() {
         getDataFromShareperecence();
         getIntentMessage();
         findAccountDataFromBomb(owner);
@@ -92,41 +74,34 @@ public class GoodsDetailsActivity extends Activity {
         myobject = sharedPreferences.getString("object_id", "没有id");
         myorganization = sharedPreferences.getString("organization", null);
         myname = sharedPreferences.getString("nick_name", "匿名用户");
-        organization.setText(myorganization);
+        binding.tvOrganization.setText(myorganization);
     }
 
-    //用objectID获取用户的数据
-    public void findAccountDataFromBomb(String target_object) {
-        Log.i("又来试验了target_object", target_object);
-        bomb.findAccountDataAlone(target_object, new BOMBOpenHelper.FindAccountDataAloneCallback() {
+    /**
+     * 用objectID获取用户的数据
+     */
+    public void findAccountDataFromBomb(String targetObject) {
+        bomb.findAccountDataAlone(targetObject, new BOMBOpenHelper.FindAccountDataAloneCallback() {
             @Override
-            public void onSuccess(String name, String head) {
+            public void onSuccess(User_account object) {
                 Message message = new Message();
                 message.what = CHAT_ACTIVITY_ACCOUNT_NAME;
-                message.obj = name;
-                Log.i("又来试验了name", name);
+                message.obj = object.getNick_name();
                 handler.sendMessage(message);
                 Message message2 = new Message();
                 message2.what = CHAT_ACTIVITY_ACCOUNT_HEAD;
-                message2.obj = head;
-                Log.i("又来试验了head", head);
+                message2.obj = object.getZanList();
                 handler.sendMessage(message2);
 
             }
         });
     }
 
-    //获取头像
-    private void getHeadProtrait(String headPortrait) {
-        if (headPortrait != null) {
-            Glide.with(this).load(headPortrait).into(icon);
-        }
-    }
 
     private void headClick() {
-        icon.setOnClickListener(new clickToChat());
-        head_LinearLayout.setOnClickListener(new clickToChat());
-        call.setOnClickListener(new clickToChat());
+        binding.imgHead.setOnClickListener(new clickToChat());
+        binding.llImages.setOnClickListener(new clickToChat());
+        binding.tvContact.setOnClickListener(new clickToChat());
     }
 
     private class clickToChat implements View.OnClickListener {
@@ -143,59 +118,51 @@ public class GoodsDetailsActivity extends Activity {
     }
 
 
-    private void path_for_click(Intent intent, int a) {
-//        intent.putExtra("img1_path", img1_path);
-//        intent.putExtra("img2_path", img2_path);
-//        intent.putExtra("img3_path", img3_path);
-        intent.putExtra("nub", a);
-    }//缩减代码，点击中的一部分
-
-
     public void zanClick() {
-        zan.setOnClickListener(new View.OnClickListener() {
+        binding.btZan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (zan_ro_not_zan == true) {
-                    Log.i("aaa00000", zan_nub.getText().toString());
-                    Log.i("aaa00000", "这里没有赞");
-                    int nub = Integer.parseInt(zan_nub.getText().toString()) + 1;
-                    zan_nub.setText(nub + "");
-                    zan.setBackgroundResource(R.drawable.love2);
-                    bomb.updateZan(objectID, nub);
-                    zan_ro_not_zan = false;
-                } else if (zan_ro_not_zan == false) {
-                    Log.i("aaa", zan_nub.getText().toString());
-                    int nub = Integer.parseInt(zan_nub.getText().toString()) - 1;
-                    zan_nub.setText(nub + "");
-                    zan.setBackgroundResource(R.drawable.love1);
-                    bomb.updateZan(objectID, nub);
-
-                    zan_ro_not_zan = true;
+                if (isZan) {
+                    zanList.remove(objectID);
+                    int nub = Integer.parseInt(binding.tvZanNub.getText().toString()) - 1;
+                    binding.tvZanNub.setText(nub);
+                    binding.btZan.setBackgroundResource(R.drawable.love1);
+                    bomb.updateZan(objectID, zanList, nub);
+                    isZan = false;
+                    return;
                 }
+                zanList.add(objectID);
+                int nub = Integer.parseInt(binding.tvZanNub.getText().toString()) + 1;
+                binding.tvZanNub.setText(nub);
+                binding.btZan.setBackgroundResource(R.drawable.love2);
+                bomb.updateZan(objectID, zanList, nub);
+                isZan = true;
+
             }
         });
-    }//点赞，加一
+    }
 
-    private void setImage(int imgNub, List<String> list) {
+    private void setImage(int imgNub, final List<String> list) {
         for (int i = 0; i < imgNub; i++) {
             final int a = i;
-            ImageView imageView = (ImageView) linearLayout.getChildAt(i);
+            ImageView imageView = (ImageView) binding.llImages.getChildAt(i);
             imageView.setVisibility(View.VISIBLE);
             Glide.with(GoodsDetailsActivity.this)
                     .load(list.get(i))
+                    .placeholder(R.drawable.img_loading)
                     .into(imageView);
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(GoodsDetailsActivity.this, ViewPagerActivity.class);
-                    path_for_click(intent, a);
+                    intent.putExtra("nub", a);
+                    intent.putStringArrayListExtra("imgList", (ArrayList<String>) list);
                     startActivity(intent);
                 }
             });
         }
     }
 
-    //从上一个页面获得信息，intent
     public void getIntentMessage() {
         Intent intent = getIntent();
         if (intent != null) {
@@ -204,72 +171,69 @@ public class GoodsDetailsActivity extends Activity {
             BOMBOpenHelper bomb = new BOMBOpenHelper();
             bomb.find_alone(objectID, new BOMBOpenHelper.ImageCallback() {
                 @Override
-                public void onImageLoad(ShopGoods shopGoods) {
-                    title.setText(shopGoods.getText());
-                    //TODO:把信息都填入
-                    price.setText(shopGoods.getPrice());
-                    zan_nub.setText(shopGoods.getZan_nub());
-                    setImage(shopGoods.getPictureNub(), shopGoods.ImageList());
+                public void onImageLoad(shop_goods shopgoods) {
+                    Glide.with(GoodsDetailsActivity.this)
+                            .load(shopgoods.getHead_portrait())
+                            .into(binding.imgHead);
+                    binding.tvName.setText(shopgoods.getName());
+                    binding.tvOrganization.setText(shopgoods.getOrganization());
+                    binding.tvDescription.setText(shopgoods.getText());
+                    binding.tvPrice.setText(shopgoods.getPrice());
+//                    binding.tvZanNub.setText(shopgoods.getZan_nub());
+                    setImage(shopgoods.getPictureNub(), shopgoods.ImageList());
                 }
 
                 @Override
                 public void onError() {
                 }
             });
-            getComment();//获取评论
+            getComment();
         }
-    }//从互联网中获取图片，评论。
+    }
 
     public void comMent() {
-        commemt.setOnClickListener(new View.OnClickListener() {
+        binding.btComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!comment_text.getText().toString().isEmpty() && comment_reply) {
-                    comment_text.setHint("快点就下你的评论吧");
-                    String text_context = comment_text.getText().toString();
-                    text_context = myname + " ：“" + text_context + "”";
-                    getNewTextView(text_context);//生成一个新的TextView，并设置点击事件
-                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(comment_text.getWindowToken(), 0); // 关闭软键盘
-                    comment_text.setText(null);
+                String textContext = binding.etCommentInput.getText().toString();
+                if (!binding.etCommentInput.getText().toString().isEmpty() && replyUser == null) {
+                    binding.etCommentInput.setHint("快点就下你的评论吧");
+                    textContext = myname + " ：“" + textContext + "”";
+                    getNewTextView(textContext);
+                    KeyboardUtil.closeKeyBoard(GoodsDetailsActivity.this,binding.etCommentInput);
+                    binding.etCommentInput.setText(null);
                     Toast.makeText(GoodsDetailsActivity.this, "评论成功", Toast.LENGTH_SHORT).show();
-                    final String finalTextContext = text_context;
-                    final CommentZan commentZan = new CommentZan(finalTextContext, objectID, "name1", "name2", 0);
-                    new Thread() {
+                    final CommentZan commentZan = new CommentZan(textContext, objectID, "name1", "name2", 0);
+                    SHandlerThread.postToWorker(new Runnable() {
                         @Override
                         public void run() {
                             bomb.addCommentZan(commentZan);
-                            super.run();
                         }
-                    }.start();
-
-                } else if (!comment_text.getText().toString().isEmpty() && !comment_reply) {
-                    comment_reply = true;
-                    comment_text.setHint("回复用户");
-                    String text_context = comment_text.getText().toString();
-                    text_context = "   " + myname + "  回复了" + "上面的用户" + ":“" + text_context + "”";
-
-                    getNewTextView(text_context);//生成一个新的TextView，并设置点击事件
-                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(comment_text.getWindowToken(), 0); // 关闭软键盘
-                    comment_text.setText(null);
-                    Toast.makeText(GoodsDetailsActivity.this, "回复成功", Toast.LENGTH_SHORT).show();
-                    final String finalText_context = text_context;
-                    final CommentZan commentZan = new CommentZan(finalText_context, objectID, "name1", "name2", 1);
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            bomb.addCommentZan(commentZan);
-                            super.run();
-                        }
-                    }.start();
-
-                } else {
-                    Toast.makeText(GoodsDetailsActivity.this, "内容不能为空", Toast.LENGTH_SHORT).show();
+                    });
+                    return;
                 }
+                if (!binding.etCommentInput.getText().toString().isEmpty() && replyUser != null) {
+                    binding.etCommentInput.setHint("回复用户");
+                    textContext = "   " + myname + "  回复了" + "上面的用户" + ":“" + textContext + "”";
+                    getNewTextView(textContext);
+                    KeyboardUtil.closeKeyBoard(GoodsDetailsActivity.this,binding.etCommentInput);
+                    binding.etCommentInput.setText(null);
+                    Toast.makeText(GoodsDetailsActivity.this, "回复成功", Toast.LENGTH_SHORT).show();
+                    final CommentZan commentZan = new CommentZan(textContext, objectID, "name1", "name2", 1);
+                    SHandlerThread.postToWorker(new Runnable() {
+                        @Override
+                        public void run() {
+                            bomb.addCommentZan(commentZan);
+                        }
+                    });
+                    replyUser = null;
+                    return;
+                }
+                Toast.makeText(GoodsDetailsActivity.this, "内容不能为空", Toast.LENGTH_SHORT).show();
             }
         });
-    }    //评论commemt
+    }
+
 
     public void getComment() {
         bomb.find_comment(objectID, new BOMBOpenHelper.getCommentCallback() {
@@ -279,7 +243,7 @@ public class GoodsDetailsActivity extends Activity {
                     for (int i = 0; i < arrayList.size(); i++) {
                         CommentZan commentZan = arrayList.get(i);
                         String comment = commentZan.getComment();
-                        getNewTextView(comment);//生成一个新的TextView，并设置点击事件
+                        getNewTextView(comment);
                     }
                 } else {
                     getNewTextView("还没有评论哦，快来做第一个！");
@@ -287,31 +251,30 @@ public class GoodsDetailsActivity extends Activity {
             }
 
         });
-    }//获取评论呢
+    }
 
     public void getNewTextView(String context) {
         TextView textView = new TextView(GoodsDetailsActivity.this);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.setMargins(0, 5, 0, 0);
         textView.setLayoutParams(layoutParams);
         textView.setText(context);
-        linearLayout_comment.addView(textView);
+        binding.llComment.addView(textView);
         textView.setOnClickListener(new MyButtonListener());
-    }//生成一个TextView并设置内容和点击事件
+    }
 
     private class MyButtonListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-//让编辑框弹出来，并显示对谁进行评论
-            comment_text.setFocusable(true);
-            comment_text.setFocusableInTouchMode(true);
-            comment_text.requestFocus();
-            //打开软键盘
-            InputMethodManager imm = (InputMethodManager) GoodsDetailsActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-            comment_reply = false;
+            TextView textView = (TextView) v;
+            binding.etCommentInput.setFocusable(true);
+            binding.etCommentInput.setFocusableInTouchMode(true);
+            binding.etCommentInput.requestFocus();
+            KeyboardUtil.openKeyBoard(GoodsDetailsActivity.this);
+            replyUser = textView.getText().toString();
         }
-    }//让编辑框弹出来，并显示对谁进行评论
+    }
 
 
     @SuppressLint("HandlerLeak")
@@ -321,11 +284,11 @@ public class GoodsDetailsActivity extends Activity {
             super.handleMessage(msg);
             switch (msg.what) {
                 case CHAT_ACTIVITY_ACCOUNT_NAME:
-                    name.setText((String) msg.obj);
+                    binding.tvName.setText((String) msg.obj);
                     break;
                 case CHAT_ACTIVITY_ACCOUNT_HEAD:
-                    head_portrait = (String) msg.obj;
-                    getHeadProtrait(head_portrait);
+                    zanList = (ArrayList) msg.obj;
+                    isZan = zanList.contains(objectID);
                     break;
                 default:
                     break;

@@ -9,12 +9,12 @@ import com.uncle.Base.BaseAdapter;
 import com.uncle.Base.BaseBindViewHolder;
 import com.uncle.administrator.fleamarket.R;
 import com.uncle.administrator.fleamarket.databinding.AdapterHomeBinding;
-import com.uncle.bomb.ShopGoods;
+import com.uncle.bomb.shop_goods;
 
 /**
  * @author unclewei
  */
-public class HomeListAdapter extends BaseAdapter<ShopGoods> {
+public class HomeListAdapter extends BaseAdapter<shop_goods> {
 
     private Context context;
 
@@ -29,10 +29,10 @@ public class HomeListAdapter extends BaseAdapter<ShopGoods> {
     }
 
     @Override
-    protected BaseBindViewHolder<ShopGoods> createHolder(ViewDataBinding binding) {
-        return new BaseBindViewHolder<ShopGoods>(binding) {
+    protected BaseBindViewHolder<shop_goods> createHolder(ViewDataBinding binding) {
+        return new BaseBindViewHolder<shop_goods>(binding) {
             @Override
-            public void bindTo(BaseBindViewHolder<ShopGoods> holder, ShopGoods item) {
+            public void bindTo(BaseBindViewHolder<shop_goods> holder, shop_goods item) {
                 AdapterHomeBinding baseBinding = (AdapterHomeBinding) binding;
                 baseBinding.baseItemName.setText(item.getName());
                 baseBinding.baseItemCollege.setText(item.getCollege());
@@ -44,12 +44,12 @@ public class HomeListAdapter extends BaseAdapter<ShopGoods> {
     }
 
     @Override
-    protected boolean areItemsSame(ShopGoods oldItem, ShopGoods newItem) {
+    protected boolean areItemsSame(shop_goods oldItem, shop_goods newItem) {
         return false;
     }
 
     @Override
-    protected boolean areContentsSame(ShopGoods oldItem, ShopGoods newItem) {
+    protected boolean areContentsSame(shop_goods oldItem, shop_goods newItem) {
         return false;
     }
 

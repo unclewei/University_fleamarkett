@@ -25,7 +25,8 @@ import android.widget.Toast;
 
 import com.uncle.administrator.fleamarket.Login_Activity.welcome_page;
 import com.uncle.bomb.BOMBOpenHelper;
-import com.uncle.bomb.ShopGoods;
+import com.uncle.bomb.User_account;
+import com.uncle.bomb.shop_goods;
 import com.uncle.method.turns;
 
 import java.io.ByteArrayOutputStream;
@@ -101,8 +102,8 @@ public class SellActivity extends Activity {
             BOMBOpenHelper bomb = new BOMBOpenHelper();
             bomb.findAccountDataAlone(objectID, new BOMBOpenHelper.FindAccountDataAloneCallback() {
                 @Override
-                public void onSuccess(String name, String head) {
-                    head_portrait = head;
+                public void onSuccess(User_account object) {
+                    head_portrait = object.getHead_portrait();
                 }
             });
         }
@@ -126,7 +127,7 @@ public class SellActivity extends Activity {
                 } else if (imageItem.size() <= 3) {
                     Toast.makeText(SellActivity.this, "要有三张以上图片才能让别人了解你哟~~", Toast.LENGTH_SHORT).show();
                 } else {//开启数据库
-                    final ShopGoods shopGoods = new ShopGoods(str[0], str[1], str[2], str[3], str[4], str[5]
+                    final shop_goods shopgoods = new shop_goods(str[0], str[1], str[2], str[3], str[4], str[5]
                             , str[6], str[7], str[8]
                             , title, detail, price, null, 0,
                             picture_number, objectID, college,
@@ -135,7 +136,7 @@ public class SellActivity extends Activity {
                     Runnable runnable = new Runnable() {
                         @Override
                         public void run() {
-                            bomb.uploadImg(shopGoods);
+                            bomb.uploadImg(shopgoods);
                         }
                     };
                     runnable.run();

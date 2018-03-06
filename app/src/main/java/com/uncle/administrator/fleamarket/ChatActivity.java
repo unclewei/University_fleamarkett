@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.uncle.administrator.fleamarket.Login_Activity.welcome_page;
 import com.uncle.bomb.BOMBOpenHelper;
 import com.uncle.bomb.IMConversation;
+import com.uncle.bomb.User_account;
 import com.uncle.database.Chat_data_Dao;
 
 import org.json.JSONObject;
@@ -178,14 +179,14 @@ public class ChatActivity extends Activity {
     public void findAccountDataFromBomb(String target_object) {
         bomb.findAccountDataAlone(target_object, new BOMBOpenHelper.FindAccountDataAloneCallback() {
             @Override
-            public void onSuccess(String name, String head) {
+            public void onSuccess(User_account object) {
                 Message message = new Message();
                 message.what = CHAT_ACTIVITY_ACCOUNT_NAME;
-                message.obj = name;
+                message.obj = object.getNick_name();
                 handler.sendMessage(message);
                 Message message2 = new Message();
                 message2.what = CHAT_ACTIVITY_ACCOUNT_HEAD;
-                message2.obj = head;
+                message2.obj = object.getHead_portrait();
                 handler.sendMessage(message2);
 
             }
