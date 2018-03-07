@@ -125,9 +125,7 @@ public class BOMBOpenHelper {
 
     }
 
-    public interface UploadAlongListener {
-        void onSuccess(String url);
-    }
+
 
     private void upload_alnog(String picPath, final UploadAlongListener alongListener) {
         final BmobFile bmobFile = new BmobFile(new File(picPath));
@@ -148,12 +146,7 @@ public class BOMBOpenHelper {
         });
     }
 
-    // 图片的回调函数
-    public interface ImageCallback {
-        void onImageLoad(shop_goods shopgoods);
 
-        void onError();
-    }
 
     //通过id找到一条数据，用于点击商品之后的详细信息
     public void find_alone(String objID, final ImageCallback callback) {
@@ -195,30 +188,27 @@ public class BOMBOpenHelper {
      * @param objectId 确定商品id
      * @param zan      新的赞数
      */
-    public void updateZan(String objectId, ArrayList zanList, int zan) {
+    public void updateZan(String objectId, String userObject,ArrayList zanList, int zan) {
         shop_goods goods = new shop_goods();
         goods.setZan_nub(zan);
         goods.update(objectId, new UpdateListener() {
 
             @Override
             public void done(BmobException e) {
-                if (e == null) {
-                }
             }
         });
         User_account userAccount = new User_account();
         userAccount.setZanList(zanList);
-        userAccount.update(objectId, new UpdateListener() {
+        userAccount.update(userObject, new UpdateListener() {
             @Override
             public void done(BmobException e) {
-
+                if (e == null) {
+                }
             }
         });
     }
 
-    public interface getCommentCallback {
-        void onCommentLoad(List<CommentZan> arrayList);
-    }
+
 
     //找到评论，商品详细信息内
     public void find_comment(String objectId, final getCommentCallback commentCallback) {
@@ -241,11 +231,7 @@ public class BOMBOpenHelper {
     //···IM聊天数据表·························································
 
 
-    public interface Talk_Callback {
-        void onSuccess();
 
-        void onFail();
-    }
 
     /**
      * @param who           目标，哪两个用户交流，两个object的结合
@@ -270,11 +256,7 @@ public class BOMBOpenHelper {
         });
     }
 
-    public interface addTalkDataChangeCallback {
-        public void onSueecssBTellA(String object);
 
-        public void onSueecssATellB(String object);
-    }
 
     //增加两条数据，用来当其中有一个变量变的时候，通知系统，更改ui，用于im即时通讯
     public void addTalkDataChange(String objectA, String objectB, final addTalkDataChangeCallback addTalkDataChangeCallback) {
@@ -300,9 +282,6 @@ public class BOMBOpenHelper {
         });
     }
 
-    public interface findTalkDataChangeObjectIdCallback {
-        public void onSuccess(String object_id);
-    }
 
     public void findTalkDataChangeObjectIdAlone(String objectid, final findTalkDataChangeObjectIdCallback findTalkDataChangeObjectIdCallback) {
         BmobQuery<IMConversation> query = new BmobQuery<>();
@@ -344,12 +323,7 @@ public class BOMBOpenHelper {
     }
 
 
-    //查找聊天表中的聊天信息
-    public interface findTalkCallback {
-        public void onSuccess(List<IMConversation> list);
 
-        public void onFail();
-    }
 
     //寻找指定两个id聊天的数据，并返回arraylist
     public void findTalkData(String object_id, String target_objectID, final findTalkCallback findTalkCallback) {
@@ -372,12 +346,7 @@ public class BOMBOpenHelper {
 
     }
 
-    public interface FindAccountCallback {
-        void onSuccess(List<User_account> list);
 
-        void onFail(int failCode);
-
-    }
 
 
     //```````账号的数据表```````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````
@@ -400,13 +369,10 @@ public class BOMBOpenHelper {
     }
 
 
-    public interface FindAccountDataAloneCallback {
-        void onSuccess(User_account object);
-    }
+
 
     //通过objectid找到指定账号的信息，名字和头像
     public void findAccountDataAlone(String objectID, final FindAccountDataAloneCallback findAccountDataAloneCallback) {
-
         BmobQuery<User_account> bmobQuery = new BmobQuery<User_account>();
         bmobQuery.getObject(objectID, new QueryListener<User_account>() {
             @Override
@@ -419,9 +385,6 @@ public class BOMBOpenHelper {
     }
 
 
-    public interface AddAccountCallback {
-        public void onSuccess(String object);
-    }
 
     //增加一个账号信息
     public void add_account(String name, String head_portrait_adress, String account, String college, String organization, final AddAccountCallback addAccountCallback) {
@@ -453,11 +416,6 @@ public class BOMBOpenHelper {
         });
     }
 
-    public interface LoginUpdateSchoolCallback {
-        void done();
-
-        void fail();
-    }
 
     //更新学校的名字
     public void loginUpdateSchool(String objectId, String college, String organization, final LoginUpdateSchoolCallback loginUpdateSchoolCallback) {
@@ -527,6 +485,55 @@ public class BOMBOpenHelper {
         });
     }
 
+
+    public interface OnDoneListener {
+        void onDone();
+    }
+
+    public interface ImageCallback {
+        void onImageLoad(shop_goods shopgoods);
+        void onError();
+    }
+
+    public interface UploadAlongListener {
+        void onSuccess(String url);
+    }
+
+    public interface getCommentCallback {
+        void onCommentLoad(List<CommentZan> arrayList);
+    }
+
+    public interface Talk_Callback {
+        void onSuccess();
+        void onFail();
+    }
+    public interface addTalkDataChangeCallback {
+        public void onSueecssBTellA(String object);
+        public void onSueecssATellB(String object);
+    }
+
+    public interface findTalkDataChangeObjectIdCallback {
+        public void onSuccess(String object_id);
+    }
+    //查找聊天表中的聊天信息
+    public interface findTalkCallback {
+        public void onSuccess(List<IMConversation> list);
+        public void onFail();
+    }
+    public interface FindAccountCallback {
+        void onSuccess(List<User_account> list);
+        void onFail(int failCode);
+    }
+    public interface FindAccountDataAloneCallback {
+        void onSuccess(User_account object);
+    }
+    public interface AddAccountCallback {
+        public void onSuccess(String object);
+    }
+    public interface LoginUpdateSchoolCallback {
+        void done();
+        void fail();
+    }
 
 }
 

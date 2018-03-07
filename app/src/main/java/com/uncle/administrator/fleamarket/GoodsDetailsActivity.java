@@ -123,20 +123,19 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
             public void onClick(View v) {
                 if (isZan) {
                     zanList.remove(objectID);
-                    int nub = Integer.parseInt(binding.tvZanNub.getText().toString()) - 1;
-                    binding.tvZanNub.setText(nub);
+                    final int nub = Integer.parseInt(binding.tvZanCount.getText().toString()) - 1;
+                    bomb.updateZan(objectID, myobject,zanList, nub);
+                    binding.tvZanCount.setText(String.valueOf(nub));
                     binding.btZan.setBackgroundResource(R.drawable.love1);
-                    bomb.updateZan(objectID, zanList, nub);
                     isZan = false;
                     return;
                 }
                 zanList.add(objectID);
-                int nub = Integer.parseInt(binding.tvZanNub.getText().toString()) + 1;
-                binding.tvZanNub.setText(nub);
+                final int nub = Integer.parseInt(binding.tvZanCount.getText().toString()) + 1;
+                bomb.updateZan(objectID,myobject, zanList, nub);
+                binding.tvZanCount.setText(String.valueOf(nub));
                 binding.btZan.setBackgroundResource(R.drawable.love2);
-                bomb.updateZan(objectID, zanList, nub);
                 isZan = true;
-
             }
         });
     }
@@ -178,7 +177,7 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
                     binding.tvOrganization.setText(shopgoods.getOrganization());
                     binding.tvDescription.setText(shopgoods.getText());
                     binding.tvPrice.setText(shopgoods.getPrice());
-//                    binding.tvZanNub.setText(shopgoods.getZan_nub());
+                    binding.tvZanCount.setText(String.valueOf(shopgoods.getZan_nub()));
                     setImage(shopgoods.getPictureNub(), shopgoods.ImageList());
                 }
 
@@ -293,6 +292,7 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
                         return;
                     }
                     isZan = zanList.contains(objectID);
+                    binding.btZan.setBackgroundResource(isZan ? R.drawable.love2 : R.drawable.love1);
                     break;
                 default:
                     break;
