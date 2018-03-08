@@ -20,7 +20,6 @@ import com.uncle.bomb.CommentZan;
 import com.uncle.bomb.User_account;
 import com.uncle.bomb.shop_goods;
 import com.uncle.method.KeyboardUtil;
-import com.uncle.method.SHandlerThread;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +30,7 @@ import java.util.List;
  */
 
 public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetailBinding> {
-    private String replyUser = null;
+    private String replyUserName = null;
     private Boolean isZan = false;
     private final int CHAT_ACTIVITY_ACCOUNT_NAME = 7;
     private final int CHAT_ACTIVITY_ACCOUNT_HEAD = 8;
@@ -41,6 +40,7 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
     private String myObjectId;
     private String myName;
     private ArrayList zanList = null;
+    private ArrayList commentList = null;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -85,13 +85,8 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
             public void onSuccess(User_account object) {
                 Message message = new Message();
                 message.what = CHAT_ACTIVITY_ACCOUNT_NAME;
-                message.obj = object.getNick_name();
+                message.obj = object;
                 handler.sendMessage(message);
-                Message message2 = new Message();
-                message2.what = CHAT_ACTIVITY_ACCOUNT_HEAD;
-                message2.obj = object.getZanList();
-                handler.sendMessage(message2);
-
             }
         });
     }
@@ -194,37 +189,26 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
             @Override
             public void onClick(View v) {
                 String textContext = binding.etCommentInput.getText().toString();
-                if (!binding.etCommentInput.getText().toString().isEmpty() && replyUser == null) {
-                    binding.etCommentInput.setHint("快点就下你的评论吧");
+                if (!binding.etCommentInput.getText().toString().isEmpty() && replyUserName == null) {
+                    binding.etCommentInput.setHint("快点留下你的评论吧");
                     textContext = myName + " ：“" + textContext + "”";
                     getNewTextView(textContext);
                     KeyboardUtil.closeKeyBoard(GoodsDetailsActivity.this, binding.etCommentInput);
                     binding.etCommentInput.setText(null);
                     Toast.makeText(GoodsDetailsActivity.this, "评论成功", Toast.LENGTH_SHORT).show();
                     final CommentZan commentZan = new CommentZan(textContext, pageObjectID, myName, "name2", 0);
-                    SHandlerThread.postToWorker(new Runnable() {
-                        @Override
-                        public void run() {
-                            bomb.addCommentZan(commentZan);
-                        }
-                    });
+                    bomb.addCommentZan(commentZan, myObjectId, commentList);
                     return;
                 }
-                if (!binding.etCommentInput.getText().toString().isEmpty() && replyUser != null) {
-                    binding.etCommentInput.setHint("回复用户");
-                    textContext = "   " + myName + "  回复了" + "上面的用户" + ":“" + textContext + "”";
+                if (!binding.etCommentInput.getText().toString().isEmpty() && replyUserName != null) {
+                    textContext = "   " + myName + "  回复了" + replyUserName + "：“" + textContext + "”";
                     getNewTextView(textContext);
                     KeyboardUtil.closeKeyBoard(GoodsDetailsActivity.this, binding.etCommentInput);
                     binding.etCommentInput.setText(null);
                     Toast.makeText(GoodsDetailsActivity.this, "回复成功", Toast.LENGTH_SHORT).show();
-                    final CommentZan commentZan = new CommentZan(textContext, pageObjectID, "name1", "name2", 1);
-                    SHandlerThread.postToWorker(new Runnable() {
-                        @Override
-                        public void run() {
-                            bomb.addCommentZan(commentZan);
-                        }
-                    });
-                    replyUser = null;
+                    final CommentZan commentZan = new CommentZan(textContext, pageObjectID, myName, "name2", 1);
+                    bomb.addCommentZan(commentZan, myObjectId, commentList);
+                    replyUserName = null;
                     return;
                 }
                 Toast.makeText(GoodsDetailsActivity.this, "内容不能为空", Toast.LENGTH_SHORT).show();
@@ -235,14 +219,14 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
     private String getCommentUserName(String name) {
         if (name.contains("回复")) {
             return name.substring(0, name.indexOf("回复"));
-        } else if (name.contains(":")) {
-            return name.substring(0, name.indexOf(":"));
+        } else if (name.contains("：")) {
+            return name.substring(0, name.indexOf("："));
         }
         return null;
     }
 
     public void getComment() {
-        bomb.find_comment(pageObjectID, new BOMBOpenHelper.getCommentCallback() {
+        bomb.findComment(pageObjectID, new BOMBOpenHelper.getCommentCallback() {
             @Override
             public void onCommentLoad(List<CommentZan> arrayList) {
                 if (arrayList.size() != 0) {
@@ -278,7 +262,10 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
             binding.etCommentInput.setFocusableInTouchMode(true);
             binding.etCommentInput.requestFocus();
             KeyboardUtil.openKeyBoard(GoodsDetailsActivity.this);
-            replyUser = getCommentUserName(textView.getText().toString().trim());
+            replyUserName = getCommentUserName(textView.getText().toString().trim());
+            if (replyUserName != null) {
+                binding.etCommentInput.setHint("回复用户 " + replyUserName);
+            }
         }
     }
 
@@ -290,10 +277,9 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
             super.handleMessage(msg);
             switch (msg.what) {
                 case CHAT_ACTIVITY_ACCOUNT_NAME:
-                    binding.tvName.setText((String) msg.obj);
-                    break;
-                case CHAT_ACTIVITY_ACCOUNT_HEAD:
-                    zanList = (ArrayList) msg.obj;
+                    User_account userAccount = (User_account) msg.obj;
+                    binding.tvName.setText(userAccount.getNick_name());
+                    zanList = userAccount.getZanList();
                     if (zanList == null) {
                         zanList = new ArrayList();
                         isZan = false;
@@ -301,6 +287,16 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
                     }
                     isZan = zanList.contains(pageObjectID);
                     binding.btZan.setBackgroundResource(isZan ? R.drawable.love2 : R.drawable.love1);
+
+                    commentList = userAccount.getCommentList();
+                    if (commentList.contains(pageObjectID)) {
+                        commentList = null;
+                    } else {
+                        commentList.add(pageObjectID);
+                    }
+                    break;
+                case CHAT_ACTIVITY_ACCOUNT_HEAD:
+
                     break;
                 default:
                     break;

@@ -126,7 +126,6 @@ public class BOMBOpenHelper {
     }
 
 
-
     private void upload_alnog(String picPath, final UploadAlongListener alongListener) {
         final BmobFile bmobFile = new BmobFile(new File(picPath));
         bmobFile.uploadblock(new UploadFileListener() {
@@ -145,7 +144,6 @@ public class BOMBOpenHelper {
             }
         });
     }
-
 
 
     //通过id找到一条数据，用于点击商品之后的详细信息
@@ -170,15 +168,26 @@ public class BOMBOpenHelper {
     /**
      * 增加评论和回复进入网络数据库
      */
-    public void addCommentZan(CommentZan commentZan) {
+    public void addCommentZan(CommentZan commentZan, String userObject, ArrayList commentList) {
         commentZan.save(new SaveListener<String>() {
-
             @Override
             public void done(String objectId, BmobException e) {
                 if (e == null) {
                 }
             }
 
+        });
+        if (commentList == null) {
+            return;
+        }
+        User_account userAccount = new User_account();
+        userAccount.setCommentList(commentList);
+        userAccount.update(userObject, new UpdateListener() {
+            @Override
+            public void done(BmobException e) {
+                if (e == null) {
+                }
+            }
         });
     }
 
@@ -188,7 +197,7 @@ public class BOMBOpenHelper {
      * @param objectId 确定商品id
      * @param zan      新的赞数
      */
-    public void updateZan(String objectId, String userObject,ArrayList zanList, int zan) {
+    public void updateZan(String objectId, String userObject, ArrayList zanList, int zan) {
         shop_goods goods = new shop_goods();
         goods.setZan_nub(zan);
         goods.update(objectId, new UpdateListener() {
@@ -208,18 +217,15 @@ public class BOMBOpenHelper {
         });
     }
 
-
-
     //找到评论，商品详细信息内
-    public void find_comment(String objectId, final getCommentCallback commentCallback) {
+    public void findComment(String objectId, final getCommentCallback commentCallback) {
         BmobQuery<CommentZan> query = new BmobQuery<>();
-        query.addWhereEqualTo("taget_object", objectId);//查询taget_object叫“objectid”的数据
-//        query.setLimit(10);
+        query.addWhereEqualTo("targetObject", objectId);
         query.findObjects(new FindListener<CommentZan>() {
             @Override
-            public void done(List<CommentZan> object, BmobException e) {
+            public void done(List<CommentZan> list, BmobException e) {
                 if (e == null) {
-                    commentCallback.onCommentLoad(object);
+                    commentCallback.onCommentLoad(list);
                 } else {
                     Log.i("bmob", "失败：" + e.getMessage() + "," + e.getErrorCode());
                 }
@@ -229,8 +235,6 @@ public class BOMBOpenHelper {
 
 
     //···IM聊天数据表·························································
-
-
 
 
     /**
@@ -255,7 +259,6 @@ public class BOMBOpenHelper {
             }
         });
     }
-
 
 
     //增加两条数据，用来当其中有一个变量变的时候，通知系统，更改ui，用于im即时通讯
@@ -323,8 +326,6 @@ public class BOMBOpenHelper {
     }
 
 
-
-
     //寻找指定两个id聊天的数据，并返回arraylist
     public void findTalkData(String object_id, String target_objectID, final findTalkCallback findTalkCallback) {
         BmobQuery<IMConversation> query = new BmobQuery<>();
@@ -347,8 +348,6 @@ public class BOMBOpenHelper {
     }
 
 
-
-
     //```````账号的数据表```````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````
 
     //通过id找到一个账号
@@ -369,8 +368,6 @@ public class BOMBOpenHelper {
     }
 
 
-
-
     //通过objectid找到指定账号的信息，名字和头像
     public void findAccountDataAlone(String objectID, final FindAccountDataAloneCallback findAccountDataAloneCallback) {
         BmobQuery<User_account> bmobQuery = new BmobQuery<User_account>();
@@ -383,7 +380,6 @@ public class BOMBOpenHelper {
             }
         });
     }
-
 
 
     //增加一个账号信息
@@ -492,6 +488,7 @@ public class BOMBOpenHelper {
 
     public interface ImageCallback {
         void onImageLoad(shop_goods shopgoods);
+
         void onError();
     }
 
@@ -505,33 +502,44 @@ public class BOMBOpenHelper {
 
     public interface Talk_Callback {
         void onSuccess();
+
         void onFail();
     }
+
     public interface addTalkDataChangeCallback {
         public void onSueecssBTellA(String object);
+
         public void onSueecssATellB(String object);
     }
 
     public interface findTalkDataChangeObjectIdCallback {
         public void onSuccess(String object_id);
     }
+
     //查找聊天表中的聊天信息
     public interface findTalkCallback {
         public void onSuccess(List<IMConversation> list);
+
         public void onFail();
     }
+
     public interface FindAccountCallback {
         void onSuccess(List<User_account> list);
+
         void onFail(int failCode);
     }
+
     public interface FindAccountDataAloneCallback {
         void onSuccess(User_account object);
     }
+
     public interface AddAccountCallback {
         public void onSuccess(String object);
     }
+
     public interface LoginUpdateSchoolCallback {
         void done();
+
         void fail();
     }
 

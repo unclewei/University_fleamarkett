@@ -18,6 +18,16 @@ public class User_account extends BmobObject {
     String college;
     String organization;
     ArrayList zanList;
+    ArrayList commentList;
+
+
+    public ArrayList getCommentList() {
+        return commentList;
+    }
+
+    public void setCommentList(ArrayList commentList) {
+        this.commentList = commentList;
+    }
 
     public ArrayList getZanList() {
         return zanList;
