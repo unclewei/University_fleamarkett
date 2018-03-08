@@ -33,13 +33,13 @@ import java.util.List;
 public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetailBinding> {
     private String replyUser = null;
     private Boolean isZan = false;
-    private final int DEAL_WITH_IMAGE = 5;
     private final int CHAT_ACTIVITY_ACCOUNT_NAME = 7;
     private final int CHAT_ACTIVITY_ACCOUNT_HEAD = 8;
-    private String objectID, new_objectID;//1.获取的数据库中的id。2.新生成的数据的objectid。
+    private String pageObjectID;
     private BOMBOpenHelper bomb = new BOMBOpenHelper();
-    private String owner;//该条目的发出人objectid
-    private String myobject, myorganization, head_portrait, myname;
+    private String ownerObjectId;
+    private String myObjectId;
+    private String myName;
     private ArrayList zanList = null;
 
     /**
@@ -61,19 +61,19 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
     public void init() {
         getDataFromShareperecence();
         getIntentMessage();
-        findAccountDataFromBomb(owner);
+        findAccountDataFromBomb(ownerObjectId);
 
-        comMent();
+        comment();
         zanClick();
         headClick();
     }
 
     private void getDataFromShareperecence() {
         SharedPreferences sharedPreferences = getSharedPreferences("account", Context.MODE_WORLD_READABLE);
-        myobject = sharedPreferences.getString("object_id", "没有id");
-        myorganization = sharedPreferences.getString("organization", null);
-        myname = sharedPreferences.getString("nick_name", "匿名用户");
-        binding.tvOrganization.setText(myorganization);
+        myObjectId = sharedPreferences.getString("object_id", "没有id");
+        String myOrganization = sharedPreferences.getString("organization", null);
+        myName = sharedPreferences.getString("nick_name", "匿名用户");
+        binding.tvOrganization.setText(myOrganization);
     }
 
     /**
@@ -106,11 +106,11 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
     private class clickToChat implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            if (owner.equals(myobject)) {
+            if (ownerObjectId.equals(myObjectId)) {
                 Toast.makeText(GoodsDetailsActivity.this, "不能自己与自己聊天", Toast.LENGTH_SHORT).show();
             } else {
                 Intent intent = new Intent(GoodsDetailsActivity.this, ChatActivity.class);
-                intent.putExtra("owner", owner);
+                intent.putExtra("ownerObjectId", ownerObjectId);
                 startActivity(intent);
             }
         }
@@ -122,17 +122,17 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
             @Override
             public void onClick(View v) {
                 if (isZan) {
-                    zanList.remove(objectID);
+                    zanList.remove(pageObjectID);
                     final int nub = Integer.parseInt(binding.tvZanCount.getText().toString()) - 1;
-                    bomb.updateZan(objectID, myobject,zanList, nub);
+                    bomb.updateZan(pageObjectID, myObjectId, zanList, nub);
                     binding.tvZanCount.setText(String.valueOf(nub));
                     binding.btZan.setBackgroundResource(R.drawable.love1);
                     isZan = false;
                     return;
                 }
-                zanList.add(objectID);
+                zanList.add(pageObjectID);
                 final int nub = Integer.parseInt(binding.tvZanCount.getText().toString()) + 1;
-                bomb.updateZan(objectID,myobject, zanList, nub);
+                bomb.updateZan(pageObjectID, myObjectId, zanList, nub);
                 binding.tvZanCount.setText(String.valueOf(nub));
                 binding.btZan.setBackgroundResource(R.drawable.love2);
                 isZan = true;
@@ -164,10 +164,10 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
     public void getIntentMessage() {
         Intent intent = getIntent();
         if (intent != null) {
-            objectID = intent.getStringExtra("objID");
-            owner = intent.getStringExtra("owner_id");
+            pageObjectID = intent.getStringExtra("objID");
+            ownerObjectId = intent.getStringExtra("owner_id");
             BOMBOpenHelper bomb = new BOMBOpenHelper();
-            bomb.find_alone(objectID, new BOMBOpenHelper.ImageCallback() {
+            bomb.find_alone(pageObjectID, new BOMBOpenHelper.ImageCallback() {
                 @Override
                 public void onImageLoad(shop_goods shopgoods) {
                     Glide.with(GoodsDetailsActivity.this)
@@ -189,19 +189,19 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
         }
     }
 
-    public void comMent() {
+    public void comment() {
         binding.btComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String textContext = binding.etCommentInput.getText().toString();
                 if (!binding.etCommentInput.getText().toString().isEmpty() && replyUser == null) {
                     binding.etCommentInput.setHint("快点就下你的评论吧");
-                    textContext = myname + " ：“" + textContext + "”";
+                    textContext = myName + " ：“" + textContext + "”";
                     getNewTextView(textContext);
                     KeyboardUtil.closeKeyBoard(GoodsDetailsActivity.this, binding.etCommentInput);
                     binding.etCommentInput.setText(null);
                     Toast.makeText(GoodsDetailsActivity.this, "评论成功", Toast.LENGTH_SHORT).show();
-                    final CommentZan commentZan = new CommentZan(textContext, objectID, "name1", "name2", 0);
+                    final CommentZan commentZan = new CommentZan(textContext, pageObjectID, myName, "name2", 0);
                     SHandlerThread.postToWorker(new Runnable() {
                         @Override
                         public void run() {
@@ -212,12 +212,12 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
                 }
                 if (!binding.etCommentInput.getText().toString().isEmpty() && replyUser != null) {
                     binding.etCommentInput.setHint("回复用户");
-                    textContext = "   " + myname + "  回复了" + "上面的用户" + ":“" + textContext + "”";
+                    textContext = "   " + myName + "  回复了" + "上面的用户" + ":“" + textContext + "”";
                     getNewTextView(textContext);
                     KeyboardUtil.closeKeyBoard(GoodsDetailsActivity.this, binding.etCommentInput);
                     binding.etCommentInput.setText(null);
                     Toast.makeText(GoodsDetailsActivity.this, "回复成功", Toast.LENGTH_SHORT).show();
-                    final CommentZan commentZan = new CommentZan(textContext, objectID, "name1", "name2", 1);
+                    final CommentZan commentZan = new CommentZan(textContext, pageObjectID, "name1", "name2", 1);
                     SHandlerThread.postToWorker(new Runnable() {
                         @Override
                         public void run() {
@@ -232,9 +232,17 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
         });
     }
 
+    private String getCommentUserName(String name) {
+        if (name.contains("回复")) {
+            return name.substring(0, name.indexOf("回复"));
+        } else if (name.contains(":")) {
+            return name.substring(0, name.indexOf(":"));
+        }
+        return null;
+    }
 
     public void getComment() {
-        bomb.find_comment(objectID, new BOMBOpenHelper.getCommentCallback() {
+        bomb.find_comment(pageObjectID, new BOMBOpenHelper.getCommentCallback() {
             @Override
             public void onCommentLoad(List<CommentZan> arrayList) {
                 if (arrayList.size() != 0) {
@@ -270,7 +278,7 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
             binding.etCommentInput.setFocusableInTouchMode(true);
             binding.etCommentInput.requestFocus();
             KeyboardUtil.openKeyBoard(GoodsDetailsActivity.this);
-            replyUser = textView.getText().toString();
+            replyUser = getCommentUserName(textView.getText().toString().trim());
         }
     }
 
@@ -291,7 +299,7 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
                         isZan = false;
                         return;
                     }
-                    isZan = zanList.contains(objectID);
+                    isZan = zanList.contains(pageObjectID);
                     binding.btZan.setBackgroundResource(isZan ? R.drawable.love2 : R.drawable.love1);
                     break;
                 default:
