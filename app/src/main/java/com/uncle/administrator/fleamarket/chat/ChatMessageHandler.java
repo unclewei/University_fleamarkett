@@ -1,14 +1,16 @@
-package com.uncle.administrator.fleamarket;
+package com.uncle.administrator.fleamarket.chat;
 
 import cn.bmob.newim.event.MessageEvent;
 import cn.bmob.newim.event.OfflineMessageEvent;
 import cn.bmob.newim.listener.BmobIMMessageHandler;
 
 /**
- * Created by Administrator on 2018/3/11 0011.
+ *
+ * @author Administrator
+ * @date 2018/3/11 0011
  */
 
-public class DemoMessageHandler extends BmobIMMessageHandler {
+public class ChatMessageHandler extends BmobIMMessageHandler {
 
     @Override
     public void onMessageReceive(final MessageEvent event) {

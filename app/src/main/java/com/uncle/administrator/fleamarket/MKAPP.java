@@ -2,6 +2,8 @@ package com.uncle.administrator.fleamarket;
 
 import android.app.Application;
 
+import com.uncle.administrator.fleamarket.chat.ChatMessageHandler;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -22,7 +24,7 @@ public class MKAPP extends Application {
     private void initBomb() {
         if (getApplicationInfo().packageName.equals(getMyProcessName())) {
             BmobIM.init(this);
-            BmobIM.registerDefaultMessageHandler(new DemoMessageHandler());
+            BmobIM.registerDefaultMessageHandler(new ChatMessageHandler());
         }
     }
 
