@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.uncle.administrator.fleamarket.chat.OnRecyclerViewListener;
-import com.uncle.method.SHandlerThread;
+import com.uncle.Util.SHandlerThread;
 
 /**
  * 建议使用BaseRecyclerAdapter

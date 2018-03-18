@@ -18,10 +18,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.uncle.administrator.fleamarket.DTO.Friend;
+import com.uncle.administrator.fleamarket.DTO.User;
+import com.uncle.administrator.fleamarket.chat.ChatActivity;
 import com.uncle.database.Chat_data_Dao;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import cn.bmob.newim.BmobIM;
+import cn.bmob.newim.bean.BmobIMConversation;
+import cn.bmob.newim.bean.BmobIMUserInfo;
 
 /**
  * Created by Administrator on 2016/11/22 0022.
@@ -58,6 +65,17 @@ public class TalkFragment extends Fragment {
 
     }
 
+    private void navToChat(Friend friend){
+        User user = friend.getFriendUser();
+        BmobIMUserInfo info = new BmobIMUserInfo(user.getObjectId(), user.getUsername(), user.getAvatar());
+        //TODO 会话：4.1、创建一个常态会话入口，好友聊天
+        BmobIMConversation conversationEntrance = BmobIM.getInstance().startPrivateConversation(info, null);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("c", conversationEntrance);
+        Intent intent = new Intent(getContext(),ChatActivity.class);
+        intent.putExtra(getActivity().getPackageName(),bundle);
+        startActivity(intent, bundle);
+    }
     private void get_data_from_chat_database() {
         ArrayList<HashMap<String, Object>> arrayList = chat_dao.find_and_get_data_from_Chat_database();
         if (arrayList!= null) {
@@ -183,7 +201,7 @@ public class TalkFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String target_ID = tv.getText().toString();
-                Intent intent = new Intent(getContext(), ChatActivity.class);
+                Intent intent = new Intent(getContext(), ChatActivityOld.class);
                 intent.putExtra("owner", target_ID);
                 startActivity(intent);
             }

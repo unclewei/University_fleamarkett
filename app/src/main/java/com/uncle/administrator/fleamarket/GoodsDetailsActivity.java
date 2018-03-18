@@ -19,7 +19,7 @@ import com.uncle.bomb.BOMBOpenHelper;
 import com.uncle.bomb.CommentZan;
 import com.uncle.bomb.User_account;
 import com.uncle.bomb.shop_goods;
-import com.uncle.method.KeyboardUtil;
+import com.uncle.Util.KeyboardUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,7 +104,7 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
             if (ownerObjectId.equals(myObjectId)) {
                 Toast.makeText(GoodsDetailsActivity.this, "不能自己与自己聊天", Toast.LENGTH_SHORT).show();
             } else {
-                Intent intent = new Intent(GoodsDetailsActivity.this, ChatActivity.class);
+                Intent intent = new Intent(GoodsDetailsActivity.this, ChatActivityOld.class);
                 intent.putExtra("ownerObjectId", ownerObjectId);
                 startActivity(intent);
             }

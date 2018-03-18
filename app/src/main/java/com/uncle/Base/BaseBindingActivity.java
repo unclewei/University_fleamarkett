@@ -16,6 +16,7 @@ import android.support.annotation.Nullable;
 
     protected T binding;
     private boolean isCreated = false;
+    public String TAG = this.getClass().getName();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -24,7 +25,12 @@ import android.support.annotation.Nullable;
         bindData(binding);
     }
 
-
+    public Bundle getBundle() {
+        if (getIntent() != null && getIntent().hasExtra(getPackageName()))
+            return getIntent().getBundleExtra(getPackageName());
+        else
+            return null;
+    }
     protected abstract void bindData(T dataBinding);
 
     protected abstract int getLayoutId();

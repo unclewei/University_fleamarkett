@@ -27,7 +27,7 @@ import com.uncle.administrator.fleamarket.Login_Activity.welcome_page;
 import com.uncle.bomb.BOMBOpenHelper;
 import com.uncle.bomb.User_account;
 import com.uncle.bomb.shop_goods;
-import com.uncle.method.turns;
+import com.uncle.Util.Turns;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -62,7 +62,7 @@ public class SellActivity extends Activity {
     private List<HashMap<String, Object>> imageItem;
     private List<HashMap<String, String>> bomb_imageItem;//把图片数据换成二进制数，存入云服务器
     private SimpleAdapter simpleAdapter;     //适配器
-    private turns turn = new turns();
+    private Turns turn = new Turns();
     private String objectID, college, organization, head_portrait, name;//自己的id,大学名字，学院，头像,名字，买东西的时候存入数据库
 
 

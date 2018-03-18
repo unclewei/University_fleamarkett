@@ -1,4 +1,4 @@
-package com.uncle.method;
+package com.uncle.Util;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -32,7 +32,7 @@ import java.io.IOException;
 
  c)  String s = "" + intvalue ;
  */
-public class turns {
+public class Turns {
 
     /**
      * 02.     * 图片转成string

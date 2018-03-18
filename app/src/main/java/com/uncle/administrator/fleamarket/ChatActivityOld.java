@@ -35,7 +35,7 @@ import cn.bmob.v3.listener.ValueEventListener;
  * @date 2017/4/12 0012
  */
 
-public class ChatActivity extends Activity {
+public class ChatActivityOld extends Activity {
 
     private static final int CHAT_ACTIVITY_CHAT_DATA = 784847001;
     private static final int CHAT_ACTIVITY_CHAT_A_TELL_B = 784847002;
@@ -70,7 +70,7 @@ public class ChatActivity extends Activity {
         chat_LinearLayout = (LinearLayout) findViewById(R.id.conversation_chat_LinearLayout);
         scrollView = (ScrollView) findViewById(R.id.conversation_chat_ScrollView);
         head_name = (TextView) findViewById(R.id.conversation_name);
-        chat_data_dao = new Chat_data_Dao(ChatActivity.this);
+        chat_data_dao = new Chat_data_Dao(ChatActivityOld.this);
 
 
         get_data_from_sharepreference_and_Intent();
@@ -92,7 +92,7 @@ public class ChatActivity extends Activity {
     private void get_data_from_sharepreference_and_Intent() {
         SharedPreferences sharedPreferences = getSharedPreferences("account", Context.MODE_WORLD_READABLE);
         if (sharedPreferences.getString("object_id", "没有id").equals("没有id")) {
-            Intent intent = new Intent(ChatActivity.this, welcome_page.class);
+            Intent intent = new Intent(ChatActivityOld.this, welcome_page.class);
             startActivity(intent);
             finish();
         } else {
@@ -272,7 +272,7 @@ public class ChatActivity extends Activity {
 
     //增加一个右边的聊天条
     public void addLinearLayoutRight(String context) {
-        LinearLayout linearLayout = new LinearLayout(ChatActivity.this);
+        LinearLayout linearLayout = new LinearLayout(ChatActivityOld.this);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -281,14 +281,14 @@ public class ChatActivity extends Activity {
         layoutParams.setMargins(0, 3, 3, 3);
         chat_LinearLayout.addView(linearLayout);
 
-        View view = new View(ChatActivity.this);
+        View view = new View(ChatActivityOld.this);
         LinearLayout.LayoutParams layoutParams_view = new LinearLayout.LayoutParams(
                 0, LinearLayout.LayoutParams.WRAP_CONTENT);
         layoutParams_view.weight = 1;
         view.setLayoutParams(layoutParams_view);
         linearLayout.addView(view);
 
-        TextView textView = new TextView(ChatActivity.this);
+        TextView textView = new TextView(ChatActivityOld.this);
         LinearLayout.LayoutParams layoutParams_text = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 //        layoutParams_text.weight = 1;
@@ -302,7 +302,7 @@ public class ChatActivity extends Activity {
 
     //增加一个左边的聊天条
     public void addLinearLayoutLeft(String context) {
-        LinearLayout linearLayout = new LinearLayout(ChatActivity.this);
+        LinearLayout linearLayout = new LinearLayout(ChatActivityOld.this);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -311,7 +311,7 @@ public class ChatActivity extends Activity {
         linearLayout.setLayoutParams(layoutParams);
         chat_LinearLayout.addView(linearLayout);
 
-        TextView textView = new TextView(ChatActivity.this);
+        TextView textView = new TextView(ChatActivityOld.this);
         LinearLayout.LayoutParams layoutParams_text = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 //        layoutParams_text.weight = 1;

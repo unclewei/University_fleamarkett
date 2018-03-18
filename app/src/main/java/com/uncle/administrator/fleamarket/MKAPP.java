@@ -1,6 +1,7 @@
 package com.uncle.administrator.fleamarket;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.uncle.administrator.fleamarket.chat.ChatMessageHandler;
 
@@ -43,5 +44,8 @@ public class MKAPP extends Application {
             e.printStackTrace();
             return null;
         }
+    }
+    public Context getContext(){
+        return this;
     }
 }

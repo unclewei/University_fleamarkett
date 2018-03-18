@@ -47,7 +47,7 @@
         <activity android:name="com.uncle.administrator.fleamarket.SellActivity" />
         <activity android:name="com.uncle.administrator.fleamarket.GoodsDetailsActivity" />
         <activity android:name="com.uncle.administrator.fleamarket.ViewPagerActivity" />
-        <activity android:name="com.uncle.administrator.fleamarket.ChatActivity" />
+        <activity android:name="com.uncle.administrator.fleamarket.ChatActivityOld" />
         <activity android:name="com.uncle.administrator.fleamarket.Login_Activity.Login_activity_2" />
         <activity android:name="com.uncle.administrator.fleamarket.Login_Activity.Login_activity_1" />
         <activity android:name="com.uncle.administrator.fleamarket.Login_Activity.Login_activity3_setname" />

@@ -1,4 +1,4 @@
-package com.uncle.method;
+package com.uncle.Util;
 
 /**
  * Created by hakonzhao on 2018/3/5.

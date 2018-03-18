@@ -4,7 +4,6 @@ package com.uncle.administrator.fleamarket.Home;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
-
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -20,7 +19,6 @@ import com.uncle.administrator.fleamarket.GoodsDetailsActivity;
 import com.uncle.administrator.fleamarket.R;
 import com.uncle.administrator.fleamarket.databinding.TheBaseButton1Binding;
 import com.uncle.bomb.shop_goods;
-import com.uncle.method.SHandlerThread;
 
 import java.util.ArrayList;
 import java.util.List;
