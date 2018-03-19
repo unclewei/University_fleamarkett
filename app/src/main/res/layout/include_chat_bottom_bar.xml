@@ -5,7 +5,7 @@
 
         <variable
             name="module"
-            type="com.uncle.administrator.fleamarket.chat.ChatViewModule" />
+            type="com.uncle.administrator.fleamarket.chat.ChatVM" />
     </data>
 
     <LinearLayout

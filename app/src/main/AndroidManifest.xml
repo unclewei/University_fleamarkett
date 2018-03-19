@@ -58,6 +58,7 @@
         <activity android:name="com.uncle.administrator.fleamarket.Login_Activity.Login_activity3_setname" />
         <activity android:name="com.uncle.administrator.fleamarket.ChangePersonDataActivity" />
         <activity android:name="com.uncle.administrator.fleamarket.NullActivity" />
+        <activity android:name=".Mine.MineDataActivity"/>
         <activity android:name="com.uncle.administrator.fleamarket.Login_Activity.welcome_page" />
 
         <receiver android:name="cn.bmob.newim.core.ConnectChangeReceiver">

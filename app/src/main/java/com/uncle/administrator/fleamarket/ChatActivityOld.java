@@ -189,19 +189,19 @@ public class ChatActivityOld extends Activity {
     public void find_chat_change_objectID(String myobject, String target_object) {
         bomb.findTalkDataChangeObjectIdAlone(myobject + target_object, new BOMBOpenHelper.findTalkDataChangeObjectIdCallback() {
             @Override
-            public void onSuccess(String object_id) {
+            public void onSuccess(String objectId) {
                 Message message = new Message();
                 message.what = CHAT_ACTIVITY_CHAT_A_TELL_B;
-                message.obj = object_id;
+                message.obj = objectId;
                 handler.sendMessage(message);
             }
         });
         bomb.findTalkDataChangeObjectIdAlone(target_object + myobject, new BOMBOpenHelper.findTalkDataChangeObjectIdCallback() {
             @Override
-            public void onSuccess(String object_id) {
+            public void onSuccess(String objectId) {
                 Message message = new Message();
                 message.what = CHAT_ACTIVITY_CHAT_B_TELL_A;
-                message.obj = object_id;
+                message.obj = objectId;
                 handler.sendMessage(message);
             }
         });

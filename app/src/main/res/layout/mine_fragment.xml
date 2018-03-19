@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="module"
+            type="com.uncle.administrator.fleamarket.Mine.MineVM" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/bt3_person_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="#FFF"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:onClick="@{module::navToAvatar}"
+            android:paddingTop="5dp">
+
+            <ImageView
+                android:id="@+id/img_avatar"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/head_yard" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:text="昵称："
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_school"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="学校："
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="471dp"
+            android:layout_height="7dp"
+            android:background="#22222268" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <ImageView
+                android:id="@+id/img_my_public"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_weight="0.62"
+                android:onClick="@{module::navToMyPublic}"
+                android:background="@drawable/bt_3_fabu" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="#22222268" />
+
+            <ImageView
+                android:id="@+id/img_my_buy"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:onClick="@{module::navToMyBuy}"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/bt_3_maidaode" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="#22222268" />
+
+            <ImageView
+                android:id="@+id/img_my_sell"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:onClick="@{module::navToMySell}"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/bt_3_sell" />
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="#22222268" />
+
+            <ImageView
+                android:id="@+id/img_my_zan"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:onClick="@{module::navToMyZan}"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/bt_3_zan" />
+
+
+            <View
+                android:layout_width="471dp"
+                android:layout_height="7dp"
+                android:background="#22222268" />
+
+            <ImageView
+                android:id="@+id/img_set"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:onClick="@{module::navToSet}"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/bt_3_set" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

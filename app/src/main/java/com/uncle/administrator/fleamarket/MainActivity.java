@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.uncle.administrator.fleamarket.Conversation.ConversationFragment;
 import com.uncle.administrator.fleamarket.Home.HomeFragment;
+import com.uncle.administrator.fleamarket.Mine.MineFragment;
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
 
@@ -150,7 +151,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
      */
     private void clickTab3Layout() {
         if (the_thirs == null) {
-            the_thirs = new PersonFragment();
+            the_thirs = new MineFragment();
         }
 
         addOrShowFragment(getSupportFragmentManager().beginTransaction(), the_thirs);

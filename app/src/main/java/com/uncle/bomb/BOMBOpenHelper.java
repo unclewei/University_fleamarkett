@@ -54,16 +54,17 @@ public class BOMBOpenHelper {
     }
 
 
-    public void queryGoodsAndDoing() {
+    public void findGoods(String object, int setSkipNumber , final OnGoodsListCallBack onGoodsListCallBack) {
         final List<shop_goods> listGoods = new ArrayList<>();
         BmobQuery<shop_goods> bmobQuery = new BmobQuery<>();
-        bmobQuery.addWhereEqualTo(null, null);
-//        bmobQuery.setLimit(1);
+        bmobQuery.addWhereEqualTo("object", object);
+        bmobQuery.setSkip(10 * setSkipNumber);
+        bmobQuery.setLimit(10);
         bmobQuery.findObjects(new FindListener<shop_goods>() {
             @Override
             public void done(List<shop_goods> list, BmobException e) {
                 if (e == null) {
-
+                    onGoodsListCallBack.onDone(list);
                 }
             }
         });
@@ -154,7 +155,6 @@ public class BOMBOpenHelper {
     public void find_alone(String objID, final ImageCallback callback) {
         BmobQuery<shop_goods> query = new BmobQuery<>();
         query.getObject(objID, new QueryListener<shop_goods>() {
-
             @Override
             public void done(shop_goods object, BmobException e) {
                 if (e == null) {
@@ -489,7 +489,9 @@ public class BOMBOpenHelper {
     public interface OnDoneListener {
         void onDone();
     }
-
+    public interface OnGoodsListCallBack {
+        void onDone(List<shop_goods> list);
+    }
     public interface ImageCallback {
         void onImageLoad(shop_goods shopgoods);
 
@@ -517,7 +519,7 @@ public class BOMBOpenHelper {
     }
 
     public interface findTalkDataChangeObjectIdCallback {
-        public void onSuccess(String object_id);
+        public void onSuccess(String objectId);
     }
 
     //查找聊天表中的聊天信息

@@ -20,6 +20,7 @@ public class shop_goods extends BmobObject {
     private String text;
     private String price;
     private String variety;
+    private String time;
 
     private int zan_nub;
     private int pictureNub;
@@ -60,6 +61,9 @@ public class shop_goods extends BmobObject {
         this.name = name;
     }
 
+    public String getTime() {
+        return getCreatedAt();
+    }
 
     public int getPictureNub() {
         return pictureNub;

@@ -61,7 +61,7 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
     // 话筒动画
     private Drawable[] drawable_Anims;
     protected LinearLayoutManager layoutManager;
-    private ChatViewModule chatViewModule;
+    private ChatVM chatVM;
     private String myObject;
     private String targetObject;
     public static final String TargetObjectID = "TargetObjectID";
@@ -70,7 +70,7 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
     protected void bindData(ActivityChatBinding dataBinding) {
         initConversationManager();
         initObject();
-        chatViewModule = new ChatViewModule(ChatActivity.this, binding);
+        chatVM = new ChatVM(ChatActivity.this, binding);
         initSwipeLayout();
         initVoiceView();
         initBottomView();

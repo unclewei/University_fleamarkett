@@ -11,19 +11,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import com.uncle.Base.BaseBindAdapter;
 import com.uncle.Base.BaseBindingFragment;
+import com.uncle.administrator.fleamarket.DTO.shop_goods;
 import com.uncle.administrator.fleamarket.GoodsDetailsActivity;
 import com.uncle.administrator.fleamarket.R;
 import com.uncle.administrator.fleamarket.databinding.GoodsFragmentBinding;
-import com.uncle.administrator.fleamarket.DTO.shop_goods;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
@@ -135,16 +133,7 @@ public class HomeFragment extends BaseBindingFragment<GoodsFragmentBinding> impl
         queryGoods(setSkipNumber, new QueryCallBack() {
             @Override
             public void onImageLoad(List<shop_goods> list) {
-                homeListAdapter.addAll(list);
-                setSkipNumber++;
-                homeListAdapter.isLoading = false;
-                homeListAdapter.notifyDataSetChanged();
-                if (list.size() < 10) {
-                    homeListAdapter.removeLoadingView();
-                    isLast = true;
-                    Toast.makeText(getContext(),"没有更多货物啦",Toast.LENGTH_SHORT).show();
-                }
-                homeListAdapter.setCanLoadMore(!isLast);
+
             }
         });
     }

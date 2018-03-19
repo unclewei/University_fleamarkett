@@ -11,11 +11,11 @@ import com.uncle.administrator.fleamarket.databinding.ActivityChatBinding;
  * @date 2018/3/18 0018
  */
 
-public class ChatViewModule {
+public class ChatVM {
 
     private ChatActivity activity;
     private ActivityChatBinding binding;
-    public ChatViewModule(ChatActivity activity, ActivityChatBinding binding){
+    public ChatVM(ChatActivity activity, ActivityChatBinding binding){
         this.activity = activity;
         this.binding = binding;
         binding.setModule(this);
