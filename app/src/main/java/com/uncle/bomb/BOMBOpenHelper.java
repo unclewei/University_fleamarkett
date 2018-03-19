@@ -57,7 +57,7 @@ public class BOMBOpenHelper {
     public void findGoods(String object, int setSkipNumber , final OnGoodsListCallBack onGoodsListCallBack) {
         final List<shop_goods> listGoods = new ArrayList<>();
         BmobQuery<shop_goods> bmobQuery = new BmobQuery<>();
-        bmobQuery.addWhereEqualTo("object", object);
+        bmobQuery.addWhereEqualTo("owner", object);
         bmobQuery.setSkip(10 * setSkipNumber);
         bmobQuery.setLimit(10);
         bmobQuery.findObjects(new FindListener<shop_goods>() {
