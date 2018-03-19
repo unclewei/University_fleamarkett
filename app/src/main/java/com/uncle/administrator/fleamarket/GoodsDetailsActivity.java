@@ -16,9 +16,9 @@ import com.bumptech.glide.Glide;
 import com.uncle.Base.BaseBindingActivity;
 import com.uncle.administrator.fleamarket.databinding.ActivityGoodsDetailBinding;
 import com.uncle.bomb.BOMBOpenHelper;
-import com.uncle.bomb.CommentZan;
-import com.uncle.bomb.User_account;
-import com.uncle.bomb.shop_goods;
+import com.uncle.administrator.fleamarket.DTO.CommentZan;
+import com.uncle.administrator.fleamarket.DTO.User_account;
+import com.uncle.administrator.fleamarket.DTO.shop_goods;
 import com.uncle.Util.KeyboardUtil;
 
 import java.util.ArrayList;

@@ -18,40 +18,26 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.uncle.administrator.fleamarket.Conversation.ConversationFragment;
 import com.uncle.administrator.fleamarket.Home.HomeFragment;
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
 
-    // 三个tab布局
     private RelativeLayout knowLayout, iWantKnowLayout, meLayout, sell;
 
-    // 底部标签切换的Fragment
     private Fragment the_first;
     private Fragment the_secend;
     private Fragment the_thirs;
     private Fragment currentFragment;
-    // 底部标签图片
     private ImageView knowImg, iWantKnowImg, meImg;
-    // 底部标签的文本
-
     private long exitTime = 0;//点击两次退出程序的计时
-
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_fragment);
-
-
         initUI();
         initTab();
-
-
     }
 
     /**
@@ -144,7 +130,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
      */
     private void clickTab2Layout() {
         if (the_secend == null) {
-            the_secend = new TalkFragment();
+            the_secend = new ConversationFragment();
         }
         addOrShowFragment(getSupportFragmentManager().beginTransaction(), the_secend);
 

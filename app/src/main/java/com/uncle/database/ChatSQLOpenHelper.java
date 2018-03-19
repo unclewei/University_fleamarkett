@@ -8,8 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Created by Administrator on 2017/4/25 0025.
  */
 
-public class Chat_SQL_OpenHelper extends SQLiteOpenHelper {
-    public Chat_SQL_OpenHelper(Context context) {
+public class ChatSQLOpenHelper extends SQLiteOpenHelper {
+    public ChatSQLOpenHelper(Context context) {
         super(context, "Chat_DataBase.db", null, 1);
     }
 

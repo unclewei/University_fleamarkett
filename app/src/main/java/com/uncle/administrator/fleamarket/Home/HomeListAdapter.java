@@ -9,7 +9,7 @@ import com.uncle.Base.BaseAdapter;
 import com.uncle.Base.BaseBindViewHolder;
 import com.uncle.administrator.fleamarket.R;
 import com.uncle.administrator.fleamarket.databinding.AdapterHomeBinding;
-import com.uncle.bomb.shop_goods;
+import com.uncle.administrator.fleamarket.DTO.shop_goods;
 
 /**
  * @author unclewei

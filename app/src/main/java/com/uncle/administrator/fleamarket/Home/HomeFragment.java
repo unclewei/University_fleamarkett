@@ -17,8 +17,8 @@ import com.uncle.Base.BaseBindAdapter;
 import com.uncle.Base.BaseBindingFragment;
 import com.uncle.administrator.fleamarket.GoodsDetailsActivity;
 import com.uncle.administrator.fleamarket.R;
-import com.uncle.administrator.fleamarket.databinding.TheBaseButton1Binding;
-import com.uncle.bomb.shop_goods;
+import com.uncle.administrator.fleamarket.databinding.GoodsFragmentBinding;
+import com.uncle.administrator.fleamarket.DTO.shop_goods;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ import cn.bmob.v3.listener.FindListener;
  * @author Administrator
  * @date 2016/11/22 0022
  */
-public class HomeFragment extends BaseBindingFragment<TheBaseButton1Binding> implements
+public class HomeFragment extends BaseBindingFragment<GoodsFragmentBinding> implements
         BaseBindAdapter.OnItemClickListener<shop_goods>,
         SwipeRefreshLayout.OnRefreshListener,
         BaseBindAdapter.OnLoadListener {
@@ -43,8 +43,7 @@ public class HomeFragment extends BaseBindingFragment<TheBaseButton1Binding> imp
 
 
     @Override
-    protected void bindData(TheBaseButton1Binding dataBinding) {
-        Bmob.initialize(getContext(), "144dbb1fbca09ce5d3af201a05c54628");
+    protected void bindData(GoodsFragmentBinding dataBinding) {
         initWidget();
         initViewPager();
         queryGoods(0, new QueryCallBack() {
@@ -57,7 +56,7 @@ public class HomeFragment extends BaseBindingFragment<TheBaseButton1Binding> imp
 
     @Override
     protected int getLayoutId() {
-        return R.layout.the_base_button_1;
+        return R.layout.goods_fragment;
     }
 
 

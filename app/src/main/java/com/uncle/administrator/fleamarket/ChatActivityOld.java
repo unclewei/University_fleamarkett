@@ -20,8 +20,8 @@ import android.widget.TextView;
 import com.uncle.administrator.fleamarket.Login_Activity.welcome_page;
 import com.uncle.bomb.BOMBOpenHelper;
 import com.uncle.bomb.IMConversation;
-import com.uncle.bomb.User_account;
-import com.uncle.database.Chat_data_Dao;
+import com.uncle.administrator.fleamarket.DTO.User_account;
+import com.uncle.database.ChatDataDao;
 
 import org.json.JSONObject;
 
@@ -52,7 +52,7 @@ public class ChatActivityOld extends Activity {
     private BOMBOpenHelper bomb = new BOMBOpenHelper();
     private String b_tell_a, a_tell_b;
     private BmobRealTimeData rtd;//实时监控
-    private Chat_data_Dao chat_data_dao;//本地聊天数据库
+    private ChatDataDao chatData_dao;//本地聊天数据库
     private String target_name, target_head = null, head_portrait;//目的用户的头像和名字,头像
 
 
@@ -70,7 +70,7 @@ public class ChatActivityOld extends Activity {
         chat_LinearLayout = (LinearLayout) findViewById(R.id.conversation_chat_LinearLayout);
         scrollView = (ScrollView) findViewById(R.id.conversation_chat_ScrollView);
         head_name = (TextView) findViewById(R.id.conversation_name);
-        chat_data_dao = new Chat_data_Dao(ChatActivityOld.this);
+        chatData_dao = new ChatDataDao(ChatActivityOld.this);
 
 
         get_data_from_sharepreference_and_Intent();
@@ -97,18 +97,10 @@ public class ChatActivityOld extends Activity {
             finish();
         } else {
             myobject = sharedPreferences.getString("object_id", "没有id");
-//            head_portrait = sharedPreferences.getString("head_portrait_adress", null);
-//            Log.i("头像的地址是",head_portrait);
-//            if (head_portrait !=null){
-//                File file = new File(this.getCacheDir(),head_portrait);// 保存文件
-//                drawable2 =  Drawable.createFromPath(file.toString());
-//            }
-
         }
         Intent intent = getIntent();
         if (intent != null) {
             target_object = intent.getStringExtra("owner");
-            findAccountDataFromBomb(target_object);
         }
     }
 
@@ -325,22 +317,15 @@ public class ChatActivityOld extends Activity {
 
     //从本地数据库中查找有无该对话用户的数据，有的话就更新时间和最后一句，没有的话就创建一条进入数据库中
     private void add_chat_data_to_chat_database() {
-        chat_data_dao.find_data_from_Chat_database(target_object, new Chat_data_Dao.Find_data_from_Chat_database_callback() {
-            @Override
-            public void onFail() {
-                String timing = get_system_time();
-                String last_chat = get_last_chat();
-                chat_data_dao.add_one_data_to_Chat_database(target_name, target_object, target_head, timing, last_chat);
-            }
-
-            @Override
-            public void onSuccess() {
-                //更新时间和最后一句
-                String timing = get_system_time();
-                String last_chat = get_last_chat();
-                chat_data_dao.update_data_from_database(target_object, timing, target_head, last_chat);
-            }
-        });
+        if (chatData_dao.isUserExist(target_object)){
+            String timing = get_system_time();
+            String last_chat = get_last_chat();
+            chatData_dao.updateLastWord(target_object, timing, target_head, last_chat);
+            return;
+        }
+        String timing = get_system_time();
+        String last_chat = get_last_chat();
+        chatData_dao.addChatDB(target_name, target_object, target_head, timing, last_chat);
     }
 
     //获取最后一个句子

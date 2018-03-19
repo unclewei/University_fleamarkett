@@ -123,7 +123,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
 //            @Override
 //            public void onClick(View v) {
 ////
-////                Chat_data_Dao dao = new Chat_data_Dao(getContext());
+////                ChatDataDao dao = new ChatDataDao(getContext());
 ////                dao.delete();
 //                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("account", Context.MODE_WORLD_READABLE);
 //                SharedPreferences.Editor editor =sharedPreferences.edit();

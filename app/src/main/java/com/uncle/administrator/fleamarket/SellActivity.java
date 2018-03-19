@@ -25,8 +25,8 @@ import android.widget.Toast;
 
 import com.uncle.administrator.fleamarket.Login_Activity.welcome_page;
 import com.uncle.bomb.BOMBOpenHelper;
-import com.uncle.bomb.User_account;
-import com.uncle.bomb.shop_goods;
+import com.uncle.administrator.fleamarket.DTO.User_account;
+import com.uncle.administrator.fleamarket.DTO.shop_goods;
 import com.uncle.Util.Turns;
 
 import java.io.ByteArrayOutputStream;

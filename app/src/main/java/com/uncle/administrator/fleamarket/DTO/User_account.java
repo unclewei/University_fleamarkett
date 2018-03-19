@@ -1,4 +1,4 @@
-package com.uncle.bomb;
+package com.uncle.administrator.fleamarket.DTO;
 
 import java.util.ArrayList;
 

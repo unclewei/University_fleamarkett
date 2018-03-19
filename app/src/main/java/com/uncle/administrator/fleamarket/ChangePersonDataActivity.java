@@ -32,7 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.uncle.bomb.BOMBOpenHelper;
-import com.uncle.bomb.User_account;
+import com.uncle.administrator.fleamarket.DTO.User_account;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

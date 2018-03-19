@@ -2,6 +2,10 @@ package com.uncle.bomb;
 
 import android.util.Log;
 
+import com.uncle.administrator.fleamarket.DTO.CommentZan;
+import com.uncle.administrator.fleamarket.DTO.User_account;
+import com.uncle.administrator.fleamarket.DTO.shop_goods;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;

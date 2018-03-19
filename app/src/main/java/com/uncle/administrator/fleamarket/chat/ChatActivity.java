@@ -1,11 +1,12 @@
 package com.uncle.administrator.fleamarket.chat;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -16,14 +17,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.uncle.Base.BaseBindingActivity;
@@ -36,14 +29,12 @@ import com.uncle.administrator.fleamarket.databinding.ActivityChatBinding;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import cn.bmob.newim.BmobIM;
 import cn.bmob.newim.bean.BmobIMAudioMessage;
 import cn.bmob.newim.bean.BmobIMConversation;
 import cn.bmob.newim.bean.BmobIMFileMessage;
 import cn.bmob.newim.bean.BmobIMImageMessage;
-import cn.bmob.newim.bean.BmobIMLocationMessage;
 import cn.bmob.newim.bean.BmobIMMessage;
 import cn.bmob.newim.bean.BmobIMTextMessage;
 import cn.bmob.newim.bean.BmobIMVideoMessage;
@@ -61,23 +52,25 @@ import cn.bmob.v3.exception.BmobException;
  * 聊天界面
  *
  * @author :smile
- * @project:ChatActivity
  * @date :2016-01-25-18:23
  */
 public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> implements MessageListHandler {
-
-    private Drawable[] drawable_Anims;// 话筒动画
     BmobRecordManager recordManager;
-
     ChatAdapter adapter;
-    protected LinearLayoutManager layoutManager;
     BmobIMConversation mConversationManager;
+    // 话筒动画
+    private Drawable[] drawable_Anims;
+    protected LinearLayoutManager layoutManager;
+    private ChatViewModule chatViewModule;
+    private String myObject;
+    private String targetObject;
+    public static final String TargetObjectID = "TargetObjectID";
 
     @Override
     protected void bindData(ActivityChatBinding dataBinding) {
-        BmobIMConversation conversationEntrance = (BmobIMConversation) getBundle().getSerializable("c");
-        //TODO 消息：5.1、根据会话入口获取消息管理，聊天页面
-        mConversationManager = BmobIMConversation.obtain(BmobIMClient.getInstance(), conversationEntrance);
+        initConversationManager();
+        initObject();
+        chatViewModule = new ChatViewModule(ChatActivity.this, binding);
         initSwipeLayout();
         initVoiceView();
         initBottomView();
@@ -86,6 +79,21 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
     @Override
     protected int getLayoutId() {
         return R.layout.activity_chat;
+    }
+
+    private void initConversationManager() {
+        BmobIMConversation conversationEntrance = (BmobIMConversation) getBundle().getSerializable("c");
+        //TODO 消息：5.1、根据会话入口获取消息管理，聊天页面
+        if (conversationEntrance == null) {
+            ToastUtil.show(ChatActivity.this, "获取聊天对象失败，请重试");
+            return;
+        }
+        mConversationManager = BmobIMConversation.obtain(BmobIMClient.getInstance(), conversationEntrance);
+    }
+
+    private void initObject() {
+        SharedPreferences sharedPreferences = getSharedPreferences("account", Context.MODE_WORLD_READABLE);
+        myObject = sharedPreferences.getString(TargetObjectID, null);
     }
 
     private void initSwipeLayout() {
@@ -115,7 +123,7 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
         adapter.setOnRecyclerViewListener(new OnRecyclerViewListener() {
             @Override
             public void onItemClick(int position) {
-                Log.i(TAG,"" + position);
+                Log.i(TAG, "" + position);
             }
 
             @Override
@@ -148,7 +156,7 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (!TextUtils.isEmpty(s)) {
-                    
+
                     binding.input.btnChatSend.setVisibility(View.VISIBLE);
                     binding.input.btnChatKeyboard.setVisibility(View.GONE);
                     binding.input.btnChatVoice.setVisibility(View.GONE);
@@ -171,7 +179,6 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
      * 初始化语音布局
      *
      * @param
-     * @return void
      */
     private void initVoiceView() {
         binding.input.btnSpeak.setOnTouchListener(new VoiceTouchListener());
@@ -181,10 +188,6 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
 
     /**
      * 初始化语音动画资源
-     *
-     * @param
-     * @return void
-     * @Title: initVoiceAnimRes
      */
     private void initVoiceAnimRes() {
         drawable_Anims = new Drawable[]{
@@ -210,13 +213,12 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
 
             @Override
             public void onTimeChanged(int recordTime, String localPath) {
-                Log.i(TAG,"voice: 已录音长度:" + recordTime);
-                if (recordTime >= BmobRecordManager.MAX_RECORD_TIME) {// 1分钟结束，发送消息
+                Log.i(TAG, "voice: 已录音长度:" + recordTime);
+                if (recordTime >= BmobRecordManager.MAX_RECORD_TIME) {
                     // 需要重置按钮
                     binding.input.btnSpeak.setPressed(false);
                     binding.input.btnSpeak.setClickable(false);
                     // 取消录音框
-                    
                     binding.layoutRecord.setVisibility(View.INVISIBLE);
                     // 发送语音消息
                     sendVoiceMessage(localPath, recordTime);
@@ -245,7 +247,7 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     if (!CommUtil.checkSdCard()) {
-                        ToastUtil.show(ChatActivity.this,"发送语音需要sdcard支持！");
+                        ToastUtil.show(ChatActivity.this, "发送语音需要sdcard支持！");
                         return false;
                     }
                     try {
@@ -315,114 +317,16 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
         return toast;
     }
 
-    @OnClick(R.id.binding.input.editMsg)
-    public void onEditClick(View view) {
-        if (binding.input.layoutMore.getVisibility() == View.VISIBLE) {
-            binding.input.layoutAdd.setVisibility(View.GONE);
-            binding.input.layoutEmo.setVisibility(View.GONE);
-            binding.input.layoutMore.setVisibility(View.GONE);
-        }
-    }
-
-    @OnClick(R.id.btn_chat_emo)
-    public void onEmoClick(View view) {
-        if (binding.input.layoutMore.getVisibility() == View.GONE) {
-            showEditState(true);
-        } else {
-            if (binding.input.layoutAdd.getVisibility() == View.VISIBLE) {
-                binding.input.layoutAdd.setVisibility(View.GONE);
-                binding.input.layoutEmo.setVisibility(View.VISIBLE);
-            } else {
-                binding.input.layoutMore.setVisibility(View.GONE);
-            }
-        }
-    }
-
-    @OnClick(R.id.btn_chat_add)
-    public void onAddClick(View view) {
-        if (binding.input.layoutMore.getVisibility() == View.GONE) {
-            binding.input.layoutMore.setVisibility(View.VISIBLE);
-            binding.input.layoutAdd.setVisibility(View.VISIBLE);
-            binding.input.layoutEmo.setVisibility(View.GONE);
-            KeyboardUtil.hideSoftInputView(ChatActivity.this);
-        } else {
-            if (binding.input.layoutEmo.getVisibility() == View.VISIBLE) {
-                binding.input.layoutEmo.setVisibility(View.GONE);
-                binding.input.layoutAdd.setVisibility(View.VISIBLE);
-            } else {
-                binding.input.layoutMore.setVisibility(View.GONE);
-            }
-        }
-    }
-
-    @OnClick(R.id.binding.input.btnChatVoice)
-    public void onVoiceClick(View view) {
-        binding.input.editMsg.setVisibility(View.GONE);
-        binding.input.layoutMore.setVisibility(View.GONE);
-        binding.input.btnChatVoice.setVisibility(View.GONE);
-        binding.input.btnChatKeyboard.setVisibility(View.VISIBLE);
-        binding.input.btnSpeak.setVisibility(View.VISIBLE);
-        KeyboardUtil.hideSoftInputView(ChatActivity.this);
-    }
-
-    @OnClick(R.id.binding.input.btnChatKeyboard)
-    public void onKeyClick(View view) {
-        showEditState(false);
-    }
-
-    @OnClick(R.id.binding.input.btnChatSend)
     public void onSendClick(View view) {
         sendMessage();
     }
 
-    @OnClick(R.id.tv_picture)
     public void onPictureClick(View view) {
         sendLocalImageMessage();
     }
 
-    @OnClick(R.id.tv_camera)
     public void onCameraClick(View view) {
         sendRemoteImageMessage();
-    }
-
-    @OnClick(R.id.tv_location)
-    public void onLocationClick(View view) {
-        sendLocationMessage();
-    }
-
-    /**
-     * 根据是否点击笑脸来显示文本输入框的状态
-     *
-     * @param isEmo 用于区分文字和表情
-     * @return void
-     */
-    private void showEditState(boolean isEmo) {
-        binding.input.editMsg.setVisibility(View.VISIBLE);
-        binding.input.btnChatKeyboard.setVisibility(View.GONE);
-        binding.input.btnChatVoice.setVisibility(View.VISIBLE);
-        binding.input.btnSpeak.setVisibility(View.GONE);
-        binding.input.editMsg.requestFocus();
-        if (isEmo) {
-            binding.input.layoutMore.setVisibility(View.VISIBLE);
-            binding.input.layoutMore.setVisibility(View.VISIBLE);
-            binding.input.layoutEmo.setVisibility(View.VISIBLE);
-            binding.input.layoutAdd.setVisibility(View.GONE);
-            KeyboardUtil.hideSoftInputView(ChatActivity.this);
-        } else {
-            binding.input.layoutMore.setVisibility(View.GONE);
-            showSoftInputView();
-        }
-    }
-
-    /**
-     * 显示软键盘
-     */
-    public void showSoftInputView() {
-        if (getWindow().getAttributes().softInputMode == WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
-            if (getCurrentFocus() != null)
-                ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
-                        .showSoftInput(binding.input.editMsg, 0);
-        }
     }
 
     /**
@@ -431,7 +335,7 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
     private void sendMessage() {
         String text = binding.input.editMsg.getText().toString();
         if (TextUtils.isEmpty(text.trim())) {
-            ToastUtil.show(ChatActivity.this,"请输入内容");
+            ToastUtil.show(ChatActivity.this, "请输入内容");
             return;
         }
         //TODO 发送消息：6.1、发送文本消息
@@ -478,7 +382,7 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
     /**
      * 发送远程音频文件
      */
-    private void sendRemoteAudioMessage(){
+    private void sendRemoteAudioMessage() {
         //TODO 发送消息：6.5、发送本地音频文件消息
         BmobIMAudioMessage audio = new BmobIMAudioMessage();
         audio.setRemoteUrl("此处替换为你远程的音频文件地址");
@@ -497,7 +401,7 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
     /**
      * 发送远程视频文件
      */
-    private void sendRemoteVideoMessage(){
+    private void sendRemoteVideoMessage() {
         //TODO 发送消息：6.7、发送本地音频文件消息
         BmobIMAudioMessage audio = new BmobIMAudioMessage();
         audio.setRemoteUrl("此处替换为你远程的音频文件地址");
@@ -512,6 +416,7 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
         BmobIMFileMessage file = new BmobIMFileMessage("此处替换为你本地的文件地址");
         mConversationManager.sendMessage(file, listener);
     }
+
     /**
      * 发送远程文件
      */
@@ -521,6 +426,7 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
         file.setRemoteUrl("此处替换为你远程的文件地址");
         mConversationManager.sendMessage(file, listener);
     }
+
     /**
      * 发送语音消息
      *
@@ -544,19 +450,6 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
 
 
     /**
-     * 发送地理位置消息
-     */
-    public void sendLocationMessage() {
-        //TODO 发送消息：6.10、发送位置消息
-        //测试数据，真实数据需要从地图SDK中获取
-        BmobIMLocationMessage location = new BmobIMLocationMessage("广州番禺区", 23.5, 112.0);
-        Map<String, Object> map = new HashMap<>();
-        map.put("from", "百度地图");
-        location.setExtraMap(map);
-        mConversationManager.sendMessage(location, listener);
-    }
-
-    /**
      * 消息发送监听器
      */
     public MessageSendListener listener = new MessageSendListener() {
@@ -565,7 +458,7 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
         public void onProgress(int value) {
             super.onProgress(value);
             //文件类型的消息才有进度值
-            Log.i(TAG,"onProgress：" + value);
+            Log.i(TAG, "onProgress：" + value);
         }
 
         @Override
@@ -582,7 +475,7 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
             binding.input.editMsg.setText("");
             scrollToBottom();
             if (e != null) {
-                ToastUtil.show(ChatActivity.this,e.getMessage());
+                ToastUtil.show(ChatActivity.this, e.getMessage());
             }
         }
     };
@@ -604,7 +497,7 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
                         layoutManager.scrollToPositionWithOffset(list.size() - 1, 0);
                     }
                 } else {
-                    ToastUtil.show(ChatActivity.this,e.getMessage() + "(" + e.getErrorCode() + ")");
+                    ToastUtil.show(ChatActivity.this, e.getMessage() + "(" + e.getErrorCode() + ")");
                 }
             }
         });
@@ -615,11 +508,10 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
     }
 
 
-
     //TODO 消息接收：8.2、单个页面的自定义接收器
     @Override
     public void onMessageReceive(List<MessageEvent> list) {
-        Log.i(TAG,"聊天页面接收到消息：" + list.size());
+        Log.i(TAG, "聊天页面接收到消息：" + list.size());
         //当注册页面消息监听时候，有消息（包含离线消息）到来时会回调该方法
         for (int i = 0; i < list.size(); i++) {
             addMessage2Chat(list.get(i));
@@ -642,7 +534,7 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
             }
             scrollToBottom();
         } else {
-            Log.i(TAG,"不是与当前聊天对象的消息");
+            Log.i(TAG, "不是与当前聊天对象的消息");
         }
     }
 
