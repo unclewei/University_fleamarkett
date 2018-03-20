@@ -5,23 +5,47 @@ import java.util.ArrayList;
 import cn.bmob.v3.BmobObject;
 
 /**
- *
  * @author Administrator
  * @date 2017/4/15 0015
  */
 
 public class User_account extends BmobObject {
 
-    String account;
-    String head_portrait;
-    String nick_name;
-    String college;
-    String organization;
-    ArrayList zanList;
-    ArrayList commentList;
+    private String account;
+    private String avatar;
+    private String name;
+    private String college;
+    private String organization;
+    private ArrayList<String> zanList;
+    private ArrayList<String> commentList;
+    private ArrayList<String> scanList;
 
+    public User_account() {
+    }
 
-    public ArrayList getCommentList() {
+    public User_account( String account,
+                        String avatar, String name, String college,
+                        String organization, ArrayList<String> zanList,
+                        ArrayList<String> commentList, ArrayList<String> scanList) {
+        this.account = account;
+        this.avatar = avatar;
+        this.name = name;
+        this.college = college;
+        this.organization = organization;
+        this.zanList = zanList;
+        this.commentList = commentList;
+        this.scanList = scanList;
+    }
+
+    public ArrayList<String> getScanList() {
+        return scanList;
+    }
+
+    public void setScanList(ArrayList scanList) {
+        this.scanList = scanList;
+    }
+
+    public ArrayList<String> getCommentList() {
         return commentList;
     }
 
@@ -29,7 +53,7 @@ public class User_account extends BmobObject {
         this.commentList = commentList;
     }
 
-    public ArrayList getZanList() {
+    public ArrayList<String> getZanList() {
         return zanList;
     }
 
@@ -61,19 +85,19 @@ public class User_account extends BmobObject {
         this.account = account;
     }
 
-    public String getHead_portrait() {
-        return head_portrait;
+    public String getAvatar() {
+        return avatar;
     }
 
-    public void setHead_portrait(String head_portrait) {
-        this.head_portrait = head_portrait;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
-    public String getNick_name() {
-        return nick_name;
+    public String getName() {
+        return name;
     }
 
-    public void setNick_name(String nick_name) {
-        this.nick_name = nick_name;
+    public void setName(String name) {
+        this.name = name;
     }
 }

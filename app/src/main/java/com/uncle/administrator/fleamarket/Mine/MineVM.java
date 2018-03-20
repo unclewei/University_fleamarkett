@@ -1,13 +1,15 @@
 package com.uncle.administrator.fleamarket.Mine;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.View;
 
 import com.uncle.administrator.fleamarket.ChangePersonDataActivity;
+import com.uncle.administrator.fleamarket.DTO.User_account;
 import com.uncle.administrator.fleamarket.databinding.MineFragmentBinding;
 
 /**
- *
  * @author Administrator
  * @date 2018/3/19 0019
  */
@@ -27,23 +29,33 @@ public class MineVM {
     }
 
     public void navToMyPublic(View view) {
-        Intent intent = new Intent(fragment.getContext(),MineDataActivity.class);
+        Intent intent = new Intent(fragment.getContext(), MineDataActivity.class);
+        intent.putExtra(MineDataActivity.TYPE, MineDataActivity.MY_PUBLIC);
         fragment.startActivity(intent);
     }
 
     public void navToMyBuy(View view) {
-
-    }
-
-    public void navToMySell(View view) {
-
+        Intent intent = new Intent(fragment.getContext(), MineDataActivity.class);
+        intent.putExtra(MineDataActivity.TYPE, MineDataActivity.MY_SCAN);
+        fragment.startActivity(intent);
     }
 
     public void navToMyZan(View view) {
-
+        Intent intent = new Intent(fragment.getContext(), MineDataActivity.class);
+        intent.putExtra(MineDataActivity.TYPE, MineDataActivity.MY_ZAN);
+        fragment.startActivity(intent);
     }
 
     public void navToSet(View view) {
+        User_account userAccount = new User_account("a646d91303", "http://bmob-cdn-8783.b0.upaiyun.com/2017/10/19/a9b5ff14ae814db1abe69f24eebaf01b.jpg",
+                "威", "五邑大学", "计算机学院", null, null, null);
+        saveMyAccountFromSharePerFences(view.getContext(), userAccount);
+    }
 
+    public void saveMyAccountFromSharePerFences(Context context, User_account myAccount) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("account", Context.MODE_WORLD_WRITEABLE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("myAccount", myAccount.toString());
+        editor.commit();
     }
 }

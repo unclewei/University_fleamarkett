@@ -91,20 +91,6 @@
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/bt_3_maidaode" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:background="#22222268" />
-
-            <ImageView
-                android:id="@+id/img_my_sell"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:onClick="@{module::navToMySell}"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/bt_3_sell" />
 
 
             <View

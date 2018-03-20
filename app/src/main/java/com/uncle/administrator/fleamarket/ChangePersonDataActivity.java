@@ -170,8 +170,8 @@ public class ChangePersonDataActivity extends Activity {
         User_account userAccount = new User_account();
         userAccount.setCollege(college);
         userAccount.setOrganization(myorganization);
-        userAccount.setHead_portrait(urlpath);
-        userAccount.setNick_name(text_name.getText().toString());
+        userAccount.setAvatar(urlpath);
+        userAccount.setName(text_name.getText().toString());
         BOMBOpenHelper bomb = new BOMBOpenHelper();
         bomb.uploadHeadPortrait(objectid, userAccount, new BOMBOpenHelper.LoginUpdateSchoolCallback() {
             @Override

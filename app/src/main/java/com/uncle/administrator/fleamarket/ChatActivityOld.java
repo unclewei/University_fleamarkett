@@ -174,11 +174,11 @@ public class ChatActivityOld extends Activity {
             public void onSuccess(User_account object) {
                 Message message = new Message();
                 message.what = CHAT_ACTIVITY_ACCOUNT_NAME;
-                message.obj = object.getNick_name();
+                message.obj = object.getName();
                 handler.sendMessage(message);
                 Message message2 = new Message();
                 message2.what = CHAT_ACTIVITY_ACCOUNT_HEAD;
-                message2.obj = object.getHead_portrait();
+                message2.obj = object.getAvatar();
                 handler.sendMessage(message2);
 
             }

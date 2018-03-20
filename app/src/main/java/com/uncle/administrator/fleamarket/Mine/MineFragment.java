@@ -10,7 +10,9 @@ import com.uncle.administrator.fleamarket.R;
 import com.uncle.administrator.fleamarket.databinding.MineFragmentBinding;
 
 /**
- * Created by Administrator on 2016/11/22 0022.
+ *
+ * @author Administrator
+ * @date 2016/11/22 0022
  */
 
 public class MineFragment extends BaseBindingFragment<MineFragmentBinding> {
@@ -31,15 +33,15 @@ public class MineFragment extends BaseBindingFragment<MineFragmentBinding> {
 
     private void initData() {
         sharedPreferences = getActivity().getSharedPreferences("account", Context.MODE_PRIVATE);
-        String name = sharedPreferences.getString("nick_name", null);
+        String name = sharedPreferences.getString("name", null);
         String college = sharedPreferences.getString("college", null);
         String organization = sharedPreferences.getString("organization", null);
-        String avater = sharedPreferences.getString("head_portrait_adress", null);
+        String avatar = sharedPreferences.getString("avatar", null);
 
         binding.tvName.setText(name);
         binding.tvSchool.setText(college + "·" + organization);
         Glide.with(getActivity())
-                .load(avater)
+                .load(avatar)
                 .placeholder(R.drawable.head_black)
                 .error(R.drawable.head_black)
                 .into(binding.imgAvatar);

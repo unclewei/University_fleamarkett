@@ -143,11 +143,11 @@ public class Login_activity_2 extends Activity {
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("account", nub);
                             editor.putString("object_id", userAccount.getObjectId());
-                            editor.putString("nick_name", userAccount.getNick_name());
+                            editor.putString("nick_name", userAccount.getName());
                             editor.putString("college", userAccount.getCollege());
                             editor.putString("organization", userAccount.getOrganization());
                             editor.putString("Login", "success");
-                            editor.putString("head_portrait",userAccount.getHead_portrait());
+                            editor.putString("head_portrait",userAccount.getAvatar());
                             editor.putString("refresh","false");
                             editor.commit();
                             handler.sendEmptyMessage(0);

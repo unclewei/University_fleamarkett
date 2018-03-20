@@ -103,7 +103,7 @@ public class SellActivity extends Activity {
             bomb.findAccountDataAlone(objectID, new BOMBOpenHelper.FindAccountDataAloneCallback() {
                 @Override
                 public void onSuccess(User_account object) {
-                    head_portrait = object.getHead_portrait();
+                    head_portrait = object.getAvatar();
                 }
             });
         }

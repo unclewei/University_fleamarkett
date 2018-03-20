@@ -30,6 +30,7 @@ public class shop_goods extends BmobObject {
     private String organization;
     private String head_portrait;
     private String name;
+    private ArrayList<String> commentList;
 
     public shop_goods() {
     }
@@ -59,6 +60,15 @@ public class shop_goods extends BmobObject {
         this.organization = organization;
         this.head_portrait = head_portrait;
         this.name = name;
+        commentList = null;
+    }
+
+    public ArrayList<String> getCommentList() {
+        return commentList;
+    }
+
+    public void setCommentList(ArrayList<String> commentList) {
+        this.commentList = commentList;
     }
 
     public String getTime() {

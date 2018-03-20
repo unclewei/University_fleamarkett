@@ -2,9 +2,11 @@ package com.uncle.bomb;
 
 import android.util.Log;
 
+import com.uncle.Util.SHandlerThread;
 import com.uncle.administrator.fleamarket.DTO.CommentZan;
 import com.uncle.administrator.fleamarket.DTO.User_account;
 import com.uncle.administrator.fleamarket.DTO.shop_goods;
+import com.uncle.administrator.fleamarket.Mine.MineDataActivity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -24,16 +26,25 @@ import cn.bmob.v3.listener.UploadFileListener;
 
 public class BOMBOpenHelper {
 
-
+    private static BOMBOpenHelper openHelper;
     private final IMConversation im = new IMConversation();
     private final IMConversation im2 = new IMConversation();
     private final IMConversation im3 = new IMConversation();
     private int temp_nub;//临时数字，用来记录有多少个图片，后面防止上传重复问题。
     private int temp_nub_image = 0;//临时数字，用来记录有多少个图片，后面防止上传重复问题。
 
+    public static BOMBOpenHelper getInstance() {
+        if (openHelper == null) {
+            synchronized (BOMBOpenHelper.class) {
+                if (openHelper == null) {
+                    openHelper = new BOMBOpenHelper();
+                }
+            }
+        }
+        return openHelper;
+    }
 
     //----商品-----增删改查-----------------------------------------------------------------------------------------------------------------------------------------------------
-
 
     /**
      * 创建一条商品信息
@@ -54,8 +65,7 @@ public class BOMBOpenHelper {
     }
 
 
-    public void findGoods(String object, int setSkipNumber , final OnGoodsListCallBack onGoodsListCallBack) {
-        final List<shop_goods> listGoods = new ArrayList<>();
+    public void findMyPubGoods(String object, int setSkipNumber, final OnGoodsListCallBack onGoodsListCallBack) {
         BmobQuery<shop_goods> bmobQuery = new BmobQuery<>();
         bmobQuery.addWhereEqualTo("owner", object);
         bmobQuery.setSkip(10 * setSkipNumber);
@@ -70,8 +80,39 @@ public class BOMBOpenHelper {
         });
     }
 
+    public void findScanList(ArrayList<String> list, int setSkipNumber, final OnGoodsListCallBack onGoodsListCallBack) {
+        BmobQuery<shop_goods> bmobQuery = new BmobQuery<>();
+        bmobQuery.addWhereContainedIn("objectId", list);
+        bmobQuery.setSkip(10 * setSkipNumber);
+        bmobQuery.setLimit(10);
+        bmobQuery.findObjects(new FindListener<shop_goods>() {
+            @Override
+            public void done(List<shop_goods> list, BmobException e) {
+                if (e == null) {
+                    onGoodsListCallBack.onDone(list);
+                }
+            }
+        });
+    }
 
-    //上传文件，上传图片进入数据库，然后创建商品，与上连用
+    public void findMyGoods(String object, final String type, final int setSkipNumber, final OnGoodsListCallBack onGoodsListCallBack) {
+        BmobQuery<User_account> bmobQuery = new BmobQuery<>();
+        bmobQuery.getObject(object, new QueryListener<User_account>() {
+            @Override
+            public void done(User_account userAccount, BmobException e) {
+                if (e == null || userAccount != null) {
+                    if (MineDataActivity.MY_SCAN.equals(type)) {
+                        findScanList(userAccount.getScanList(), setSkipNumber, onGoodsListCallBack);
+                        return;
+                    }
+                    if (MineDataActivity.MY_ZAN.equals(type)) {
+                        findScanList(userAccount.getZanList(), setSkipNumber, onGoodsListCallBack);
+                    }
+                }
+            }
+        });
+    }
+
     public void uploadImg(final shop_goods shopgoods) {
         final String[] filePaths = new String[shopgoods.getPictureNub()];
         temp_nub = shopgoods.getPictureNub();
@@ -172,25 +213,10 @@ public class BOMBOpenHelper {
     /**
      * 增加评论和回复进入网络数据库
      */
-    public void addCommentZan(CommentZan commentZan, String userObject, ArrayList commentList) {
+    public void addCommentZan(CommentZan commentZan) {
         commentZan.save(new SaveListener<String>() {
             @Override
             public void done(String objectId, BmobException e) {
-                if (e == null) {
-                }
-            }
-
-        });
-        if (commentList == null) {
-            return;
-        }
-        User_account userAccount = new User_account();
-        userAccount.setCommentList(commentList);
-        userAccount.update(userObject, new UpdateListener() {
-            @Override
-            public void done(BmobException e) {
-                if (e == null) {
-                }
             }
         });
     }
@@ -201,22 +227,40 @@ public class BOMBOpenHelper {
      * @param objectId 确定商品id
      * @param zan      新的赞数
      */
-    public void updateZan(String objectId, String userObject, ArrayList zanList, int zan) {
-        shop_goods goods = new shop_goods();
-        goods.setZan_nub(zan);
-        goods.update(objectId, new UpdateListener() {
-
+    public void updateZan(String objectId, int zan) {
+        shop_goods shopGoods = new shop_goods();
+        shopGoods.setZan_nub(zan);
+        shopGoods.update(objectId, new UpdateListener() {
             @Override
             public void done(BmobException e) {
             }
         });
-        User_account userAccount = new User_account();
-        userAccount.setZanList(zanList);
-        userAccount.update(userObject, new UpdateListener() {
+    }
+
+    public void addZan(final String objectId) {
+        BmobQuery<shop_goods> bmobQuery = new BmobQuery<>();
+        bmobQuery.getObject(objectId, new QueryListener<shop_goods>() {
             @Override
-            public void done(BmobException e) {
+            public void done(shop_goods shopGoods, BmobException e) {
                 if (e == null) {
+                    return;
                 }
+                int totalNub = shopGoods.getZan_nub() + 1;
+                updateZan(objectId, totalNub);
+            }
+        });
+    }
+
+    public void substractZan(final String objectId) {
+        BmobQuery<shop_goods> bmobQuery = new BmobQuery<>();
+        bmobQuery.getObject(objectId, new QueryListener<shop_goods>() {
+            @Override
+            public void done(shop_goods shopGoods, BmobException e) {
+                if (e == null) {
+                    return;
+                }
+                int totalNub = shopGoods.getZan_nub() - 1;
+                updateZan(objectId, totalNub);
             }
         });
     }
@@ -362,7 +406,6 @@ public class BOMBOpenHelper {
             @Override
             public void done(List<User_account> list, BmobException e) {
                 if (e == null) {
-
                     accountCallback.onSuccess(list);
                 } else {
                     accountCallback.onFail(e.getErrorCode());
@@ -390,8 +433,8 @@ public class BOMBOpenHelper {
     public void add_account(String name, String head_portrait_adress, String account, String college, String organization, final AddAccountCallback addAccountCallback) {
         User_account user_account = new User_account();
         user_account.setAccount(account);
-        user_account.setNick_name(name);
-        user_account.setHead_portrait(head_portrait_adress);
+        user_account.setName(name);
+        user_account.setAvatar(head_portrait_adress);
         user_account.setCollege(college);
         user_account.setOrganization(organization);
 
@@ -407,7 +450,7 @@ public class BOMBOpenHelper {
     //登录界面设置名字的时候更新数据库的名字
     public void Login_update_name(String objectId, String name) {
         User_account userAccount = new User_account();
-        userAccount.setNick_name(name);
+        userAccount.setName(name);
         userAccount.update(objectId, new UpdateListener() {
             @Override
             public void done(BmobException e) {
@@ -466,7 +509,7 @@ public class BOMBOpenHelper {
 
     public void uploadHeadPortrait(final String objectId, final User_account userAccount
             , final LoginUpdateSchoolCallback loginUpdateSchoolCallback) {
-        final BmobFile bmobFile = new BmobFile(new File(userAccount.getHead_portrait()));
+        final BmobFile bmobFile = new BmobFile(new File(userAccount.getAvatar()));
         bmobFile.uploadblock(new UploadFileListener() {
             @Override
             public void done(BmobException e) {
@@ -489,9 +532,11 @@ public class BOMBOpenHelper {
     public interface OnDoneListener {
         void onDone();
     }
+
     public interface OnGoodsListCallBack {
         void onDone(List<shop_goods> list);
     }
+
     public interface ImageCallback {
         void onImageLoad(shop_goods shopgoods);
 

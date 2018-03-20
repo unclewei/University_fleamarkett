@@ -106,8 +106,8 @@ public class HomeFragment extends BaseBindingFragment<GoodsFragmentBinding> impl
     @Override
     public void onItemClick(shop_goods data) {
         Intent intent = new Intent(getContext(), GoodsDetailsActivity.class);
-        intent.putExtra("objID", data.getObjectId());
-        intent.putExtra("owner_id", data.getOwner());
+        intent.putExtra("pageGoodsId", data.getObjectId());
+        intent.putExtra("goodsOwnerObjectId", data.getOwner());
         startActivity(intent);
     }
 
