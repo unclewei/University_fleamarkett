@@ -19,15 +19,13 @@ public class User_account extends BmobObject {
     private ArrayList<String> zanList;
     private ArrayList<String> commentList;
     private ArrayList<String> scanList;
-
     public User_account() {
     }
 
-    public User_account( String account,
-                        String avatar, String name, String college,
+    public User_account(String avatar, String name, String college,
                         String organization, ArrayList<String> zanList,
                         ArrayList<String> commentList, ArrayList<String> scanList) {
-        this.account = account;
+
         this.avatar = avatar;
         this.name = name;
         this.college = college;

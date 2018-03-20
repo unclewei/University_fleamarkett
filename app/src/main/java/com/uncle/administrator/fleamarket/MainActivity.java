@@ -1,14 +1,15 @@
 package com.uncle.administrator.fleamarket;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -18,9 +19,19 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.uncle.Util.IMMLeaks;
 import com.uncle.administrator.fleamarket.Conversation.ConversationFragment;
+import com.uncle.administrator.fleamarket.DTO.User_account;
 import com.uncle.administrator.fleamarket.Home.HomeFragment;
 import com.uncle.administrator.fleamarket.Mine.MineFragment;
+
+import cn.bmob.newim.BmobIM;
+import cn.bmob.newim.bean.BmobIMUserInfo;
+import cn.bmob.newim.core.ConnectionStatus;
+import cn.bmob.newim.listener.ConnectListener;
+import cn.bmob.newim.listener.ConnectStatusChangeListener;
+import cn.bmob.v3.exception.BmobException;
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
 
@@ -31,14 +42,57 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private Fragment the_thirs;
     private Fragment currentFragment;
     private ImageView knowImg, iWantKnowImg, meImg;
+    protected User_account myAccount;
     private long exitTime = 0;//点击两次退出程序的计时
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.home_fragment);
+        setContentView(R.layout.activity_home);
+        getMyAccountFromSharePerFences();
+        connectBmob();
         initUI();
         initTab();
+    }
+
+    private void connectBmob() {
+        //TODO 连接：3.1、登录成功、注册成功或处于登录状态重新打开应用后执行连接IM服务器的操作
+        if (!TextUtils.isEmpty(myAccount.getObjectId())) {
+            BmobIM.connect(myAccount.getObjectId(), new ConnectListener() {
+                @Override
+                public void done(String uid, BmobException e) {
+                    if (e == null) {
+                        //TODO 连接成功后再进行修改本地用户信息的操作，并查询本地用户信息
+                        //服务器连接成功就发送一个更新事件，同步更新会话及主页的小红点
+                        //TODO 会话：3.6、更新用户资料，用于在会话页面、聊天页面以及个人信息页面显示
+                        BmobIM.getInstance().
+                                updateUserInfo(new BmobIMUserInfo(myAccount.getObjectId(),
+                                        myAccount.getName(), myAccount.getAvatar()));
+                        Log.e("william   ", "链接成功");
+                    } else {
+                        Log.e("william   ", e.getMessage());
+                    }
+                }
+            });
+            //TODO 连接：3.3、监听连接状态，可通过BmobIM.getInstance().getCurrentStatus()来获取当前的长连接状态
+            BmobIM.getInstance().setOnConnectStatusChangeListener(new ConnectStatusChangeListener() {
+                @Override
+                public void onChange(ConnectionStatus status) {
+                    Log.i("MainActivity.class", BmobIM.getInstance().getCurrentStatus().getMsg());
+                    Log.e("william   ", BmobIM.getInstance().getCurrentStatus().getMsg());
+                }
+            });
+            //解决leancanary提示InputMethodManager内存泄露的问题
+            IMMLeaks.fixFocusedViewLeak(getApplication());
+        }
+    }
+
+    private void getMyAccountFromSharePerFences() {
+        SharedPreferences sp = this.getSharedPreferences("account", Context.MODE_PRIVATE);
+        String string = sp.getString("myAccount", null);
+        if (string != null) {
+            myAccount = new Gson().fromJson(string, User_account.class);
+        }
     }
 
     /**

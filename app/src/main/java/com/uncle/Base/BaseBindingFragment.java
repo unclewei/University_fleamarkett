@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.google.gson.Gson;
 import com.uncle.administrator.fleamarket.DTO.User_account;
 
@@ -52,6 +51,7 @@ public abstract class BaseBindingFragment<T extends ViewDataBinding> extends Fra
         SharedPreferences sp = getActivity().getSharedPreferences("account", Context.MODE_PRIVATE);
         String string = sp.getString("myAccount", null);
         if (string != null) {
+
             myAccount = new Gson().fromJson(string, User_account.class);
         }
     }
@@ -59,7 +59,7 @@ public abstract class BaseBindingFragment<T extends ViewDataBinding> extends Fra
     public void saveMyAccountFromSharePerFences(User_account myAccount) {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("account", Context.MODE_WORLD_WRITEABLE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("myAccount", myAccount.toString());
+        editor.putString("myAccount",new Gson().toJson(myAccount));
         editor.commit();
     }
 

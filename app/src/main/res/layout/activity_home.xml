@@ -1,6 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <RelativeLayout
         android:id="@+id/rl_main"
@@ -137,4 +135,4 @@
         </LinearLayout>
     </RelativeLayout>
 
-</FrameLayout>
+</layout>

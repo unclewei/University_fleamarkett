@@ -25,9 +25,9 @@ public abstract class BaseBindingActivity<T extends ViewDataBinding> extends Act
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getMyAccountFromSharePerFences();
         binding = DataBindingUtil.setContentView(this, getLayoutId());
         bindData(binding);
-        getMyAccountFromSharePerFences();
     }
 
     public Bundle getBundle() {
@@ -48,7 +48,7 @@ public abstract class BaseBindingActivity<T extends ViewDataBinding> extends Act
     public void saveMyAccountFromSharePerFences(User_account myAccount){
         SharedPreferences sharedPreferences = this.getSharedPreferences("account", Context.MODE_WORLD_WRITEABLE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("myAccount",myAccount.toString());
+        editor.putString("myAccount",new Gson().toJson(myAccount));
         editor.commit();
     }
 

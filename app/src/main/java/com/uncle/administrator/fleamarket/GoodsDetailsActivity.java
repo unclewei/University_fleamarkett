@@ -13,14 +13,13 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.uncle.Base.BaseBindingActivity;
-import com.uncle.administrator.fleamarket.DTO.ConversationDTO;
-import com.uncle.administrator.fleamarket.chat.ChatActivity;
-import com.uncle.administrator.fleamarket.databinding.ActivityGoodsDetailBinding;
-import com.uncle.bomb.BOMBOpenHelper;
+import com.uncle.Util.KeyboardUtil;
 import com.uncle.administrator.fleamarket.DTO.CommentZan;
 import com.uncle.administrator.fleamarket.DTO.User_account;
 import com.uncle.administrator.fleamarket.DTO.shop_goods;
-import com.uncle.Util.KeyboardUtil;
+import com.uncle.administrator.fleamarket.chat.ChatActivity;
+import com.uncle.administrator.fleamarket.databinding.ActivityGoodsDetailBinding;
+import com.uncle.bomb.BOMBOpenHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,8 +56,8 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
     }
 
     public void init() {
-        getDataFromSharedPerfences();
         getIntentMessage();
+        getDataFromSharedPerfences();
         findAccountDataFromBomb(GET_GOODS_OWNER_ACCOUNT, goodsOwnerObjectId);
         comment();
         zanClick();
@@ -78,9 +77,8 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
         }
         isZan = zanList.contains(pageGoodsID);
         binding.btZan.setBackgroundResource(isZan ? R.drawable.love2 : R.drawable.love1);
-        if (myAccount.getCommentList() == null || !myAccount.getCommentList().contains(pageGoodsID)) {
-            myAccount.getCommentList().add(pageGoodsID);
-            myAccount.setCommentList(myAccount.getCommentList());
+        if (commentList == null || !commentList.contains(pageGoodsID)) {
+            commentList.add(pageGoodsID);
         }
     }
 
@@ -189,7 +187,6 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
                     binding.tvZanCount.setText(String.valueOf(shopgoods.getZan_nub()));
                     setImage(shopgoods.getPictureNub(), shopgoods.ImageList());
                 }
-
                 @Override
                 public void onError() {
                 }

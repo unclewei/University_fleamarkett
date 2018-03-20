@@ -2,7 +2,6 @@ package com.uncle.bomb;
 
 import android.util.Log;
 
-import com.uncle.Util.SHandlerThread;
 import com.uncle.administrator.fleamarket.DTO.CommentZan;
 import com.uncle.administrator.fleamarket.DTO.User_account;
 import com.uncle.administrator.fleamarket.DTO.shop_goods;
@@ -242,7 +241,7 @@ public class BOMBOpenHelper {
         bmobQuery.getObject(objectId, new QueryListener<shop_goods>() {
             @Override
             public void done(shop_goods shopGoods, BmobException e) {
-                if (e == null) {
+                if (e != null) {
                     return;
                 }
                 int totalNub = shopGoods.getZan_nub() + 1;
@@ -256,7 +255,7 @@ public class BOMBOpenHelper {
         bmobQuery.getObject(objectId, new QueryListener<shop_goods>() {
             @Override
             public void done(shop_goods shopGoods, BmobException e) {
-                if (e == null) {
+                if (e != null) {
                     return;
                 }
                 int totalNub = shopGoods.getZan_nub() - 1;
