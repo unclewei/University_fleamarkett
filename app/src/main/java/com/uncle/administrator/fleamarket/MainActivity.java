@@ -92,7 +92,19 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         String string = sp.getString("myAccount", null);
         if (string != null) {
             myAccount = new Gson().fromJson(string, User_account.class);
+            return;
         }
+        myAccount = new User_account("http://bmob-cdn-8783.b0.upaiyun.com/2017/10/19/a9b5ff14ae814db1abe69f24eebaf01b.jpg",
+                "威", "五邑大学", "计算机学院", null, null, null);
+        myAccount.setObjectId("a646d91303");
+        saveMyAccountFromSharePerFences(this, myAccount);
+    }
+
+    public void saveMyAccountFromSharePerFences(Context context, User_account myAccount) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("account", Context.MODE_WORLD_WRITEABLE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("myAccount", new Gson().toJson(myAccount));
+        editor.commit();
     }
 
     /**

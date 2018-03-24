@@ -120,8 +120,8 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
         Bundle bundle = new Bundle();
         bundle.putSerializable("c", conversationEntrance);
         Intent intent = new Intent(GoodsDetailsActivity.this, ChatActivity.class);
-        intent.putExtra(GoodsDetailsActivity.this.getPackageName(), bundle);
-        startActivity(intent, bundle);
+        intent.putExtra("chat", bundle);
+        startActivity(intent);
     }
 
     public void zanClick() {
@@ -187,6 +187,7 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
                     binding.tvZanCount.setText(String.valueOf(shopgoods.getZan_nub()));
                     setImage(shopgoods.getPictureNub(), shopgoods.ImageList());
                 }
+
                 @Override
                 public void onError() {
                 }

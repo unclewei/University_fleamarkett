@@ -23,49 +23,49 @@ public class ChatVM {
 
 
     public void onEditClick(View view) {
-        if (binding.input.layoutMore.getVisibility() == View.VISIBLE) {
-            binding.input.layoutAdd.setVisibility(View.GONE);
-            binding.input.layoutEmo.setVisibility(View.GONE);
-            binding.input.layoutMore.setVisibility(View.GONE);
+        if (binding.layoutMore.getVisibility() == View.VISIBLE) {
+            binding.layoutAdd.setVisibility(View.GONE);
+            binding.layoutEmo.setVisibility(View.GONE);
+            binding.layoutMore.setVisibility(View.GONE);
         }
     }
 
     public void onEmoClick(View view) {
-        if (binding.input.layoutMore.getVisibility() == View.GONE) {
+        if (binding.layoutMore.getVisibility() == View.GONE) {
             showEditState(true);
         } else {
-            if (binding.input.layoutAdd.getVisibility() == View.VISIBLE) {
-                binding.input.layoutAdd.setVisibility(View.GONE);
-                binding.input.layoutEmo.setVisibility(View.VISIBLE);
+            if (binding.layoutAdd.getVisibility() == View.VISIBLE) {
+                binding.layoutAdd.setVisibility(View.GONE);
+                binding.layoutEmo.setVisibility(View.VISIBLE);
             } else {
-                binding.input.layoutMore.setVisibility(View.GONE);
+                binding.layoutMore.setVisibility(View.GONE);
             }
         }
     }
 
     public void onAddClick(View view) {
-        if (binding.input.layoutMore.getVisibility() == View.GONE) {
-            binding.input.layoutMore.setVisibility(View.VISIBLE);
-            binding.input.layoutAdd.setVisibility(View.VISIBLE);
-            binding.input.layoutEmo.setVisibility(View.GONE);
+        if (binding.layoutMore.getVisibility() == View.GONE) {
+            binding.layoutMore.setVisibility(View.VISIBLE);
+            binding.layoutAdd.setVisibility(View.VISIBLE);
+            binding.layoutEmo.setVisibility(View.GONE);
             KeyboardUtil.hideSoftInputView(activity);
         } else {
-            if (binding.input.layoutEmo.getVisibility() == View.VISIBLE) {
-                binding.input.layoutEmo.setVisibility(View.GONE);
-                binding.input.layoutAdd.setVisibility(View.VISIBLE);
+            if (binding.layoutEmo.getVisibility() == View.VISIBLE) {
+                binding.layoutEmo.setVisibility(View.GONE);
+                binding.layoutAdd.setVisibility(View.VISIBLE);
             } else {
-                binding.input.layoutMore.setVisibility(View.GONE);
+                binding.layoutMore.setVisibility(View.GONE);
             }
         }
     }
 
     public void onVoiceClick(View view) {
 
-        binding.input.editMsg.setVisibility(View.GONE);
-        binding.input.layoutMore.setVisibility(View.GONE);
-        binding.input.btnChatVoice.setVisibility(View.GONE);
-        binding.input.btnChatKeyboard.setVisibility(View.VISIBLE);
-        binding.input.btnSpeak.setVisibility(View.VISIBLE);
+        binding.editMsg.setVisibility(View.GONE);
+        binding.layoutMore.setVisibility(View.GONE);
+        binding.btnChatVoice.setVisibility(View.GONE);
+        binding.btnChatKeyboard.setVisibility(View.VISIBLE);
+        binding.btnSpeak.setVisibility(View.VISIBLE);
         KeyboardUtil.hideSoftInputView(activity);
     }
 
@@ -93,20 +93,20 @@ public class ChatVM {
      * @return void
      */
     public void showEditState(boolean isEmo) {
-        binding.input.editMsg.setVisibility(View.VISIBLE);
-        binding.input.btnChatKeyboard.setVisibility(View.GONE);
-        binding.input.btnChatVoice.setVisibility(View.VISIBLE);
-        binding.input.btnSpeak.setVisibility(View.GONE);
-        binding.input.editMsg.requestFocus();
+        binding.editMsg.setVisibility(View.VISIBLE);
+        binding.btnChatKeyboard.setVisibility(View.GONE);
+        binding.btnChatVoice.setVisibility(View.VISIBLE);
+        binding.btnSpeak.setVisibility(View.GONE);
+        binding.editMsg.requestFocus();
         if (isEmo) {
-            binding.input.layoutMore.setVisibility(View.VISIBLE);
-            binding.input.layoutMore.setVisibility(View.VISIBLE);
-            binding.input.layoutEmo.setVisibility(View.VISIBLE);
-            binding.input.layoutAdd.setVisibility(View.GONE);
+            binding.layoutMore.setVisibility(View.VISIBLE);
+            binding.layoutMore.setVisibility(View.VISIBLE);
+            binding.layoutEmo.setVisibility(View.VISIBLE);
+            binding.layoutAdd.setVisibility(View.GONE);
             KeyboardUtil.hideSoftInputView(activity);
         } else {
-            binding.input.layoutMore.setVisibility(View.GONE);
-            KeyboardUtil.showSoftInputView(activity, binding.input.editMsg);
+            binding.layoutMore.setVisibility(View.GONE);
+            KeyboardUtil.showSoftInputView(activity, binding.editMsg);
         }
     }
 }

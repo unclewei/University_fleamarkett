@@ -45,4 +45,6 @@ dependencies {
     compile 'me.relex:circleindicator:1.2.2@aar'
     compile 'com.bm.photoview:library:1.4.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha2'
+    compile 'com.ethanhua:skeleton:1.1.0'
+    compile 'io.supercharge:shimmerlayout:2.0.0'
 }

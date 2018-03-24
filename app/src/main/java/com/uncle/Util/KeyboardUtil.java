@@ -40,9 +40,10 @@ public class KeyboardUtil {
      */
     public static void showSoftInputView(Activity activity, View view) {
         if (activity.getWindow().getAttributes().softInputMode == WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
-            if (activity.getCurrentFocus() != null)
+            if (activity.getCurrentFocus() != null) {
                 ((InputMethodManager) activity.getSystemService(INPUT_METHOD_SERVICE))
                         .showSoftInput(view, 0);
+            }
         }
     }
 }

@@ -1,9 +1,11 @@
 package com.uncle.administrator.fleamarket.chat;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -82,7 +84,9 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
     }
 
     private void initConversationManager() {
-        BmobIMConversation conversationEntrance = (BmobIMConversation) getBundle().getSerializable("c");
+        Intent intent = getIntent();
+        Bundle bundle = intent.getBundleExtra("chat");
+        BmobIMConversation conversationEntrance = (BmobIMConversation) bundle.getSerializable("c");
         //TODO 消息：5.1、根据会话入口获取消息管理，聊天页面
         if (conversationEntrance == null) {
             ToastUtil.show(ChatActivity.this, "获取聊天对象失败，请重试");
@@ -137,7 +141,7 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
     }
 
     private void initBottomView() {
-        binding.input.editMsg.setOnTouchListener(new View.OnTouchListener() {
+        binding.editMsg.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_UP) {
@@ -146,7 +150,7 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
                 return false;
             }
         });
-        binding.input.editMsg.addTextChangedListener(new TextWatcher() {
+        binding.editMsg.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -157,14 +161,14 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (!TextUtils.isEmpty(s)) {
 
-                    binding.input.btnChatSend.setVisibility(View.VISIBLE);
-                    binding.input.btnChatKeyboard.setVisibility(View.GONE);
-                    binding.input.btnChatVoice.setVisibility(View.GONE);
+                    binding.btnChatSend.setVisibility(View.VISIBLE);
+                    binding.btnChatKeyboard.setVisibility(View.GONE);
+                    binding.btnChatVoice.setVisibility(View.GONE);
                 } else {
-                    if (binding.input.btnChatVoice.getVisibility() != View.VISIBLE) {
-                        binding.input.btnChatVoice.setVisibility(View.VISIBLE);
-                        binding.input.btnChatSend.setVisibility(View.GONE);
-                        binding.input.btnChatKeyboard.setVisibility(View.GONE);
+                    if (binding.btnChatVoice.getVisibility() != View.VISIBLE) {
+                        binding.btnChatVoice.setVisibility(View.VISIBLE);
+                        binding.btnChatSend.setVisibility(View.GONE);
+                        binding.btnChatKeyboard.setVisibility(View.GONE);
                     }
                 }
             }
@@ -181,7 +185,7 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
      * @param
      */
     private void initVoiceView() {
-        binding.input.btnSpeak.setOnTouchListener(new VoiceTouchListener());
+        binding.btnSpeak.setOnTouchListener(new VoiceTouchListener());
         initVoiceAnimRes();
         initRecordManager();
     }
@@ -216,8 +220,8 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
                 Log.i(TAG, "voice: 已录音长度:" + recordTime);
                 if (recordTime >= BmobRecordManager.MAX_RECORD_TIME) {
                     // 需要重置按钮
-                    binding.input.btnSpeak.setPressed(false);
-                    binding.input.btnSpeak.setClickable(false);
+                    binding.btnSpeak.setPressed(false);
+                    binding.btnSpeak.setClickable(false);
                     // 取消录音框
                     binding.layoutRecord.setVisibility(View.INVISIBLE);
                     // 发送语音消息
@@ -227,7 +231,7 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
 
                         @Override
                         public void run() {
-                            binding.input.btnSpeak.setClickable(true);
+                            binding.btnSpeak.setClickable(true);
                         }
                     }, 1000);
                 }
@@ -333,7 +337,7 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
      * 发送文本消息
      */
     private void sendMessage() {
-        String text = binding.input.editMsg.getText().toString();
+        String text = binding.editMsg.getText().toString();
         if (TextUtils.isEmpty(text.trim())) {
             ToastUtil.show(ChatActivity.this, "请输入内容");
             return;
@@ -465,14 +469,14 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
         public void onStart(BmobIMMessage msg) {
             super.onStart(msg);
             adapter.addMessage(msg);
-            binding.input.editMsg.setText("");
+            binding.editMsg.setText("");
             scrollToBottom();
         }
 
         @Override
         public void done(BmobIMMessage msg, BmobException e) {
             adapter.notifyDataSetChanged();
-            binding.input.editMsg.setText("");
+            binding.editMsg.setText("");
             scrollToBottom();
             if (e != null) {
                 ToastUtil.show(ChatActivity.this, e.getMessage());
@@ -541,8 +545,8 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (binding.input.layoutMore.getVisibility() == View.VISIBLE) {
-                binding.input.layoutMore.setVisibility(View.GONE);
+            if (binding.layoutMore.getVisibility() == View.VISIBLE) {
+                binding.layoutMore.setVisibility(View.GONE);
                 return false;
             } else {
                 return super.onKeyDown(keyCode, event);
