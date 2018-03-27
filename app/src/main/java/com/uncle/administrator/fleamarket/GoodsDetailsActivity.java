@@ -89,6 +89,7 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
         bomb.findAccountDataAlone(targetObject, new BOMBOpenHelper.FindAccountDataAloneCallback() {
             @Override
             public void onSuccess(User_account object) {
+                pageAccount = object;
                 Message message = new Message();
                 message.what = messageType;
                 message.obj = object;

@@ -21,6 +21,8 @@ import cn.bmob.v3.exception.BmobException;
 
 /**
  * 发送的文本类型
+ *
+ * @author unclewei
  */
 public class SendTextHolder extends BaseViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
@@ -57,7 +59,12 @@ public class SendTextHolder extends BaseViewHolder implements View.OnClickListen
             binding.ivFailResend.setVisibility(View.GONE);
             binding.progressLoad.setVisibility(View.GONE);
         }
-
+        binding.getRoot().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toast("点击了");
+            }
+        });
         binding.tvMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

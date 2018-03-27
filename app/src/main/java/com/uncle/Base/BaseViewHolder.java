@@ -18,13 +18,12 @@ import com.uncle.Util.SHandlerThread;
 /**
  * 建议使用BaseRecyclerAdapter
  *
- * @param <T>
+ * @author unclewei
  */
-public abstract class BaseViewHolder<T extends ViewDataBinding, B> extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-
+public abstract class BaseViewHolder<T> extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
     public OnRecyclerViewListener onRecyclerViewListener;
     protected Context context;
-    protected T dataBinding;
+    protected ViewDataBinding dataBinding;
 
     public BaseViewHolder(Context context, ViewGroup root, int layoutRes, OnRecyclerViewListener listener) {
         super(LayoutInflater.from(context).inflate(layoutRes, root, false));
@@ -39,7 +38,7 @@ public abstract class BaseViewHolder<T extends ViewDataBinding, B> extends Recyc
         return itemView.getContext();
     }
 
-    public abstract void setData(B t);
+    public abstract void setData(T t);
 
 
     private Toast toast;
@@ -49,8 +48,9 @@ public abstract class BaseViewHolder<T extends ViewDataBinding, B> extends Recyc
             SHandlerThread.postToMainThread(new Runnable() {
                 @Override
                 public void run() {
-                    if (toast == null)
+                    if (toast == null) {
                         toast = Toast.makeText(context, "", Toast.LENGTH_SHORT);
+                    }
                     toast.setText(obj.toString());
                     toast.show();
                 }
@@ -73,20 +73,6 @@ public abstract class BaseViewHolder<T extends ViewDataBinding, B> extends Recyc
             onRecyclerViewListener.onItemLongClick(getAdapterPosition());
         }
         return true;
-    }
-
-    /**
-     * 启动指定Activity
-     *
-     * @param target
-     * @param bundle
-     */
-    public void startActivity(Class<? extends Activity> target, Bundle bundle) {
-        Intent intent = new Intent();
-        intent.setClass(getContext(), target);
-        if (bundle != null)
-            intent.putExtra(getContext().getPackageName(), bundle);
-        getContext().startActivity(intent);
     }
 
 }

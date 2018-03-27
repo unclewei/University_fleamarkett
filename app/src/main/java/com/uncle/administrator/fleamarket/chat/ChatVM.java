@@ -60,7 +60,6 @@ public class ChatVM {
     }
 
     public void onVoiceClick(View view) {
-
         binding.editMsg.setVisibility(View.GONE);
         binding.layoutMore.setVisibility(View.GONE);
         binding.btnChatVoice.setVisibility(View.GONE);
@@ -99,7 +98,6 @@ public class ChatVM {
         binding.btnSpeak.setVisibility(View.GONE);
         binding.editMsg.requestFocus();
         if (isEmo) {
-            binding.layoutMore.setVisibility(View.VISIBLE);
             binding.layoutMore.setVisibility(View.VISIBLE);
             binding.layoutEmo.setVisibility(View.VISIBLE);
             binding.layoutAdd.setVisibility(View.GONE);

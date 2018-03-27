@@ -17,7 +17,7 @@ import com.uncle.bomb.BOMBOpenHelper;
 
 import java.util.List;
 
-import static com.uncle.administrator.fleamarket.chat.ChatActivity.TargetObjectID;
+import static com.uncle.administrator.fleamarket.chat.ChatActivity.TARGET_OBJECT_ID;
 
 /**
  * @author Administrator
@@ -62,7 +62,7 @@ public class MineDataActivity extends BaseBindingActivity<ActivityMineDataBindin
 
     private void initData() {
         SharedPreferences sharedPreferences = getSharedPreferences("account", Context.MODE_WORLD_READABLE);
-        object = sharedPreferences.getString(TargetObjectID, null);
+        object = sharedPreferences.getString(TARGET_OBJECT_ID, null);
         Intent intent = getIntent();
         type = intent.getStringExtra(TYPE);
         if (object == null || type == null) {

@@ -1,6 +1,5 @@
 package com.uncle.administrator.fleamarket;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,7 +22,9 @@ import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.uncle.Base.BaseBindingActivity;
 import com.uncle.administrator.fleamarket.Login_Activity.welcome_page;
+import com.uncle.administrator.fleamarket.databinding.ActivitySellBinding;
 import com.uncle.bomb.BOMBOpenHelper;
 import com.uncle.administrator.fleamarket.DTO.User_account;
 import com.uncle.administrator.fleamarket.DTO.shop_goods;
@@ -42,7 +43,7 @@ import cn.bmob.v3.Bmob;
  * @date 2016/12/11 0011
  */
 
-public class SellActivity extends Activity {
+public class SellActivity extends BaseBindingActivity<ActivitySellBinding> {
     private EditText ed_title, ed_detail, ed_price;
     private Button close, bt_send;
     private ImageView img;
@@ -63,19 +64,17 @@ public class SellActivity extends Activity {
     private List<HashMap<String, String>> bomb_imageItem;//把图片数据换成二进制数，存入云服务器
     private SimpleAdapter simpleAdapter;     //适配器
     private Turns turn = new Turns();
-    private String objectID, college, organization, head_portrait, name;//自己的id,大学名字，学院，头像,名字，买东西的时候存入数据库
-
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.sell);
-
-        Bmob.initialize(this, "144dbb1fbca09ce5d3af201a05c54628");
-
+    protected void bindData(ActivitySellBinding dataBinding) {
         init();
         select_photos();
         send();
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_sell;
     }
 
     public void init() {
@@ -85,31 +84,8 @@ public class SellActivity extends Activity {
         close = (Button) findViewById(R.id.sell_bt_close);
         bt_send = (Button) findViewById(R.id.sell_bt_send);
         gridView1 = (GridView) findViewById(R.id.gridView1);
-        get_data_from_sharepreference();
     }
 
-    private void get_data_from_sharepreference() {
-        SharedPreferences sharedPreferences = getSharedPreferences("account", Context.MODE_WORLD_READABLE);
-        if (sharedPreferences.getString("object_id", "没有id").equals("没有id")) {
-            Intent intent = new Intent(SellActivity.this, welcome_page.class);
-            startActivity(intent);
-            finish();
-        } else {
-            objectID = sharedPreferences.getString("object_id", "没有id");
-            college = sharedPreferences.getString("college", null);
-            organization = sharedPreferences.getString("organization", null);
-            name = sharedPreferences.getString("nick_name", null);
-            BOMBOpenHelper bomb = new BOMBOpenHelper();
-            bomb.findAccountDataAlone(objectID, new BOMBOpenHelper.FindAccountDataAloneCallback() {
-                @Override
-                public void onSuccess(User_account object) {
-                    head_portrait = object.getAvatar();
-                }
-            });
-        }
-
-
-    }
 
     public void send() {
         bt_send.setOnClickListener(new View.OnClickListener() {
@@ -130,8 +106,8 @@ public class SellActivity extends Activity {
                     final shop_goods shopgoods = new shop_goods(str[0], str[1], str[2], str[3], str[4], str[5]
                             , str[6], str[7], str[8]
                             , title, detail, price, null, 0,
-                            picture_number, objectID, college,
-                            organization, head_portrait, name);
+                            picture_number, myAccount.getObjectId(), myAccount.getCollege(),
+                            myAccount.getOrganization(), myAccount.getAccount(), myAccount.getName());
                     final BOMBOpenHelper bomb = new BOMBOpenHelper();
                     Runnable runnable = new Runnable() {
                         @Override

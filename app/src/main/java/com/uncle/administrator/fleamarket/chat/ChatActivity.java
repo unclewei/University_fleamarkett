@@ -3,6 +3,7 @@ package com.uncle.administrator.fleamarket.chat;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.databinding.repacked.google.common.eventbus.EventBus;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -64,14 +65,12 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
     private Drawable[] drawable_Anims;
     protected LinearLayoutManager layoutManager;
     private ChatVM chatVM;
-    private String myObject;
     private String targetObject;
-    public static final String TargetObjectID = "TargetObjectID";
+    public static final String TARGET_OBJECT_ID = "TARGET_OBJECT_ID";
 
     @Override
     protected void bindData(ActivityChatBinding dataBinding) {
         initConversationManager();
-        initObject();
         chatVM = new ChatVM(ChatActivity.this, binding);
         initSwipeLayout();
         initVoiceView();
@@ -95,16 +94,11 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
         mConversationManager = BmobIMConversation.obtain(BmobIMClient.getInstance(), conversationEntrance);
     }
 
-    private void initObject() {
-        SharedPreferences sharedPreferences = getSharedPreferences("account", Context.MODE_WORLD_READABLE);
-        myObject = sharedPreferences.getString(TargetObjectID, null);
-    }
-
     private void initSwipeLayout() {
         binding.swRefresh.setEnabled(true);
         layoutManager = new LinearLayoutManager(this);
         binding.rcView.setLayoutManager(layoutManager);
-        adapter = new ChatAdapter(this, mConversationManager);
+        adapter = new ChatAdapter(this, myAccount.getObjectId(), mConversationManager);
         binding.rcView.setAdapter(adapter);
         binding.llChat.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -135,6 +129,8 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
                 //TODO 消息：5.3、删除指定聊天消息
                 mConversationManager.deleteMessage(adapter.getItem(position));
                 adapter.remove(position);
+                ToastUtil.show(ChatActivity.this, "删除成功");
+                adapter.notifyDataSetChanged();
                 return true;
             }
         });
@@ -345,10 +341,6 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
         //TODO 发送消息：6.1、发送文本消息
         BmobIMTextMessage msg = new BmobIMTextMessage();
         msg.setContent(text);
-        //可随意设置额外信息
-        Map<String, Object> map = new HashMap<>();
-        map.put("level", "1");
-        msg.setExtraMap(map);
         mConversationManager.sendMessage(msg, listener);
     }
 
@@ -508,7 +500,7 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
     }
 
     private void scrollToBottom() {
-        layoutManager.scrollToPositionWithOffset(adapter.getItemCount() - 1, 0);
+//        layoutManager.scrollToPositionWithOffset(adapter.getItemCount() - 1, 0);
     }
 
 
@@ -528,8 +520,11 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
      * @param event
      */
     private void addMessage2Chat(MessageEvent event) {
+        if (event == null) {
+            return;
+        }
         BmobIMMessage msg = event.getMessage();
-        if (mConversationManager != null && event != null && mConversationManager.getConversationId().equals(event.getConversation().getConversationId()) //如果是当前会话的消息
+        if (mConversationManager != null && mConversationManager.getConversationId().equals(event.getConversation().getConversationId()) //如果是当前会话的消息
                 && !msg.isTransient()) {//并且不为暂态消息
             if (adapter.findPosition(msg) < 0) {//如果未添加到界面中
                 adapter.addMessage(msg);

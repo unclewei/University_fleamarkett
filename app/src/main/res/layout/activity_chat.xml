@@ -1,23 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
+
     <data>
 
         <variable
             name="module"
             type="com.uncle.administrator.fleamarket.chat.ChatVM" />
     </data>
+
     <LinearLayout
         android:id="@+id/ll_chat"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include layout="@layout/include_navi" />
+        <!--<include layout="@layout/include_navi" />-->
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1.0">
+            android:layout_weight="1">
 
             <android.support.v4.widget.SwipeRefreshLayout
                 android:id="@+id/sw_refresh"
@@ -25,9 +27,11 @@
                 android:layout_height="match_parent">
 
                 <android.support.v7.widget.RecyclerView
+                    android:background="#444"
                     android:id="@+id/rc_view"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never" />
 
             </android.support.v4.widget.SwipeRefreshLayout>
 
@@ -58,6 +62,7 @@
                     android:textSize="14sp" />
             </RelativeLayout>
         </FrameLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

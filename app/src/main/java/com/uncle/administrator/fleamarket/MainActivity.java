@@ -4,6 +4,7 @@ package com.uncle.administrator.fleamarket;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.databinding.repacked.google.common.eventbus.EventBus;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;

@@ -47,4 +47,5 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha2'
     compile 'com.ethanhua:skeleton:1.1.0'
     compile 'io.supercharge:shimmerlayout:2.0.0'
+    compile 'org.greenrobot:eventbus:3.0.0'
 }

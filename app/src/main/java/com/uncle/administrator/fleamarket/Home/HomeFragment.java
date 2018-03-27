@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.ethanhua.skeleton.Skeleton;
+import com.ethanhua.skeleton.SkeletonScreen;
 import com.uncle.Base.BaseBindAdapter;
 import com.uncle.Base.BaseBindingFragment;
 import com.uncle.administrator.fleamarket.DTO.shop_goods;
@@ -38,6 +40,7 @@ public class HomeFragment extends BaseBindingFragment<GoodsFragmentBinding> impl
     private int setSkipNumber = 0;
     private boolean isLast = false;
     private HomeListAdapter homeListAdapter;
+    private SkeletonScreen skeletonScreen;
 
 
     @Override
@@ -68,7 +71,7 @@ public class HomeFragment extends BaseBindingFragment<GoodsFragmentBinding> impl
             public void done(List<shop_goods> list, BmobException e) {
                 if (e == null) {
                     queryCallBack.onImageLoad(list);
-                    Log.e("william",list.toString());
+                    Log.e("william", list.toString());
                 }
             }
         });
@@ -81,7 +84,11 @@ public class HomeFragment extends BaseBindingFragment<GoodsFragmentBinding> impl
         homeListAdapter.setOpenLoadMore(true);
         homeListAdapter.setOnLoadListener(this);
         binding.recylerview.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        binding.recylerview.setAdapter(homeListAdapter);
+        skeletonScreen = Skeleton.bind(binding.recylerview)
+                .adapter(homeListAdapter)
+                .load(R.layout.adapter_home_sklele)
+                .color(R.color.white_transparent)
+                .show();
         binding.refresh.setOnRefreshListener(this);
         binding.appBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
@@ -98,6 +105,7 @@ public class HomeFragment extends BaseBindingFragment<GoodsFragmentBinding> impl
         homeListAdapter.setList(list);
         homeListAdapter.notifyDataSetChanged();
         setSkipNumber++;
+        skeletonScreen.hide();
         if (binding.refresh.isRefreshing()) {
             binding.refresh.setRefreshing(false);
         }
@@ -129,7 +137,7 @@ public class HomeFragment extends BaseBindingFragment<GoodsFragmentBinding> impl
 
     @Override
     public void onLoadMore() {
-        Log.e("william","加载更多");
+        Log.e("william", "加载更多");
         queryGoods(setSkipNumber, new QueryCallBack() {
             @Override
             public void onImageLoad(List<shop_goods> list) {
