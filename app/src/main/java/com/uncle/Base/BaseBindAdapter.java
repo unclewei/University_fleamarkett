@@ -142,6 +142,11 @@ public abstract class BaseBindAdapter<T> extends RecyclerView.Adapter<BaseBindVi
         notifyDataSetChanged();
     }
 
+    public void remove(int positon) {
+        items.remove(positon);
+        notifyDataSetChanged();
+    }
+
     public T getItem(int position) {
         return items.get(position);
     }

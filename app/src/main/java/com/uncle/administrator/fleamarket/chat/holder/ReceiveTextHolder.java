@@ -1,10 +1,12 @@
 package com.uncle.administrator.fleamarket.chat.holder;
 
 import android.content.Context;
+import android.databinding.ViewDataBinding;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.uncle.Base.BaseBindViewHolder;
 import com.uncle.administrator.fleamarket.R;
 import com.uncle.Base.BaseViewHolder;
 import com.uncle.administrator.fleamarket.chat.OnRecyclerViewListener;
@@ -15,58 +17,53 @@ import java.text.SimpleDateFormat;
 import cn.bmob.newim.bean.BmobIMMessage;
 import cn.bmob.newim.bean.BmobIMUserInfo;
 
+import static cn.bmob.newim.core.BmobIMClient.getContext;
+
 /**
  * 接收到的文本类型
+ *
+ * @author unclewei
  */
-public class ReceiveTextHolder extends BaseViewHolder {
+public class ReceiveTextHolder extends BaseBindViewHolder<BmobIMMessage> {
+    private boolean isShow;
 
-    private ItemChatReceivedMessageBinding binding = (ItemChatReceivedMessageBinding) dataBinding;
-
-    public ReceiveTextHolder(Context context, ViewGroup root, OnRecyclerViewListener onRecyclerViewListener) {
-        super(context, root, R.layout.item_chat_received_message, onRecyclerViewListener);
+    public ReceiveTextHolder(ViewDataBinding binding, boolean isShowTime) {
+        super(binding);
+        this.isShow = isShowTime;
     }
 
-
     @Override
-    public void setData(Object o) {
-        final BmobIMMessage message = (BmobIMMessage) o;
+    public void bindTo(BaseBindViewHolder<BmobIMMessage> holder, BmobIMMessage item) {
+        ItemChatReceivedMessageBinding itemChatReceivedMessageBinding = (ItemChatReceivedMessageBinding) binding;
+        final BmobIMMessage message = (BmobIMMessage) item;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");
         String time = dateFormat.format(message.getCreateTime());
-        binding.tvTime.setText(time);
+        itemChatReceivedMessageBinding.tvTime.setText(time);
         final BmobIMUserInfo info = message.getBmobIMUserInfo();
         Glide.with(getContext())
                 .load(info.getAvatar())
-                .into(binding.ivAvatar);
+                .into(itemChatReceivedMessageBinding.ivAvatar);
         String content = message.getContent();
-        binding.tvMessage.setText(content);
-        binding.ivAvatar.setOnClickListener(new View.OnClickListener() {
+        itemChatReceivedMessageBinding.tvTime.setVisibility(isShow ? View.VISIBLE : View.GONE);
+        itemChatReceivedMessageBinding.tvMessage.setText(content);
+        itemChatReceivedMessageBinding.ivAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toast("点击" + info.getName() + "的头像");
             }
         });
-        binding.tvMessage.setOnClickListener(new View.OnClickListener() {
+        itemChatReceivedMessageBinding.tvMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toast("点击" + message.getContent());
-                if (onRecyclerViewListener != null) {
-                    onRecyclerViewListener.onItemClick(getAdapterPosition());
-                }
+
             }
         });
 
-        binding.tvMessage.setOnLongClickListener(new View.OnLongClickListener() {
+        itemChatReceivedMessageBinding.tvMessage.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if (onRecyclerViewListener != null) {
-                    onRecyclerViewListener.onItemLongClick(getAdapterPosition());
-                }
+
                 return true;
             }
         });
-    }
-
-    public void showTime(boolean isShow) {
-        binding.tvTime.setVisibility(isShow ? View.VISIBLE : View.GONE);
     }
 }

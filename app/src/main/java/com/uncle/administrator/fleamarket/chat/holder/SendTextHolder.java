@@ -1,10 +1,12 @@
 package com.uncle.administrator.fleamarket.chat.holder;
 
 import android.content.Context;
+import android.databinding.ViewDataBinding;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.uncle.Base.BaseBindViewHolder;
 import com.uncle.administrator.fleamarket.R;
 import com.uncle.Base.BaseViewHolder;
 import com.uncle.administrator.fleamarket.chat.OnRecyclerViewListener;
@@ -24,106 +26,95 @@ import cn.bmob.v3.exception.BmobException;
  *
  * @author unclewei
  */
-public class SendTextHolder extends BaseViewHolder implements View.OnClickListener, View.OnLongClickListener {
+public class SendTextHolder extends BaseBindViewHolder<BmobIMMessage> {
+    private boolean isShow;
 
-    private ItemChatSentMessageBinding binding = (ItemChatSentMessageBinding) dataBinding;
+    private BmobIMConversation c;
 
-    BmobIMConversation c;
-
-    public SendTextHolder(Context context, ViewGroup root, BmobIMConversation c, OnRecyclerViewListener listener) {
-        super(context, root, R.layout.item_chat_sent_message, listener);
+    public SendTextHolder(ViewDataBinding binding, boolean isShowTime, BmobIMConversation c) {
+        super(binding);
+        this.isShow = isShowTime;
         this.c = c;
     }
 
     @Override
-    public void setData(Object o) {
-        final BmobIMMessage message = (BmobIMMessage) o;
+    public void bindTo(BaseBindViewHolder<BmobIMMessage> holder, final BmobIMMessage message) {
+        final ItemChatSentMessageBinding itemChatSentMessageBinding = (ItemChatSentMessageBinding) binding;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         final BmobIMUserInfo info = message.getBmobIMUserInfo();
-        Glide.with(getContext())
+        Glide.with(itemChatSentMessageBinding.ivAvatar.getContext())
                 .load(info.getAvatar())
-                .into(binding.ivAvatar);
+                .into(itemChatSentMessageBinding.ivAvatar);
         String time = dateFormat.format(message.getCreateTime());
         String content = message.getContent();
-        binding.tvMessage.setText(content);
-        binding.tvTime.setText(time);
-
+        itemChatSentMessageBinding.tvMessage.setText(content);
+        itemChatSentMessageBinding.tvTime.setText(time);
+        itemChatSentMessageBinding.tvTime.setVisibility(isShow ? View.VISIBLE : View.GONE);
+        itemChatSentMessageBinding.tvTime.setVisibility(View.VISIBLE);
         int status = message.getSendStatus();
         if (status == BmobIMSendStatus.SEND_FAILED.getStatus()) {
-            binding.ivFailResend.setVisibility(View.VISIBLE);
-            binding.progressLoad.setVisibility(View.GONE);
+            itemChatSentMessageBinding.ivFailResend.setVisibility(View.VISIBLE);
+            itemChatSentMessageBinding.progressLoad.setVisibility(View.GONE);
         } else if (status == BmobIMSendStatus.SENDING.getStatus()) {
-            binding.ivFailResend.setVisibility(View.GONE);
-            binding.progressLoad.setVisibility(View.VISIBLE);
+            itemChatSentMessageBinding.ivFailResend.setVisibility(View.GONE);
+            itemChatSentMessageBinding.progressLoad.setVisibility(View.VISIBLE);
         } else {
-            binding.ivFailResend.setVisibility(View.GONE);
-            binding.progressLoad.setVisibility(View.GONE);
+            itemChatSentMessageBinding.ivFailResend.setVisibility(View.GONE);
+            itemChatSentMessageBinding.progressLoad.setVisibility(View.GONE);
         }
-        binding.getRoot().setOnClickListener(new View.OnClickListener() {
+        itemChatSentMessageBinding.getRoot().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toast("点击了");
+
             }
         });
-        binding.tvMessage.setOnClickListener(new View.OnClickListener() {
+        itemChatSentMessageBinding.tvMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toast("点击" + message.getContent());
-                if (onRecyclerViewListener != null) {
-                    onRecyclerViewListener.onItemClick(getAdapterPosition());
-                }
+
             }
         });
 
-        binding.tvMessage.setOnLongClickListener(new View.OnLongClickListener() {
+        itemChatSentMessageBinding.tvMessage.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if (onRecyclerViewListener != null) {
-                    onRecyclerViewListener.onItemLongClick(getAdapterPosition());
-                }
                 return true;
             }
         });
 
-        binding.ivAvatar.setOnClickListener(new View.OnClickListener() {
+        itemChatSentMessageBinding.ivAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toast("点击" + info.getName() + "的头像");
             }
         });
 
         //重发
-        binding.ivFailResend.setOnClickListener(new View.OnClickListener() {
+        itemChatSentMessageBinding.ivFailResend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 c.resendMessage(message, new MessageSendListener() {
                     @Override
                     public void onStart(BmobIMMessage msg) {
-                        binding.progressLoad.setVisibility(View.VISIBLE);
-                        binding.ivFailResend.setVisibility(View.GONE);
-                        binding.tvSendStatus.setVisibility(View.INVISIBLE);
+                        itemChatSentMessageBinding.progressLoad.setVisibility(View.VISIBLE);
+                        itemChatSentMessageBinding.ivFailResend.setVisibility(View.GONE);
+                        itemChatSentMessageBinding.tvSendStatus.setVisibility(View.INVISIBLE);
                     }
 
                     @Override
                     public void done(BmobIMMessage msg, BmobException e) {
                         if (e == null) {
-                            binding.tvSendStatus.setVisibility(View.VISIBLE);
-                            binding.tvSendStatus.setText("已发送");
-                            binding.ivFailResend.setVisibility(View.GONE);
-                            binding.progressLoad.setVisibility(View.GONE);
+                            itemChatSentMessageBinding.tvSendStatus.setVisibility(View.VISIBLE);
+                            itemChatSentMessageBinding.tvSendStatus.setText("已发送");
+                            itemChatSentMessageBinding.ivFailResend.setVisibility(View.GONE);
+                            itemChatSentMessageBinding.progressLoad.setVisibility(View.GONE);
                         } else {
-                            binding.ivFailResend.setVisibility(View.VISIBLE);
-                            binding.progressLoad.setVisibility(View.GONE);
-                            binding.tvSendStatus.setVisibility(View.INVISIBLE);
+                            itemChatSentMessageBinding.ivFailResend.setVisibility(View.VISIBLE);
+                            itemChatSentMessageBinding.progressLoad.setVisibility(View.GONE);
+                            itemChatSentMessageBinding.tvSendStatus.setVisibility(View.INVISIBLE);
                         }
                     }
                 });
             }
         });
-    }
-
-
-    public void showTime(boolean isShow) {
-        binding.tvTime.setVisibility(isShow ? View.VISIBLE : View.GONE);
     }
 }

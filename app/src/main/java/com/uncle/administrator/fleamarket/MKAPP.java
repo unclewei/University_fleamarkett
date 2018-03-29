@@ -12,7 +12,9 @@ import java.io.FileReader;
 import cn.bmob.newim.BmobIM;
 
 /**
- * Created by Administrator on 2018/3/11 0011.
+ *
+ * @author Administrator
+ * @date 2018/3/11 0011
  */
 
 public class MKAPP extends Application {

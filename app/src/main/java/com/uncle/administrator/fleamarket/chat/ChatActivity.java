@@ -1,9 +1,6 @@
 package com.uncle.administrator.fleamarket.chat;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.databinding.repacked.google.common.eventbus.EventBus;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -26,12 +23,17 @@ import com.uncle.Base.BaseBindingActivity;
 import com.uncle.Util.CommUtil;
 import com.uncle.Util.KeyboardUtil;
 import com.uncle.Util.ToastUtil;
+import com.uncle.administrator.fleamarket.DTO.User_account;
+import com.uncle.administrator.fleamarket.DTO.shop_goods;
 import com.uncle.administrator.fleamarket.R;
 import com.uncle.administrator.fleamarket.databinding.ActivityChatBinding;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
+import java.util.zip.Inflater;
 
 import cn.bmob.newim.BmobIM;
 import cn.bmob.newim.bean.BmobIMAudioMessage;
@@ -61,17 +63,15 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
     BmobRecordManager recordManager;
     ChatAdapter adapter;
     BmobIMConversation mConversationManager;
-    // 话筒动画
-    private Drawable[] drawable_Anims;
+    private Drawable[] drawableAnims;
     protected LinearLayoutManager layoutManager;
     private ChatVM chatVM;
-    private String targetObject;
     public static final String TARGET_OBJECT_ID = "TARGET_OBJECT_ID";
 
     @Override
     protected void bindData(ActivityChatBinding dataBinding) {
-        initConversationManager();
         chatVM = new ChatVM(ChatActivity.this, binding);
+        initConversationManager();
         initSwipeLayout();
         initVoiceView();
         initBottomView();
@@ -99,6 +99,7 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
         layoutManager = new LinearLayoutManager(this);
         binding.rcView.setLayoutManager(layoutManager);
         adapter = new ChatAdapter(this, myAccount.getObjectId(), mConversationManager);
+        adapter.setEmptyView(LayoutInflater.from(ChatActivity.this).inflate(R.layout.load_more_view, null));
         binding.rcView.setAdapter(adapter);
         binding.llChat.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -118,22 +119,21 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
             }
         });
         //设置RecyclerView的点击事件
-        adapter.setOnRecyclerViewListener(new OnRecyclerViewListener() {
-            @Override
-            public void onItemClick(int position) {
-                Log.i(TAG, "" + position);
-            }
-
-            @Override
-            public boolean onItemLongClick(int position) {
-                //TODO 消息：5.3、删除指定聊天消息
-                mConversationManager.deleteMessage(adapter.getItem(position));
-                adapter.remove(position);
-                ToastUtil.show(ChatActivity.this, "删除成功");
-                adapter.notifyDataSetChanged();
-                return true;
-            }
-        });
+//        adapter.setOnRecyclerViewListener(new OnRecyclerViewListener() {
+//            @Override
+//            public void onItemClick(int position) {
+//                Log.i(TAG, "" + position);
+//            }
+//
+//            @Override
+//            public boolean onItemLongClick(int position) {
+//                //TODO 消息：5.3、删除指定聊天消息
+//                mConversationManager.deleteMessage(adapter.getItem(position));
+//                adapter.remove(position);
+//                ToastUtil.show(ChatActivity.this, "删除成功");
+//                return true;
+//            }
+//        });
     }
 
     private void initBottomView() {
@@ -190,7 +190,7 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
      * 初始化语音动画资源
      */
     private void initVoiceAnimRes() {
-        drawable_Anims = new Drawable[]{
+        drawableAnims = new Drawable[]{
                 getResources().getDrawable(R.mipmap.chat_icon_voice2),
                 getResources().getDrawable(R.mipmap.chat_icon_voice3),
                 getResources().getDrawable(R.mipmap.chat_icon_voice4),
@@ -207,7 +207,7 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
 
             @Override
             public void onVolumeChanged(int value) {
-                binding.ivRecord.setImageDrawable(drawable_Anims[value]);
+                binding.ivRecord.setImageDrawable(drawableAnims[value]);
 
             }
 
@@ -460,7 +460,7 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
         @Override
         public void onStart(BmobIMMessage msg) {
             super.onStart(msg);
-            adapter.addMessage(msg);
+            adapter.add(msg);
             binding.editMsg.setText("");
             scrollToBottom();
         }
@@ -489,7 +489,7 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
                 binding.swRefresh.setRefreshing(false);
                 if (e == null) {
                     if (null != list && list.size() > 0) {
-                        adapter.addMessages(list);
+                        adapter.addAll(list);
                         layoutManager.scrollToPositionWithOffset(list.size() - 1, 0);
                     }
                 } else {
@@ -500,7 +500,7 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
     }
 
     private void scrollToBottom() {
-//        layoutManager.scrollToPositionWithOffset(adapter.getItemCount() - 1, 0);
+        layoutManager.scrollToPositionWithOffset(adapter.getItemCount() - 1, 0);
     }
 
 
@@ -527,7 +527,7 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
         if (mConversationManager != null && mConversationManager.getConversationId().equals(event.getConversation().getConversationId()) //如果是当前会话的消息
                 && !msg.isTransient()) {//并且不为暂态消息
             if (adapter.findPosition(msg) < 0) {//如果未添加到界面中
-                adapter.addMessage(msg);
+                adapter.add(msg);
                 //更新该会话下面的已读状态
                 mConversationManager.updateReceiveStatus(msg);
             }
