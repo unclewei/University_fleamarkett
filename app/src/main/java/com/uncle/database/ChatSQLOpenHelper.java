@@ -17,10 +17,10 @@ public class ChatSQLOpenHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table chat_data (id_number integer PRIMARY KEY autoincrement,"
                 + " name varchar,"
-                + " target_objectID varchar,"
-                + " head_portrait varchar,"
-                + " time varchar,"
-                + " last_sentence varchar)");
+                + " targetObjectID varchar,"
+                + " avatar varchar,"
+                + " lastTime long,"
+                + " lastWord varchar)");
     }
 
     @Override

@@ -1,48 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <android.support.constraint.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="60dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingEnd="20dp"
+        android:paddingStart="20dp">
 
         <ImageView
             android:id="@+id/iv_avatar"
             android:layout_width="47dp"
             android:layout_height="47dp"
-            app:srcCompat="@drawable/head_yard"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="16dp" />
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/head_yard" />
 
-
-        <TextView
-            android:id="@+id/tv_name"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="TextView"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="72dp"
-            tools:layout_editor_absoluteY="16dp" />
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/tv_contact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:ellipsize="end"
+                android:lines="1"
+                android:maxLines="1"
+                android:text="TextView" />
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/tv_contact"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="72dp"
-            tools:layout_editor_absoluteY="44dp" />
-
-        <TextView
+            android:layout_marginStart="10dp"
             android:id="@+id/tv_lastTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="301dp"
-            tools:layout_editor_absoluteY="16dp" />
-    </android.support.constraint.ConstraintLayout>
+            android:layout_marginBottom="10dp"
+            android:text="TextView" />
+    </LinearLayout>
 
 </layout>

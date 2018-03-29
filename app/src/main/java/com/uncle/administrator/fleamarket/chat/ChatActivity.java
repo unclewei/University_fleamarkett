@@ -23,26 +23,19 @@ import com.uncle.Base.BaseBindingActivity;
 import com.uncle.Util.CommUtil;
 import com.uncle.Util.KeyboardUtil;
 import com.uncle.Util.ToastUtil;
-import com.uncle.administrator.fleamarket.DTO.User_account;
-import com.uncle.administrator.fleamarket.DTO.shop_goods;
 import com.uncle.administrator.fleamarket.R;
 import com.uncle.administrator.fleamarket.databinding.ActivityChatBinding;
+import com.uncle.database.ChatDataDao;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
-import java.util.zip.Inflater;
 
 import cn.bmob.newim.BmobIM;
 import cn.bmob.newim.bean.BmobIMAudioMessage;
 import cn.bmob.newim.bean.BmobIMConversation;
-import cn.bmob.newim.bean.BmobIMFileMessage;
 import cn.bmob.newim.bean.BmobIMImageMessage;
 import cn.bmob.newim.bean.BmobIMMessage;
+import cn.bmob.newim.bean.BmobIMMessageType;
 import cn.bmob.newim.bean.BmobIMTextMessage;
-import cn.bmob.newim.bean.BmobIMVideoMessage;
 import cn.bmob.newim.core.BmobIMClient;
 import cn.bmob.newim.core.BmobRecordManager;
 import cn.bmob.newim.event.MessageEvent;
@@ -60,9 +53,9 @@ import cn.bmob.v3.exception.BmobException;
  * @date :2016-01-25-18:23
  */
 public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> implements MessageListHandler {
-    BmobRecordManager recordManager;
-    ChatAdapter adapter;
-    BmobIMConversation mConversationManager;
+    private BmobRecordManager recordManager;
+    private ChatAdapter adapter;
+    private BmobIMConversation mConversationManager;
     private Drawable[] drawableAnims;
     protected LinearLayoutManager layoutManager;
     private ChatVM chatVM;
@@ -341,6 +334,7 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
         //TODO 发送消息：6.1、发送文本消息
         BmobIMTextMessage msg = new BmobIMTextMessage();
         msg.setContent(text);
+        msg.setExtra(text);
         mConversationManager.sendMessage(msg, listener);
     }
 
@@ -351,6 +345,7 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
         //TODO 发送消息：6.2、发送本地图片消息
         //正常情况下，需要调用系统的图库或拍照功能获取到图片的本地地址，开发者只需要将本地的文件地址传过去就可以发送文件类型的消息
         BmobIMImageMessage image = new BmobIMImageMessage("/storage/emulated/0/netease/cloudmusic/网易云音乐相册/小梦大半_1371091013186741.jpg");
+        image.setExtra("[图片]");
         mConversationManager.sendMessage(image, listener);
     }
 
@@ -361,67 +356,10 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
         //TODO 发送消息：6.3、发送远程图片消息
         BmobIMImageMessage image = new BmobIMImageMessage();
         image.setRemoteUrl("https://avatars3.githubusercontent.com/u/11643472?v=4&u=df609c8370b3ef7a567457eafd113b3ba6ba3bb6&s=400");
+        image.setExtra("[图片]");
         mConversationManager.sendMessage(image, listener);
     }
 
-
-    /**
-     * 发送本地音频文件
-     */
-    private void sendLocalAudioMessage() {
-        //TODO 发送消息：6.4、发送本地音频文件消息
-        BmobIMAudioMessage audio = new BmobIMAudioMessage("此处替换为你本地的音频文件地址");
-        mConversationManager.sendMessage(audio, listener);
-    }
-
-
-    /**
-     * 发送远程音频文件
-     */
-    private void sendRemoteAudioMessage() {
-        //TODO 发送消息：6.5、发送本地音频文件消息
-        BmobIMAudioMessage audio = new BmobIMAudioMessage();
-        audio.setRemoteUrl("此处替换为你远程的音频文件地址");
-        mConversationManager.sendMessage(audio, listener);
-    }
-
-    /**
-     * 发送本地视频文件
-     */
-    private void sendLocalVideoMessage() {
-        BmobIMVideoMessage video = new BmobIMVideoMessage("此处替换为你本地的视频文件地址");
-        //TODO 发送消息：6.6、发送本地视频文件消息
-        mConversationManager.sendMessage(video, listener);
-    }
-
-    /**
-     * 发送远程视频文件
-     */
-    private void sendRemoteVideoMessage() {
-        //TODO 发送消息：6.7、发送本地音频文件消息
-        BmobIMAudioMessage audio = new BmobIMAudioMessage();
-        audio.setRemoteUrl("此处替换为你远程的音频文件地址");
-        mConversationManager.sendMessage(audio, listener);
-    }
-
-    /**
-     * 发送本地文件
-     */
-    public void sendLocalFileMessage() {
-        //TODO 发送消息：6.8、发送本地文件消息
-        BmobIMFileMessage file = new BmobIMFileMessage("此处替换为你本地的文件地址");
-        mConversationManager.sendMessage(file, listener);
-    }
-
-    /**
-     * 发送远程文件
-     */
-    public void sendRemoteFileMessage() {
-        //TODO 发送消息：6.9、发送远程文件消息
-        BmobIMFileMessage file = new BmobIMFileMessage();
-        file.setRemoteUrl("此处替换为你远程的文件地址");
-        mConversationManager.sendMessage(file, listener);
-    }
 
     /**
      * 发送语音消息
@@ -435,12 +373,9 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
         //TODO 发送消息：6.5、发送本地音频文件消息
         BmobIMAudioMessage audio = new BmobIMAudioMessage(local);
         //可设置额外信息-开发者设置的额外信息，需要开发者自己从extra中取出来
-        Map<String, Object> map = new HashMap<>();
-        map.put("from", "优酷");
-        //TODO 自定义消息：7.1、给消息设置额外信息
-        audio.setExtraMap(map);
+        audio.setExtra("[语音]");
         //设置语音文件时长：可选
-//        audio.setDuration(length);
+        audio.setDuration(length);
         mConversationManager.sendMessage(audio, listener);
     }
 
@@ -590,11 +525,32 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
         if (recordManager != null) {
             recordManager.clear();
         }
+        KeyboardUtil.hideSoftInputView(ChatActivity.this);
+        if (adapter.getItemCount() == 0) {
+            return;
+        }
+        BmobIMMessage bmobIMMessage = adapter.getItem(adapter.getItemCount() - 1);
+        ChatDataDao dataDao = ChatDataDao.getInstance(ChatActivity.this);
+        String text = bmobIMMessage.getMsgType().equals(BmobIMMessageType.TEXT.getType()) ?
+                bmobIMMessage.getContent() :
+                (bmobIMMessage.getMsgType().equals(BmobIMMessageType.IMAGE.getType()) ? "[照片]" : "[语音]");
+        if (!dataDao.isUserExist(bmobIMMessage.getConversationId())) {
+            dataDao.addChatDB(mConversationManager.getConversationTitle()
+                    , bmobIMMessage.getConversationId()
+                    , bmobIMMessage.getCreateTime()
+                    , mConversationManager.getConversationIcon()
+                    , text);
+        } else {
+            dataDao.updateLastWord(mConversationManager.getConversationTitle()
+                    , bmobIMMessage.getConversationId()
+                    , bmobIMMessage.getCreateTime()
+                    , mConversationManager.getConversationIcon()
+                    , text);
+        }
         //TODO 消息：5.4、更新此会话的所有消息为已读状态
         if (mConversationManager != null) {
             mConversationManager.updateLocalCache();
         }
-        KeyboardUtil.hideSoftInputView(ChatActivity.this);
         super.onDestroy();
     }
 

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.uncle.Base.BaseBindViewHolder;
+import com.uncle.Util.ToastUtil;
 import com.uncle.administrator.fleamarket.R;
 import com.uncle.Base.BaseViewHolder;
 import com.uncle.administrator.fleamarket.chat.OnRecyclerViewListener;
@@ -46,7 +47,7 @@ public class SendTextHolder extends BaseBindViewHolder<BmobIMMessage> {
                 .load(info.getAvatar())
                 .into(itemChatSentMessageBinding.ivAvatar);
         String time = dateFormat.format(message.getCreateTime());
-        String content = message.getContent();
+        final String content = message.getContent();
         itemChatSentMessageBinding.tvMessage.setText(content);
         itemChatSentMessageBinding.tvTime.setText(time);
         itemChatSentMessageBinding.tvTime.setVisibility(isShow ? View.VISIBLE : View.GONE);
@@ -62,16 +63,10 @@ public class SendTextHolder extends BaseBindViewHolder<BmobIMMessage> {
             itemChatSentMessageBinding.ivFailResend.setVisibility(View.GONE);
             itemChatSentMessageBinding.progressLoad.setVisibility(View.GONE);
         }
-        itemChatSentMessageBinding.getRoot().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
         itemChatSentMessageBinding.tvMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ToastUtil.show(itemChatSentMessageBinding.getRoot().getContext(), message.getExtra());
             }
         });
 

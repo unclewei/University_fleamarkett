@@ -34,7 +34,7 @@ public class ConversationAdapter extends BaseAdapter<ConversationDTO> {
                 Glide.with(getContext()).load(item.getAvatar()).into(conversationItemBinding.ivAvatar);
                 conversationItemBinding.tvName.setText(item.getUsername());
                 conversationItemBinding.tvContact.setText(item.getLastWord());
-                conversationItemBinding.tvLastTime.setText(item.getLastTime());
+                conversationItemBinding.tvLastTime.setText(item.getStringTime(item.getLastTime()));
             }
         };
     }
@@ -47,7 +47,7 @@ public class ConversationAdapter extends BaseAdapter<ConversationDTO> {
     @Override
     protected boolean areContentsSame(ConversationDTO oldItem, ConversationDTO newItem) {
         return oldItem.getAvatar().equals(newItem.getAvatar())
-                && oldItem.getLastTime().equals(newItem.getLastTime())
+                && oldItem.getLastTime() == newItem.getLastTime()
                 && oldItem.getLastWord().equals(newItem.getLastWord());
     }
 }

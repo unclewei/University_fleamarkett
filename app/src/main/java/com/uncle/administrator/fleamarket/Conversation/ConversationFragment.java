@@ -58,8 +58,8 @@ public class ConversationFragment extends BaseBindingFragment<ConversationFragme
         Bundle bundle = new Bundle();
         bundle.putSerializable("c", conversationEntrance);
         Intent intent = new Intent(getContext(), ChatActivity.class);
-        intent.putExtra(getActivity().getPackageName(), bundle);
-        startActivity(intent, bundle);
+        intent.putExtra("chat", bundle);
+        startActivity(intent);
     }
 
     private void getConversationList() {

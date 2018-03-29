@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.uncle.administrator.fleamarket.DTO.ConversationDTO;
 import com.uncle.administrator.fleamarket.DTO.User_account;
+import com.uncle.bomb.BOMBOpenHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,16 +21,28 @@ import java.util.List;
 public class ChatDataDao {
 
     private ChatSQLOpenHelper helper;
+    private static ChatDataDao chatHelper;
 
     public ChatDataDao(Context context) {
         helper = new ChatSQLOpenHelper(context);
         helper.getWritableDatabase();
     }
 
+    public static ChatDataDao getInstance(Context context) {
+        if (chatHelper == null) {
+            synchronized (ChatDataDao.class) {
+                if (chatHelper == null) {
+                    chatHelper = new ChatDataDao(context);
+                }
+            }
+        }
+        return chatHelper;
+    }
+
     /**
      * 增加一条数据
      */
-    public void addChatDB(String name, String targetObjectID, String avatar, String lastTime, String lastWord) {
+    public void addChatDB(String name, String targetObjectID, long lastTime, String avatar, String lastWord) {
         SQLiteDatabase db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("name", name);
@@ -66,7 +79,7 @@ public class ChatDataDao {
             ConversationDTO conversationDTO = new ConversationDTO();
             conversationDTO.setUsername(cursor.getString(cursor.getColumnIndex("name")));
             conversationDTO.setObjectId(cursor.getString(cursor.getColumnIndex("targetObjectID")));
-            conversationDTO.setLastTime(cursor.getString(cursor.getColumnIndex("lastTime")));
+            conversationDTO.setLastTime(cursor.getLong(cursor.getColumnIndex("lastTime")));
             conversationDTO.setLastWord(cursor.getString(cursor.getColumnIndex("lastWord")));
             conversationDTO.setAvatar(cursor.getString(cursor.getColumnIndex("avatar")));
             list.add(conversationDTO);
@@ -79,9 +92,10 @@ public class ChatDataDao {
     /**
      * 更新时间和最后一句
      */
-    public void updateLastWord(String targetObjectID, String lastTime, String avatar, String lastWord) {
+    public void updateLastWord(String targetObjectID, String name, long lastTime, String avatar, String lastWord) {
         SQLiteDatabase db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put("name", name);
         values.put("lastTime", lastTime);
         values.put("lastWord", lastWord);
         values.put("avatar", avatar);

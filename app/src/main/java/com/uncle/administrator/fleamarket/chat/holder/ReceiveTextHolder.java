@@ -35,7 +35,7 @@ public class ReceiveTextHolder extends BaseBindViewHolder<BmobIMMessage> {
     @Override
     public void bindTo(BaseBindViewHolder<BmobIMMessage> holder, BmobIMMessage item) {
         ItemChatReceivedMessageBinding itemChatReceivedMessageBinding = (ItemChatReceivedMessageBinding) binding;
-        final BmobIMMessage message = (BmobIMMessage) item;
+        final BmobIMMessage message = item;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");
         String time = dateFormat.format(message.getCreateTime());
         itemChatReceivedMessageBinding.tvTime.setText(time);
