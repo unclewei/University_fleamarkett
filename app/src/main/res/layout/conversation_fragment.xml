@@ -8,11 +8,11 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="48dp"
             android:background="#FFF"
             android:paddingStart="20dp"
             android:paddingTop="10dp"
-            android:text="聊天信息"
+            android:text="Conversation"
             android:textColor="#000"
             android:textSize="18sp" />
 

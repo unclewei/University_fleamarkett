@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import com.uncle.Base.BaseBindAdapter;
 import com.uncle.Base.BaseBindingActivity;
 import com.uncle.Util.ToastUtil;
-import com.uncle.administrator.fleamarket.DTO.shop_goods;
+import com.uncle.administrator.fleamarket.DTO.shopGoods;
 import com.uncle.administrator.fleamarket.GoodsDetailsActivity;
 import com.uncle.administrator.fleamarket.R;
 import com.uncle.administrator.fleamarket.databinding.ActivityMineDataBinding;
@@ -24,7 +24,7 @@ import static com.uncle.administrator.fleamarket.chat.ChatActivity.TARGET_OBJECT
  * @date 2018/3/19 0019
  */
 
-public class MineDataActivity extends BaseBindingActivity<ActivityMineDataBinding> implements BaseBindAdapter.OnItemClickListener<shop_goods>, BaseBindAdapter.OnLoadListener {
+public class MineDataActivity extends BaseBindingActivity<ActivityMineDataBinding> implements BaseBindAdapter.OnItemClickListener<shopGoods>, BaseBindAdapter.OnLoadListener {
 
     public static final String MY_PUBLIC = "myPublic";
     public static final String MY_SCAN = "myScan";
@@ -89,7 +89,7 @@ public class MineDataActivity extends BaseBindingActivity<ActivityMineDataBindin
     }
 
     @Override
-    public void onItemClick(shop_goods data) {
+    public void onItemClick(shopGoods data) {
         Intent intent = new Intent(MineDataActivity.this, GoodsDetailsActivity.class);
         intent.putExtra("pageGoodsId", data.getObjectId());
         intent.putExtra("goodsOwnerObjectId", data.getOwner());
@@ -103,7 +103,7 @@ public class MineDataActivity extends BaseBindingActivity<ActivityMineDataBindin
 
     private class FirstGoodsCallBack implements BOMBOpenHelper.OnGoodsListCallBack {
         @Override
-        public void onDone(List<shop_goods> list) {
+        public void onDone(List<shopGoods> list) {
             page++;
             adapter.setList(list);
             adapter.notifyDataSetChanged();
@@ -112,7 +112,7 @@ public class MineDataActivity extends BaseBindingActivity<ActivityMineDataBindin
 
     private class MoreGoodsCallBack implements BOMBOpenHelper.OnGoodsListCallBack {
         @Override
-        public void onDone(List<shop_goods> list) {
+        public void onDone(List<shopGoods> list) {
             adapter.addAll(list);
             page++;
             adapter.isLoading = false;

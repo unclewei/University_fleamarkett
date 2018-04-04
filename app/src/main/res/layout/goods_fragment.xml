@@ -8,6 +8,16 @@
         android:background="#e7e7e7"
         android:orientation="vertical">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="#FFF"
+            android:paddingStart="20dp"
+            android:paddingTop="10dp"
+            android:text="Market"
+            android:textColor="#000"
+            android:textSize="18sp" />
+
         <com.uncle.layout.VpSwipeRefreshLayout
             android:id="@+id/refresh"
             android:layout_width="match_parent"

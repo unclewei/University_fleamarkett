@@ -7,14 +7,14 @@ import android.databinding.ViewDataBinding;
 import com.bumptech.glide.Glide;
 import com.uncle.Base.BaseAdapter;
 import com.uncle.Base.BaseBindViewHolder;
+import com.uncle.administrator.fleamarket.DTO.shopGoods;
 import com.uncle.administrator.fleamarket.R;
 import com.uncle.administrator.fleamarket.databinding.AdapterHomeBinding;
-import com.uncle.administrator.fleamarket.DTO.shop_goods;
 
 /**
  * @author unclewei
  */
-public class HomeListAdapter extends BaseAdapter<shop_goods> {
+public class HomeListAdapter extends BaseAdapter<shopGoods> {
 
     private Context context;
 
@@ -29,27 +29,27 @@ public class HomeListAdapter extends BaseAdapter<shop_goods> {
     }
 
     @Override
-    protected BaseBindViewHolder<shop_goods> createHolder(ViewDataBinding binding) {
-        return new BaseBindViewHolder<shop_goods>(binding) {
+    protected BaseBindViewHolder<shopGoods> createHolder(ViewDataBinding binding) {
+        return new BaseBindViewHolder<shopGoods>(binding) {
             @Override
-            public void bindTo(BaseBindViewHolder<shop_goods> holder, shop_goods item) {
+            public void bindTo(BaseBindViewHolder<shopGoods> holder, shopGoods item) {
                 AdapterHomeBinding baseBinding = (AdapterHomeBinding) binding;
                 baseBinding.baseItemName.setText(item.getName());
                 baseBinding.baseItemCollege.setText(item.getCollege());
                 baseBinding.baseItemDescription.setText(item.getText());
                 baseBinding.baseItemPrice.setText(item.getPrice());
-                Glide.with(context).load(item.getImage1()).into(baseBinding.baseItemImg);
+                Glide.with(context).load(item.getImgFileList().get(0)).into(baseBinding.baseItemImg);
             }
         };
     }
 
     @Override
-    protected boolean areItemsSame(shop_goods oldItem, shop_goods newItem) {
+    protected boolean areItemsSame(shopGoods oldItem, shopGoods newItem) {
         return false;
     }
 
     @Override
-    protected boolean areContentsSame(shop_goods oldItem, shop_goods newItem) {
+    protected boolean areContentsSame(shopGoods oldItem, shopGoods newItem) {
         return false;
     }
 

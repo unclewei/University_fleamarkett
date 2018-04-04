@@ -21,6 +21,7 @@
             android:background="#FFF"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
+            android:layout_marginBottom="10dp"
             android:onClick="@{module::navToAvatar}"
             android:paddingTop="5dp">
 

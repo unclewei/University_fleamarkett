@@ -16,7 +16,7 @@ import com.uncle.Base.BaseBindingActivity;
 import com.uncle.Util.KeyboardUtil;
 import com.uncle.administrator.fleamarket.DTO.CommentZan;
 import com.uncle.administrator.fleamarket.DTO.User_account;
-import com.uncle.administrator.fleamarket.DTO.shop_goods;
+import com.uncle.administrator.fleamarket.DTO.shopGoods;
 import com.uncle.administrator.fleamarket.chat.ChatActivity;
 import com.uncle.administrator.fleamarket.databinding.ActivityGoodsDetailBinding;
 import com.uncle.bomb.BOMBOpenHelper;
@@ -177,16 +177,16 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
             BOMBOpenHelper bomb = new BOMBOpenHelper();
             bomb.find_alone(pageGoodsID, new BOMBOpenHelper.ImageCallback() {
                 @Override
-                public void onImageLoad(shop_goods shopgoods) {
+                public void onImageLoad(shopGoods shopgoods) {
                     Glide.with(GoodsDetailsActivity.this)
-                            .load(shopgoods.getHead_portrait())
+                            .load(shopgoods.getAvatar())
                             .into(binding.imgHead);
                     binding.tvName.setText(shopgoods.getName());
                     binding.tvOrganization.setText(shopgoods.getOrganization());
                     binding.tvDescription.setText(shopgoods.getText());
                     binding.tvPrice.setText(shopgoods.getPrice());
-                    binding.tvZanCount.setText(String.valueOf(shopgoods.getZan_nub()));
-                    setImage(shopgoods.getPictureNub(), shopgoods.ImageList());
+                    binding.tvZanCount.setText(String.valueOf(shopgoods.getZanNub()));
+                    setImage(shopgoods.getPictureNub(), shopgoods.getImgFileList());
                 }
 
                 @Override

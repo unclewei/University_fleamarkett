@@ -16,7 +16,7 @@ import com.ethanhua.skeleton.Skeleton;
 import com.ethanhua.skeleton.SkeletonScreen;
 import com.uncle.Base.BaseBindAdapter;
 import com.uncle.Base.BaseBindingFragment;
-import com.uncle.administrator.fleamarket.DTO.shop_goods;
+import com.uncle.administrator.fleamarket.DTO.shopGoods;
 import com.uncle.administrator.fleamarket.GoodsDetailsActivity;
 import com.uncle.administrator.fleamarket.R;
 import com.uncle.administrator.fleamarket.databinding.GoodsFragmentBinding;
@@ -33,12 +33,11 @@ import cn.bmob.v3.listener.FindListener;
  * @date 2016/11/22 0022
  */
 public class HomeFragment extends BaseBindingFragment<GoodsFragmentBinding> implements
-        BaseBindAdapter.OnItemClickListener<shop_goods>,
+        BaseBindAdapter.OnItemClickListener<shopGoods>,
         SwipeRefreshLayout.OnRefreshListener,
         BaseBindAdapter.OnLoadListener {
 
     private int setSkipNumber = 0;
-    private boolean isLast = false;
     private HomeListAdapter homeListAdapter;
     private SkeletonScreen skeletonScreen;
 
@@ -49,7 +48,7 @@ public class HomeFragment extends BaseBindingFragment<GoodsFragmentBinding> impl
         initViewPager();
         queryGoods(0, new QueryCallBack() {
             @Override
-            public void onImageLoad(List<shop_goods> list) {
+            public void onImageLoad(List<shopGoods> list) {
                 getDataFromSQL(list);
             }
         });
@@ -60,15 +59,14 @@ public class HomeFragment extends BaseBindingFragment<GoodsFragmentBinding> impl
         return R.layout.goods_fragment;
     }
 
-
     public void queryGoods(int setSkipNumber, final QueryCallBack queryCallBack) {
-        BmobQuery<shop_goods> query = new BmobQuery<>();
+        BmobQuery<shopGoods> query = new BmobQuery<>();
         query.setLimit(10);
         query.setSkip(10 * setSkipNumber);
         query.order("-updatedAt");
-        query.findObjects(new FindListener<shop_goods>() {
+        query.findObjects(new FindListener<shopGoods>() {
             @Override
-            public void done(List<shop_goods> list, BmobException e) {
+            public void done(List<shopGoods> list, BmobException e) {
                 if (e == null) {
                     queryCallBack.onImageLoad(list);
                     Log.e("william", list.toString());
@@ -101,7 +99,7 @@ public class HomeFragment extends BaseBindingFragment<GoodsFragmentBinding> impl
         });
     }
 
-    public void getDataFromSQL(List<shop_goods> list) {
+    public void getDataFromSQL(List<shopGoods> list) {
         homeListAdapter.setList(list);
         homeListAdapter.notifyDataSetChanged();
         setSkipNumber++;
@@ -112,7 +110,7 @@ public class HomeFragment extends BaseBindingFragment<GoodsFragmentBinding> impl
     }
 
     @Override
-    public void onItemClick(shop_goods data) {
+    public void onItemClick(shopGoods data) {
         Intent intent = new Intent(getContext(), GoodsDetailsActivity.class);
         intent.putExtra("pageGoodsId", data.getObjectId());
         intent.putExtra("goodsOwnerObjectId", data.getOwner());
@@ -124,9 +122,8 @@ public class HomeFragment extends BaseBindingFragment<GoodsFragmentBinding> impl
         setSkipNumber = 0;
         queryGoods(setSkipNumber, new QueryCallBack() {
             @Override
-            public void onImageLoad(List<shop_goods> list) {
+            public void onImageLoad(List<shopGoods> list) {
                 getDataFromSQL(list);
-                isLast = false;
                 homeListAdapter.setLoadingView(LayoutInflater.from(getContext()).inflate(R.layout.load_more_view, null));
                 homeListAdapter.setOpenLoadMore(true);
                 homeListAdapter.setCanLoadMore(true);
@@ -140,7 +137,7 @@ public class HomeFragment extends BaseBindingFragment<GoodsFragmentBinding> impl
         Log.e("william", "加载更多");
         queryGoods(setSkipNumber, new QueryCallBack() {
             @Override
-            public void onImageLoad(List<shop_goods> list) {
+            public void onImageLoad(List<shopGoods> list) {
 
             }
         });
@@ -148,15 +145,11 @@ public class HomeFragment extends BaseBindingFragment<GoodsFragmentBinding> impl
 
 
     public interface QueryCallBack {
-        void onImageLoad(List<shop_goods> list);
+        void onImageLoad(List<shopGoods> list);
     }
 
 
-//--------------------------------------------------------------------------------------------------------
-//--------------------------------------------------------------------------------------------------------
 //---------------------------------------广告-------------------------------------------------------------
-//--------------------------------------------------------------------------------------------------------
-//--------------------------------------------------------------------------------------------------------
 
     private int scrollTime = 0;
     public static final int AUTO_BANNER_CODE = 0X1001;

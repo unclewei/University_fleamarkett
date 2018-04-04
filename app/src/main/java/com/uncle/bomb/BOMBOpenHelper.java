@@ -2,9 +2,10 @@ package com.uncle.bomb;
 
 import android.util.Log;
 
+import com.uncle.Util.ToastUtil;
 import com.uncle.administrator.fleamarket.DTO.CommentZan;
 import com.uncle.administrator.fleamarket.DTO.User_account;
-import com.uncle.administrator.fleamarket.DTO.shop_goods;
+import com.uncle.administrator.fleamarket.DTO.shopGoods;
 import com.uncle.administrator.fleamarket.Mine.MineDataActivity;
 
 import java.io.File;
@@ -29,8 +30,6 @@ public class BOMBOpenHelper {
     private final IMConversation im = new IMConversation();
     private final IMConversation im2 = new IMConversation();
     private final IMConversation im3 = new IMConversation();
-    private int temp_nub;//临时数字，用来记录有多少个图片，后面防止上传重复问题。
-    private int temp_nub_image = 0;//临时数字，用来记录有多少个图片，后面防止上传重复问题。
 
     public static BOMBOpenHelper getInstance() {
         if (openHelper == null) {
@@ -48,7 +47,7 @@ public class BOMBOpenHelper {
     /**
      * 创建一条商品信息
      */
-    public void createPerson(shop_goods goods) {
+    public void createPerson(shopGoods goods) {
         goods.save(new SaveListener<String>() {
 
             @Override
@@ -65,13 +64,13 @@ public class BOMBOpenHelper {
 
 
     public void findMyPubGoods(String object, int setSkipNumber, final OnGoodsListCallBack onGoodsListCallBack) {
-        BmobQuery<shop_goods> bmobQuery = new BmobQuery<>();
+        BmobQuery<shopGoods> bmobQuery = new BmobQuery<>();
         bmobQuery.addWhereEqualTo("owner", object);
         bmobQuery.setSkip(10 * setSkipNumber);
         bmobQuery.setLimit(10);
-        bmobQuery.findObjects(new FindListener<shop_goods>() {
+        bmobQuery.findObjects(new FindListener<shopGoods>() {
             @Override
-            public void done(List<shop_goods> list, BmobException e) {
+            public void done(List<shopGoods> list, BmobException e) {
                 if (e == null) {
                     onGoodsListCallBack.onDone(list);
                 }
@@ -80,13 +79,13 @@ public class BOMBOpenHelper {
     }
 
     public void findScanList(ArrayList<String> list, int setSkipNumber, final OnGoodsListCallBack onGoodsListCallBack) {
-        BmobQuery<shop_goods> bmobQuery = new BmobQuery<>();
+        BmobQuery<shopGoods> bmobQuery = new BmobQuery<>();
         bmobQuery.addWhereContainedIn("objectId", list);
         bmobQuery.setSkip(10 * setSkipNumber);
         bmobQuery.setLimit(10);
-        bmobQuery.findObjects(new FindListener<shop_goods>() {
+        bmobQuery.findObjects(new FindListener<shopGoods>() {
             @Override
-            public void done(List<shop_goods> list, BmobException e) {
+            public void done(List<shopGoods> list, BmobException e) {
                 if (e == null) {
                     onGoodsListCallBack.onDone(list);
                 }
@@ -112,29 +111,10 @@ public class BOMBOpenHelper {
         });
     }
 
-    public void uploadImg(final shop_goods shopgoods) {
-        final String[] filePaths = new String[shopgoods.getPictureNub()];
-        temp_nub = shopgoods.getPictureNub();
-        filePaths[0] = shopgoods.getImage1();
-        filePaths[1] = shopgoods.getImage2();
-        filePaths[2] = shopgoods.getImage3();
-        switch (shopgoods.getPictureNub()) {
-            case 3:
-                break;
-            case 4:
-                filePaths[3] = shopgoods.getImage4();
-                break;
-            case 5:
-                filePaths[3] = shopgoods.getImage4();
-                filePaths[4] = shopgoods.getImage5();
-                break;
-            case 6:
-                filePaths[3] = shopgoods.getImage3();
-                filePaths[4] = shopgoods.getImage4();
-                filePaths[5] = shopgoods.getImage5();
-                break;
-            default:
-                break;
+    public void uploadImg(final shopGoods shopgoods) {
+        final String[] filePaths = new String[shopgoods.getImgFileList().size()];
+        for (int i = 0; i < shopgoods.getImgFileList().size(); i++) {
+            filePaths[i] = shopgoods.getImgFileList().get(i);
         }
         BmobFile.uploadBatch(filePaths, new UploadBatchListener() {
 
@@ -143,10 +123,14 @@ public class BOMBOpenHelper {
                 //1、files-上传完成后的BmobFile集合，是为了方便大家对其上传后的数据进行操作，例如你可以将该文件保存到表中
                 //2、urls-上传文件的完整url地址
                 //注：有多少个文件上传，onSuccess方法就会执行多少次;
-                if (urls.size() == temp_nub && temp_nub_image == 0) {//如果数量相等，则代表文件全部上传完成
+                if (urls.size() == shopgoods.getImgFileList().size()) {
+                    for (int i = 0; i < urls.size(); i++) {
+                        if ("http://bmob-cdn-8783.b0.upaiyun.comnull".equals(urls.get(i))) {
+                            return;
+                        }
+                    }
+                    shopgoods.setImgFileList((ArrayList<String>) urls);
                     createPerson(shopgoods);
-                    temp_nub_image = 1;
-                    temp_nub++;//防止重复上传文件。
                 }
             }
 
@@ -193,10 +177,10 @@ public class BOMBOpenHelper {
 
     //通过id找到一条数据，用于点击商品之后的详细信息
     public void find_alone(String objID, final ImageCallback callback) {
-        BmobQuery<shop_goods> query = new BmobQuery<>();
-        query.getObject(objID, new QueryListener<shop_goods>() {
+        BmobQuery<shopGoods> query = new BmobQuery<>();
+        query.getObject(objID, new QueryListener<shopGoods>() {
             @Override
-            public void done(shop_goods object, BmobException e) {
+            public void done(shopGoods object, BmobException e) {
                 if (e == null) {
                     callback.onImageLoad(object);
                 } else {
@@ -227,8 +211,8 @@ public class BOMBOpenHelper {
      * @param zan      新的赞数
      */
     public void updateZan(String objectId, int zan) {
-        shop_goods shopGoods = new shop_goods();
-        shopGoods.setZan_nub(zan);
+        shopGoods shopGoods = new shopGoods();
+        shopGoods.setZanNub(zan);
         shopGoods.update(objectId, new UpdateListener() {
             @Override
             public void done(BmobException e) {
@@ -237,28 +221,28 @@ public class BOMBOpenHelper {
     }
 
     public void addZan(final String objectId) {
-        BmobQuery<shop_goods> bmobQuery = new BmobQuery<>();
-        bmobQuery.getObject(objectId, new QueryListener<shop_goods>() {
+        BmobQuery<shopGoods> bmobQuery = new BmobQuery<>();
+        bmobQuery.getObject(objectId, new QueryListener<shopGoods>() {
             @Override
-            public void done(shop_goods shopGoods, BmobException e) {
+            public void done(shopGoods shopGoods, BmobException e) {
                 if (e != null) {
                     return;
                 }
-                int totalNub = shopGoods.getZan_nub() + 1;
+                int totalNub = shopGoods.getZanNub() + 1;
                 updateZan(objectId, totalNub);
             }
         });
     }
 
     public void substractZan(final String objectId) {
-        BmobQuery<shop_goods> bmobQuery = new BmobQuery<>();
-        bmobQuery.getObject(objectId, new QueryListener<shop_goods>() {
+        BmobQuery<shopGoods> bmobQuery = new BmobQuery<>();
+        bmobQuery.getObject(objectId, new QueryListener<shopGoods>() {
             @Override
-            public void done(shop_goods shopGoods, BmobException e) {
+            public void done(shopGoods shopGoods, BmobException e) {
                 if (e != null) {
                     return;
                 }
-                int totalNub = shopGoods.getZan_nub() - 1;
+                int totalNub = shopGoods.getZanNub() - 1;
                 updateZan(objectId, totalNub);
             }
         });
@@ -533,11 +517,11 @@ public class BOMBOpenHelper {
     }
 
     public interface OnGoodsListCallBack {
-        void onDone(List<shop_goods> list);
+        void onDone(List<shopGoods> list);
     }
 
     public interface ImageCallback {
-        void onImageLoad(shop_goods shopgoods);
+        void onImageLoad(shopGoods shopgoods);
 
         void onError();
     }

@@ -4,7 +4,6 @@ package com.uncle.administrator.fleamarket;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.databinding.repacked.google.common.eventbus.EventBus;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -26,6 +25,7 @@ import com.uncle.administrator.fleamarket.Conversation.ConversationFragment;
 import com.uncle.administrator.fleamarket.DTO.User_account;
 import com.uncle.administrator.fleamarket.Home.HomeFragment;
 import com.uncle.administrator.fleamarket.Mine.MineFragment;
+import com.uncle.administrator.fleamarket.Sell.SellActivity;
 
 import cn.bmob.newim.BmobIM;
 import cn.bmob.newim.bean.BmobIMUserInfo;

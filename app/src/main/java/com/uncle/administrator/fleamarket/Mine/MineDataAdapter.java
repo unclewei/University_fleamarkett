@@ -5,7 +5,7 @@ import android.databinding.ViewDataBinding;
 
 import com.uncle.Base.BaseAdapter;
 import com.uncle.Base.BaseBindViewHolder;
-import com.uncle.administrator.fleamarket.DTO.shop_goods;
+import com.uncle.administrator.fleamarket.DTO.shopGoods;
 import com.uncle.administrator.fleamarket.R;
 
 /**
@@ -14,7 +14,7 @@ import com.uncle.administrator.fleamarket.R;
  * @date 2018/3/19 0019
  */
 
-public class MineDataAdapter extends BaseAdapter<shop_goods> {
+public class MineDataAdapter extends BaseAdapter<shopGoods> {
     public MineDataAdapter(Context context) {
         super(context);
     }
@@ -25,22 +25,22 @@ public class MineDataAdapter extends BaseAdapter<shop_goods> {
     }
 
     @Override
-    protected BaseBindViewHolder<shop_goods> createHolder(ViewDataBinding binding) {
-        return new BaseBindViewHolder<shop_goods>(binding) {
+    protected BaseBindViewHolder<shopGoods> createHolder(ViewDataBinding binding) {
+        return new BaseBindViewHolder<shopGoods>(binding) {
             @Override
-            public void bindTo(BaseBindViewHolder<shop_goods> holder, shop_goods item) {
+            public void bindTo(BaseBindViewHolder<shopGoods> holder, shopGoods item) {
                 binding.setVariable(getPosition(),item);
             }
         };
     }
 
     @Override
-    protected boolean areItemsSame(shop_goods oldItem, shop_goods newItem) {
+    protected boolean areItemsSame(shopGoods oldItem, shopGoods newItem) {
         return false;
     }
 
     @Override
-    protected boolean areContentsSame(shop_goods oldItem, shop_goods newItem) {
+    protected boolean areContentsSame(shopGoods oldItem, shopGoods newItem) {
         return false;
     }
 }

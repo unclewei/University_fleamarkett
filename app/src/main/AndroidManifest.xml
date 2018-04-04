@@ -48,7 +48,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.uncle.administrator.fleamarket.TextActivity" />
-        <activity android:name="com.uncle.administrator.fleamarket.SellActivity" />
+        <activity android:name="com.uncle.administrator.fleamarket.Sell.SellActivity" />
         <activity android:name="com.uncle.administrator.fleamarket.GoodsDetailsActivity" />
         <activity android:name="com.uncle.administrator.fleamarket.ViewPagerActivity" />
         <activity android:name=".chat.ChatActivity" />
@@ -57,8 +57,11 @@
         <activity android:name="com.uncle.administrator.fleamarket.Login_Activity.Login_activity3_setname" />
         <activity android:name="com.uncle.administrator.fleamarket.ChangePersonDataActivity" />
         <activity android:name="com.uncle.administrator.fleamarket.NullActivity" />
-        <activity android:name=".Mine.MineDataActivity"/>
+        <activity android:name=".Mine.MineDataActivity" />
         <activity android:name="com.uncle.administrator.fleamarket.Login_Activity.welcome_page" />
+        <activity
+            android:name="com.lzy.imagepicker.ui.ImagePreviewDelActivity"
+            android:theme="@style/ImagePickerThemeFullScreen" />
 
         <receiver android:name="cn.bmob.newim.core.ConnectChangeReceiver">
             <intent-filter>
