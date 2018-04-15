@@ -1,4 +1,4 @@
-package com.uncle.administrator.fleamarket.DTO;
+package com.uncle.DTO;
 
 import java.text.SimpleDateFormat;
 

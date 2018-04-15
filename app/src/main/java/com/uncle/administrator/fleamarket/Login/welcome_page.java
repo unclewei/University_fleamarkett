@@ -1,4 +1,4 @@
-package com.uncle.administrator.fleamarket.Login_Activity;
+package com.uncle.administrator.fleamarket.Login;
 
 import android.app.Activity;
 import android.content.Context;
@@ -69,7 +69,7 @@ public class welcome_page extends Activity {
                         SharedPreferences sharedPreferences = getSharedPreferences("account", Context.MODE_PRIVATE);
                         String account = sharedPreferences.getString("Login", "");
                         if (account.equals(null) || account.length() <= 0) {
-                            Intent intent = new Intent(welcome_page.this, Login_activity_1.class);
+                            Intent intent = new Intent(welcome_page.this, LoginActivity.class);
                             startActivity(intent);
                             finish();
                         } else {

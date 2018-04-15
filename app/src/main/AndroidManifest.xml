@@ -52,13 +52,13 @@
         <activity android:name="com.uncle.administrator.fleamarket.GoodsDetailsActivity" />
         <activity android:name="com.uncle.administrator.fleamarket.ViewPagerActivity" />
         <activity android:name=".chat.ChatActivity" />
-        <activity android:name="com.uncle.administrator.fleamarket.Login_Activity.Login_activity_2" />
-        <activity android:name="com.uncle.administrator.fleamarket.Login_Activity.Login_activity_1" />
-        <activity android:name="com.uncle.administrator.fleamarket.Login_Activity.Login_activity3_setname" />
+        <activity android:name="com.uncle.administrator.fleamarket.Login.Login_activity_2" />
+        <activity android:name="com.uncle.administrator.fleamarket.Login.LoginActivity" />
+        <activity android:name="com.uncle.administrator.fleamarket.Login.Login_activity3_setname" />
         <activity android:name="com.uncle.administrator.fleamarket.ChangePersonDataActivity" />
         <activity android:name="com.uncle.administrator.fleamarket.NullActivity" />
         <activity android:name=".Mine.MineDataActivity" />
-        <activity android:name="com.uncle.administrator.fleamarket.Login_Activity.welcome_page" />
+        <activity android:name="com.uncle.administrator.fleamarket.Login.welcome_page" />
         <activity
             android:name="com.lzy.imagepicker.ui.ImagePreviewDelActivity"
             android:theme="@style/ImagePickerThemeFullScreen" />

@@ -5,12 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.uncle.administrator.fleamarket.DTO.ConversationDTO;
-import com.uncle.administrator.fleamarket.DTO.User_account;
-import com.uncle.bomb.BOMBOpenHelper;
+import com.uncle.DTO.ConversationDTO;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**

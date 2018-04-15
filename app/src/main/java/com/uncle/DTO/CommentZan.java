@@ -1,4 +1,4 @@
-package com.uncle.administrator.fleamarket.DTO;
+package com.uncle.DTO;
 
 import cn.bmob.v3.BmobObject;
 

@@ -1,4 +1,4 @@
-package com.uncle.administrator.fleamarket.DTO;
+package com.uncle.DTO;
 
 import java.util.ArrayList;
 
@@ -9,7 +9,7 @@ import cn.bmob.v3.BmobObject;
  * @date 2017/4/15 0015
  */
 
-public class User_account extends BmobObject {
+public class Profile extends BmobObject {
 
     private String account;
     private String avatar;
@@ -19,12 +19,12 @@ public class User_account extends BmobObject {
     private ArrayList<String> zanList;
     private ArrayList<String> commentList;
     private ArrayList<String> scanList;
-    public User_account() {
+    public Profile() {
     }
 
-    public User_account(String avatar, String name, String college,
-                        String organization, ArrayList<String> zanList,
-                        ArrayList<String> commentList, ArrayList<String> scanList) {
+    public Profile(String avatar, String name, String college,
+                   String organization, ArrayList<String> zanList,
+                   ArrayList<String> commentList, ArrayList<String> scanList) {
 
         this.avatar = avatar;
         this.name = name;

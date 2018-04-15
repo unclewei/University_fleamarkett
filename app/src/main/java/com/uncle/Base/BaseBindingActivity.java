@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.google.gson.Gson;
-import com.uncle.administrator.fleamarket.DTO.User_account;
+import com.uncle.DTO.Profile;
 
 /**
  * @author nnv
@@ -19,7 +19,7 @@ import com.uncle.administrator.fleamarket.DTO.User_account;
 public abstract class BaseBindingActivity<T extends ViewDataBinding> extends Activity {
 
     protected T binding;
-    protected User_account myAccount;
+    protected Profile myAccount;
     public String TAG = this.getClass().getName();
 
     @Override
@@ -41,11 +41,11 @@ public abstract class BaseBindingActivity<T extends ViewDataBinding> extends Act
         SharedPreferences sp = this.getSharedPreferences("account", Context.MODE_PRIVATE);
         String string = sp.getString("myAccount", null);
         if (string != null) {
-            myAccount = new Gson().fromJson(string, User_account.class);
+            myAccount = new Gson().fromJson(string, Profile.class);
         }
     }
 
-    public void saveMyAccountFromSharePerFences(User_account myAccount){
+    public void saveMyAccountFromSharePerFences(Profile myAccount){
         SharedPreferences sharedPreferences = this.getSharedPreferences("account", Context.MODE_WORLD_WRITEABLE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("myAccount",new Gson().toJson(myAccount));

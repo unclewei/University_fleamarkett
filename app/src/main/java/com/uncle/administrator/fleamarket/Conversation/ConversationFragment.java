@@ -5,12 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 
 import com.uncle.Base.BaseBindAdapter;
 import com.uncle.Base.BaseBindingFragment;
-import com.uncle.administrator.fleamarket.DTO.ConversationDTO;
+import com.uncle.DTO.ConversationDTO;
 import com.uncle.administrator.fleamarket.R;
 import com.uncle.administrator.fleamarket.chat.ChatActivity;
 import com.uncle.administrator.fleamarket.databinding.ConversationFragmentBinding;

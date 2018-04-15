@@ -14,9 +14,9 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.uncle.Base.BaseBindingActivity;
 import com.uncle.Util.KeyboardUtil;
-import com.uncle.administrator.fleamarket.DTO.CommentZan;
-import com.uncle.administrator.fleamarket.DTO.User_account;
-import com.uncle.administrator.fleamarket.DTO.shopGoods;
+import com.uncle.DTO.CommentZan;
+import com.uncle.DTO.Profile;
+import com.uncle.DTO.shopGoods;
 import com.uncle.administrator.fleamarket.chat.ChatActivity;
 import com.uncle.administrator.fleamarket.databinding.ActivityGoodsDetailBinding;
 import com.uncle.bomb.BOMBOpenHelper;
@@ -43,7 +43,7 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
     private String goodsOwnerObjectId;
     private ArrayList zanList = null;
     private ArrayList commentList = null;
-    private User_account pageAccount;
+    private Profile pageAccount;
 
     @Override
     protected void bindData(ActivityGoodsDetailBinding dataBinding) {
@@ -88,7 +88,7 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
     public void findAccountDataFromBomb(final int messageType, String targetObject) {
         bomb.findAccountDataAlone(targetObject, new BOMBOpenHelper.FindAccountDataAloneCallback() {
             @Override
-            public void onSuccess(User_account object) {
+            public void onSuccess(Profile object) {
                 pageAccount = object;
                 Message message = new Message();
                 message.what = messageType;
@@ -292,7 +292,7 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
             super.handleMessage(msg);
             switch (msg.what) {
                 case GET_GOODS_OWNER_ACCOUNT:
-                    pageAccount = (User_account) msg.obj;
+                    pageAccount = (Profile) msg.obj;
                     break;
                 default:
                     break;

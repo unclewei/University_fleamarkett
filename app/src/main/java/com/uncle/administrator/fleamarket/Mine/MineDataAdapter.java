@@ -5,7 +5,7 @@ import android.databinding.ViewDataBinding;
 
 import com.uncle.Base.BaseAdapter;
 import com.uncle.Base.BaseBindViewHolder;
-import com.uncle.administrator.fleamarket.DTO.shopGoods;
+import com.uncle.DTO.shopGoods;
 import com.uncle.administrator.fleamarket.R;
 
 /**

@@ -18,7 +18,7 @@ import com.uncle.administrator.fleamarket.MainActivity;
 import com.uncle.administrator.fleamarket.R;
 import com.uncle.administrator.fleamarket.databinding.ActivitySellBinding;
 import com.uncle.bomb.BOMBOpenHelper;
-import com.uncle.administrator.fleamarket.DTO.shopGoods;
+import com.uncle.DTO.shopGoods;
 
 import java.util.ArrayList;
 
@@ -105,7 +105,7 @@ public class SellActivity extends BaseBindingActivity<ActivitySellBinding> imple
                     final shopGoods shopgoods = new shopGoods(imgFileList
                             , title, detail, price, null, 0,
                             imgFileList.size(), myAccount.getObjectId(), myAccount.getCollege(),
-                            myAccount.getOrganization(), myAccount.getAccount(), myAccount.getName());
+                            myAccount.getOrganization(), myAccount.getAvatar(), myAccount.getName());
                     final BOMBOpenHelper bomb = new BOMBOpenHelper();
                     Runnable runnable = new Runnable() {
                         @Override

@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import com.uncle.Base.BaseBindAdapter;
 import com.uncle.Base.BaseBindingActivity;
 import com.uncle.Util.ToastUtil;
-import com.uncle.administrator.fleamarket.DTO.shopGoods;
+import com.uncle.DTO.shopGoods;
 import com.uncle.administrator.fleamarket.GoodsDetailsActivity;
 import com.uncle.administrator.fleamarket.R;
 import com.uncle.administrator.fleamarket.databinding.ActivityMineDataBinding;

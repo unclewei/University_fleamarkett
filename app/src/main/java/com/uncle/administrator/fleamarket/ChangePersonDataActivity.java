@@ -32,7 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.uncle.bomb.BOMBOpenHelper;
-import com.uncle.administrator.fleamarket.DTO.User_account;
+import com.uncle.DTO.Profile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -167,7 +167,7 @@ public class ChangePersonDataActivity extends Activity {
 
     //联网到云端保存数据
     private void updateDataOnBomb(){
-        User_account userAccount = new User_account();
+        Profile userAccount = new Profile();
         userAccount.setCollege(college);
         userAccount.setOrganization(myorganization);
         userAccount.setAvatar(urlpath);

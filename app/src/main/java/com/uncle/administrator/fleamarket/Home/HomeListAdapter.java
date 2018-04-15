@@ -7,7 +7,7 @@ import android.databinding.ViewDataBinding;
 import com.bumptech.glide.Glide;
 import com.uncle.Base.BaseAdapter;
 import com.uncle.Base.BaseBindViewHolder;
-import com.uncle.administrator.fleamarket.DTO.shopGoods;
+import com.uncle.DTO.shopGoods;
 import com.uncle.administrator.fleamarket.R;
 import com.uncle.administrator.fleamarket.databinding.AdapterHomeBinding;
 
