@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="module"
+            type="com.uncle.administrator.fleamarket.Login.LoginVM" />
+    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,7 +21,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="50dp"
             android:text="登录"
-            android:textColor="@color/base_color_text_black"
+            android:textColor="@color/orange"
             android:textSize="24sp" />
 
         <LinearLayout
@@ -38,7 +44,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="null"
+                android:background="@null"
                 android:ellipsize="end"
                 android:hint="如果未有注册将会自动注册"
                 android:inputType="number"
@@ -51,6 +57,7 @@
                 android:id="@+id/img_delete"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                android:onClick="@{module::deleteNub}"
                 android:padding="5dp"
                 android:src="@drawable/bmob_update_close_bg_tap" />
         </LinearLayout>
@@ -83,7 +90,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="null"
+                android:background="@null"
                 android:ellipsize="end"
                 android:hint="如果未有注册将会自动注册"
                 android:inputType="number"
@@ -98,6 +105,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/btn_bg_border_orange"
                 android:gravity="center"
+                android:onClick="@{module::sendSMSMessage}"
                 android:paddingBottom="5dp"
                 android:paddingTop="5dp"
                 android:text="获取验证码"
@@ -120,6 +128,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/btn_bg_full_orange"
+            android:onClick="@{module::login}"
             android:text="登 录"
             android:textColor="#FFF" />
 

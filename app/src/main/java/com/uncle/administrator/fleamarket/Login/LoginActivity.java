@@ -13,6 +13,8 @@ public class LoginActivity extends BaseBindingActivity<LoginActivityBinding> {
 
     @Override
     protected void bindData(LoginActivityBinding dataBinding) {
+        LoginVM loginVM = new LoginVM(LoginActivity.this, binding);
+        binding.setModule(loginVM);
 
     }
 
@@ -20,7 +22,6 @@ public class LoginActivity extends BaseBindingActivity<LoginActivityBinding> {
     protected int getLayoutId() {
         return R.layout.login_activity;
     }
-
 
 
 }

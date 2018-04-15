@@ -32,6 +32,7 @@
     <color name="color_1e1e1e">#1e1e1e</color>
     <color name="color_b4">#b4b4b4</color>
     <color name="white_transparent">#81ffffff</color>
+    <color name="gray_transparent">#81b4b4b4</color>
     <color name="white">#fff</color>
     <color name="orange">#eb6828</color>
 </resources>

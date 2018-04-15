@@ -1,11 +1,9 @@
 package com.uncle.administrator.fleamarket.Login;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
@@ -16,15 +14,19 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.uncle.Base.BaseBindingActivity;
 import com.uncle.administrator.fleamarket.MainActivity;
 import com.uncle.administrator.fleamarket.R;
+import com.uncle.administrator.fleamarket.databinding.SetUserDataActivityBinding;
 import com.uncle.bomb.BOMBOpenHelper;
 
 /**
- * Created by Administrator on 2017/5/10 0010.
+ *
+ * @author Administrator
+ * @date 2017/5/10 0010
  */
 
-public class Login_activity3_setname extends Activity {
+public class SetUesrDataActivity extends BaseBindingActivity<SetUserDataActivityBinding> {
     private EditText editText;
     private Spinner spinner1, spinner2, spinner3, spinner4;
     private Button button;
@@ -36,11 +38,13 @@ public class Login_activity3_setname extends Activity {
     private ProgressDialog m_pDialog; //声明进度条对话框
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_activity3_setname);
-        init();
+    protected void bindData(SetUserDataActivityBinding dataBinding) {
 
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.set_user_data_activity;
     }
 
     private void init() {
@@ -84,14 +88,14 @@ public class Login_activity3_setname extends Activity {
 
     private void Login_set_data() {
         if (editText.getText().toString().length() == 0) {
-            Toast.makeText(Login_activity3_setname.this, "请输入你的昵称", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SetUesrDataActivity.this, "请输入你的昵称", Toast.LENGTH_SHORT).show();
             handler.sendEmptyMessage(0);
         } else {
             String name = editText.getText().toString();
             SharedPreferences sharedPreferences = getSharedPreferences("account", Context.MODE_WORLD_READABLE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("nick_name", name);
-            editor.putString("Login", "success");
+            editor.putString("login", "success");
             editor.putString("college", college);
             editor.putString("organization", organization);
             editor.commit();
@@ -101,7 +105,7 @@ public class Login_activity3_setname extends Activity {
                 @Override
                 public void done() {
                     handler.sendEmptyMessage(0);
-                    Intent intent = new Intent(Login_activity3_setname.this, MainActivity.class);
+                    Intent intent = new Intent(SetUesrDataActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();
                 }
@@ -116,7 +120,7 @@ public class Login_activity3_setname extends Activity {
 
     //菊花转圈圈
     private void wait_look() {
-        m_pDialog = ProgressDialog.show(Login_activity3_setname.this, null, "登录中…");
+        m_pDialog = ProgressDialog.show(SetUesrDataActivity.this, null, "登录中…");
         new Thread() {
             @Override
             public void run() {

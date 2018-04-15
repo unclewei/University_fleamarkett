@@ -67,7 +67,7 @@ public class welcome_page extends Activity {
                     tv.setText(time);
                     if (time.equals("0")) {
                         SharedPreferences sharedPreferences = getSharedPreferences("account", Context.MODE_PRIVATE);
-                        String account = sharedPreferences.getString("Login", "");
+                        String account = sharedPreferences.getString("login", "");
                         if (account.equals(null) || account.length() <= 0) {
                             Intent intent = new Intent(welcome_page.this, LoginActivity.class);
                             startActivity(intent);
