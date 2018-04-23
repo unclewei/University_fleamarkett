@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:text="手机号"
-                android:textColor="@color/base_color_text_black" />
+                android:textColor="@color/color_text_black" />
 
             <EditText
                 android:id="@+id/et_nub"
@@ -50,7 +50,7 @@
                 android:inputType="number"
                 android:lines="1"
                 android:maxLength="11"
-                android:textColor="@color/base_color_text_black"
+                android:textColor="@color/color_text_black"
                 android:textSize="14sp" />
 
             <ImageView
@@ -83,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:text="验证码"
-                android:textColor="@color/base_color_text_black" />
+                android:textColor="@color/color_text_black" />
 
             <EditText
                 android:id="@+id/et_code"
@@ -92,11 +92,11 @@
                 android:layout_weight="1"
                 android:background="@null"
                 android:ellipsize="end"
-                android:hint="如果未有注册将会自动注册"
+                android:hint="请输入验证码"
                 android:inputType="number"
                 android:lines="1"
                 android:maxLength="6"
-                android:textColor="@color/base_color_text_black"
+                android:textColor="@color/color_text_black"
                 android:textSize="14dp" />
 
             <TextView

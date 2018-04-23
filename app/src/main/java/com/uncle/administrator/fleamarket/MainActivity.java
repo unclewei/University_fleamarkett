@@ -95,7 +95,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             myAccount = new Gson().fromJson(string, Profile.class);
             return;
         }
-        myAccount = new Profile("http://bmob-cdn-8783.b0.upaiyun.com/2017/10/19/a9b5ff14ae814db1abe69f24eebaf01b.jpg",
+        myAccount = new Profile("18219111588", "http://bmob-cdn-8783.b0.upaiyun.com/2017/10/19/a9b5ff14ae814db1abe69f24eebaf01b.jpg",
                 "威", "五邑大学", "计算机学院", null, null, null);
         myAccount.setObjectId("a646d91303");
         saveMyAccountFromSharePerFences(this, myAccount);

@@ -5,7 +5,7 @@
 
         <variable
             name="module"
-            type="com.uncle.administrator.fleamarket.DTO.shopGoods" />
+            type="com.uncle.DTO.shopGoods" />
     </data>
 
     <android.support.v7.widget.CardView

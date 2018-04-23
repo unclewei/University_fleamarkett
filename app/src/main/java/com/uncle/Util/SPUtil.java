@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 /**
- *
  * @author Administrator
  * @date 2018/4/15 0015
  */
@@ -28,8 +27,8 @@ public class SPUtil {
         this.context = context;
     }
 
-    public void saveSP(String name, String key, String date) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(name, Context.MODE_WORLD_WRITEABLE);
+    public void saveSP(String key, String date) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("account", Context.MODE_WORLD_WRITEABLE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(key, date);
         editor.commit();

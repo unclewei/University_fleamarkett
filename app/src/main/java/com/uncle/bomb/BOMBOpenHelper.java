@@ -298,7 +298,11 @@ public class BOMBOpenHelper {
         profile.save(new SaveListener<String>() {
             @Override
             public void done(String s, BmobException e) {
-                addAccountCallback.onSuccess(s);
+                if (e == null) {
+                    addAccountCallback.onSuccess(s);
+                    return;
+                }
+                addAccountCallback.onFail(e.toString());
             }
         });
     }
@@ -441,6 +445,8 @@ public class BOMBOpenHelper {
 
     public interface AddAccountCallback {
         public void onSuccess(String object);
+
+        void onFail(String failResult);
     }
 
     public interface LoginUpdateSchoolCallback {

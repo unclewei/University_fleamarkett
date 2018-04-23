@@ -35,9 +35,8 @@
         <meta-data
             android:name="Bmob_APP_KEY"
             android:value="144dbb1fbca09ce5d3af201a05c54628" />
-
         <activity
-            android:name="com.uncle.administrator.fleamarket.MainActivity"
+            android:name="com.uncle.administrator.fleamarket.Login.LoginActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar">
@@ -52,7 +51,7 @@
         <activity android:name="com.uncle.administrator.fleamarket.GoodsDetailsActivity" />
         <activity android:name="com.uncle.administrator.fleamarket.ViewPagerActivity" />
         <activity android:name=".chat.ChatActivity" />
-        <activity android:name="com.uncle.administrator.fleamarket.Login.LoginActivity" />
+        <activity android:name="com.uncle.administrator.fleamarket.MainActivity" />
         <activity android:name="com.uncle.administrator.fleamarket.Login.SetUesrDataActivity" />
         <activity android:name="com.uncle.administrator.fleamarket.ChangePersonDataActivity" />
         <activity android:name="com.uncle.administrator.fleamarket.NullActivity" />

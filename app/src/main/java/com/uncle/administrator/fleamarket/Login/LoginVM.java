@@ -62,7 +62,7 @@ public class LoginVM {
     }
 
     public void login(View view) {
-        final String code = binding.etCode.getText().toString().trim();
+        String code = binding.etCode.getText().toString().trim();
         if (TextUtils.isEmpty(code)) {
             ToastUtil.show(activity, "请出入验证码");
             return;
@@ -72,10 +72,11 @@ public class LoginVM {
             @Override
             public void done(BmobException ex) {
                 if (ex == null) {
-                    findUesrLogined();
+                    findUserLogined();
                     return;
                 }
                 ToastUtil.show(activity, ex.toString());
+                DialogUtil.getInstance(activity).dismiss();
             }
         });
     }
@@ -85,14 +86,14 @@ public class LoginVM {
     }
 
 
-    private void findUesrLogined() {
+    private void findUserLogined() {
         BOMBOpenHelper.getInstance().findAccount(phoneNub, new BOMBOpenHelper.FindAccountCallback() {
             @Override
             public void onSuccess(List<Profile> list) {
                 DialogUtil.getInstance(activity).dismiss();
                 ToastUtil.show(activity, "验证成功");
                 Profile profile = list.get(0);
-                SPUtil.getInstance(activity).saveSP("account", "profile", new Gson().toJson(profile));
+                SPUtil.getInstance(activity).saveSP("profile", new Gson().toJson(profile));
                 Intent intent = new Intent(activity, MainActivity.class);
                 activity.startActivity(intent);
                 activity.finish();
@@ -104,6 +105,7 @@ public class LoginVM {
                 DialogUtil.getInstance(activity).dismiss();
                 if (failCode == 9015) {
                     Intent intent = new Intent(activity, SetUesrDataActivity.class);
+                    intent.putExtra("phoneNub", phoneNub);
                     activity.startActivity(intent);
                     return;
                 }
@@ -123,7 +125,13 @@ public class LoginVM {
                 // TODO Auto-generated method stub
                 if (ex == null) {
                     loginHandler.sendEmptyMessage(SEND_SMS_SUCCESS);
+                    return;
                 }
+                if (ex.getErrorCode() == 10010) {
+                    ToastUtil.show(activity, "操作过于频繁，请稍后再试");
+                    return;
+                }
+                ToastUtil.show(activity, ex.toString());
             }
         });
     }

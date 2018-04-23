@@ -134,7 +134,7 @@
                     android:background="@drawable/btn_chat_voice_selector"
                     android:gravity="center"
                     android:onClick="@{module::onVoiceClick}"
-                    android:textColor="@color/base_color_text_black" />
+                    android:textColor="@color/color_text_black" />
 
                 <Button
                     android:id="@+id/btn_chat_keyboard"
@@ -143,7 +143,7 @@
                     android:background="@drawable/btn_chat_keyboard_selector"
                     android:gravity="center"
                     android:onClick="@{module::onKeyClick}"
-                    android:textColor="@color/base_color_text_black"
+                    android:textColor="@color/color_text_black"
                     android:visibility="gone" />
 
                 <Button

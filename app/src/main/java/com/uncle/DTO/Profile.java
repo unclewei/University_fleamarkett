@@ -11,7 +11,7 @@ import cn.bmob.v3.BmobObject;
 
 public class Profile extends BmobObject {
 
-    private String account;
+    private String phoneNub;
     private String avatar;
     private String name;
     private String college;
@@ -19,13 +19,14 @@ public class Profile extends BmobObject {
     private ArrayList<String> zanList;
     private ArrayList<String> commentList;
     private ArrayList<String> scanList;
+
     public Profile() {
     }
 
-    public Profile(String avatar, String name, String college,
+    public Profile(String phoneNub, String avatar, String name, String college,
                    String organization, ArrayList<String> zanList,
                    ArrayList<String> commentList, ArrayList<String> scanList) {
-
+        this.phoneNub = phoneNub;
         this.avatar = avatar;
         this.name = name;
         this.college = college;
@@ -75,12 +76,12 @@ public class Profile extends BmobObject {
         this.organization = organization;
     }
 
-    public String getAccount() {
-        return account;
+    public String getPhoneNub() {
+        return phoneNub;
     }
 
-    public void setAccount(String account) {
-        this.account = account;
+    public void setPhoneNub(String phoneNub) {
+        this.phoneNub = phoneNub;
     }
 
     public String getAvatar() {
