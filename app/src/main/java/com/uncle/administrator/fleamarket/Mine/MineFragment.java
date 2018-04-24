@@ -29,7 +29,7 @@ public class MineFragment extends BaseBindingFragment<MineFragmentBinding> {
     }
 
     private void initData() {
-        String profileStr = SPUtil.getInstance(getActivity()).getData("account", "profile");
+        String profileStr = SPUtil.getInstance(getActivity()).getData("profile");
         Profile profile = new Gson().fromJson(profileStr, Profile.class);
         String school = profile.getCollege() + "·" + profile.getOrganization();
         binding.tvName.setText(profile.getName());

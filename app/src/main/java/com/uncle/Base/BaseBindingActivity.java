@@ -19,7 +19,7 @@ import com.uncle.DTO.Profile;
 public abstract class BaseBindingActivity<T extends ViewDataBinding> extends Activity {
 
     protected T binding;
-    protected Profile myAccount;
+    protected Profile profile;
     public String TAG = this.getClass().getName();
 
     @Override
@@ -39,16 +39,16 @@ public abstract class BaseBindingActivity<T extends ViewDataBinding> extends Act
 
     private void getMyAccountFromSharePerFences() {
         SharedPreferences sp = this.getSharedPreferences("account", Context.MODE_PRIVATE);
-        String string = sp.getString("myAccount", null);
+        String string = sp.getString("profile", null);
         if (string != null) {
-            myAccount = new Gson().fromJson(string, Profile.class);
+            profile = new Gson().fromJson(string, Profile.class);
         }
     }
 
     public void saveMyAccountFromSharePerFences(Profile myAccount){
         SharedPreferences sharedPreferences = this.getSharedPreferences("account", Context.MODE_WORLD_WRITEABLE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("myAccount",new Gson().toJson(myAccount));
+        editor.putString("profile",new Gson().toJson(myAccount));
         editor.commit();
     }
 

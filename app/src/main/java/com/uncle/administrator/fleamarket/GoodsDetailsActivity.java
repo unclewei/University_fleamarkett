@@ -65,9 +65,9 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
     }
 
     private void getDataFromSharedPerfences() {
-        binding.tvOrganization.setText(myAccount.getOrganization());
-        zanList = myAccount.getZanList();
-        commentList = myAccount.getCommentList();
+        binding.tvOrganization.setText(profile.getOrganization());
+        zanList = profile.getZanList();
+        commentList = profile.getCommentList();
         if (zanList == null) {
             zanList = new ArrayList();
             isZan = false;
@@ -107,7 +107,7 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
     private class NavToChat implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            if (goodsOwnerObjectId.equals(myAccount.getObjectId())) {
+            if (goodsOwnerObjectId.equals(profile.getObjectId())) {
                 Toast.makeText(GoodsDetailsActivity.this, "不能自己与自己聊天", Toast.LENGTH_SHORT).show();
             } else {
                 navToChat(pageAccount.getObjectId(), pageAccount.getName(), pageAccount.getAvatar());
@@ -210,21 +210,21 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
                 }
                 if (replyUserName == null) {
                     binding.etCommentInput.setHint("快点留下你的评论吧");
-                    textContext = myAccount.getName() + " ：“" + textContext + "”";
+                    textContext = profile.getName() + " ：“" + textContext + "”";
                     getNewTextView(textContext);
                     KeyboardUtil.closeKeyBoard(GoodsDetailsActivity.this, binding.etCommentInput);
                     binding.etCommentInput.setText(null);
                     Toast.makeText(GoodsDetailsActivity.this, "评论成功", Toast.LENGTH_SHORT).show();
-                    CommentZan commentZan = new CommentZan(textContext, pageGoodsID, myAccount.getName(), "name2", 0);
+                    CommentZan commentZan = new CommentZan(textContext, pageGoodsID, profile.getName(), "name2", 0);
                     bomb.addCommentZan(commentZan);
                     return;
                 }
-                textContext = "   " + myAccount.getName() + "  回复了" + replyUserName + "：“" + textContext + "”";
+                textContext = "   " + profile.getName() + "  回复了" + replyUserName + "：“" + textContext + "”";
                 getNewTextView(textContext);
                 KeyboardUtil.closeKeyBoard(GoodsDetailsActivity.this, binding.etCommentInput);
                 binding.etCommentInput.setText(null);
                 Toast.makeText(GoodsDetailsActivity.this, "回复成功", Toast.LENGTH_SHORT).show();
-                CommentZan commentZan = new CommentZan(textContext, pageGoodsID, myAccount.getName(), "name2", 1);
+                CommentZan commentZan = new CommentZan(textContext, pageGoodsID, profile.getName(), "name2", 1);
                 bomb.addCommentZan(commentZan);
                 replyUserName = null;
 
@@ -303,8 +303,8 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        myAccount.setZanList(zanList);
-        myAccount.setCommentList(commentList);
-        saveMyAccountFromSharePerFences(myAccount);
+        profile.setZanList(zanList);
+        profile.setCommentList(commentList);
+        saveMyAccountFromSharePerFences(profile);
     }
 }

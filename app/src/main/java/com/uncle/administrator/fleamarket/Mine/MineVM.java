@@ -57,7 +57,7 @@ public class MineVM {
     public void saveMyAccountFromSharePerFences(Context context, Profile myAccount) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("account", Context.MODE_WORLD_WRITEABLE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("myAccount", new Gson().toJson(myAccount));
+        editor.putString("profile", new Gson().toJson(myAccount));
         editor.commit();
     }
 }

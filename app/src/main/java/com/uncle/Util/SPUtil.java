@@ -34,7 +34,7 @@ public class SPUtil {
         editor.commit();
     }
 
-    public String getData(String name, String key) {
+    public String getData(String key) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("account", Context.MODE_PRIVATE);
         return sharedPreferences.getString(key, null);
     }

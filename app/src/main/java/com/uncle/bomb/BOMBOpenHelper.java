@@ -263,17 +263,21 @@ public class BOMBOpenHelper {
     //```````账号的数据表```````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````
 
     //通过id找到一个账号
-    public void findAccount(final String account, final FindAccountCallback accountCallback) {
+    public void findAccount(final String phoneNub, final FindAccountCallback accountCallback) {
         BmobQuery<Profile> query = new BmobQuery<>();
-        query.addWhereEqualTo("account", account);
+        query.addWhereEqualTo("phoneNub", phoneNub);
         query.findObjects(new FindListener<Profile>() {
             @Override
             public void done(List<Profile> list, BmobException e) {
-                if (e == null) {
+                if (e == null && list.size() > 0) {
                     accountCallback.onSuccess(list);
-                } else {
-                    accountCallback.onFail(e.getErrorCode());
+                    return;
                 }
+                if (e != null) {
+                    accountCallback.onFail(e.getErrorCode());
+                    return;
+                }
+                accountCallback.onFail(0);
             }
         });
     }

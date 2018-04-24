@@ -104,8 +104,8 @@ public class SellActivity extends BaseBindingActivity<ActivitySellBinding> imple
                 } else {//开启数据库
                     final shopGoods shopgoods = new shopGoods(imgFileList
                             , title, detail, price, null, 0,
-                            imgFileList.size(), myAccount.getObjectId(), myAccount.getCollege(),
-                            myAccount.getOrganization(), myAccount.getAvatar(), myAccount.getName());
+                            imgFileList.size(), profile.getObjectId(), profile.getCollege(),
+                            profile.getOrganization(), profile.getAvatar(), profile.getName());
                     final BOMBOpenHelper bomb = new BOMBOpenHelper();
                     Runnable runnable = new Runnable() {
                         @Override

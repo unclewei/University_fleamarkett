@@ -1,9 +1,7 @@
 package com.uncle.administrator.fleamarket;
 
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -20,9 +18,10 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.uncle.Util.IMMLeaks;
-import com.uncle.administrator.fleamarket.Conversation.ConversationFragment;
 import com.uncle.DTO.Profile;
+import com.uncle.Util.IMMLeaks;
+import com.uncle.Util.SPUtil;
+import com.uncle.administrator.fleamarket.Conversation.ConversationFragment;
 import com.uncle.administrator.fleamarket.Home.HomeFragment;
 import com.uncle.administrator.fleamarket.Mine.MineFragment;
 import com.uncle.administrator.fleamarket.Sell.SellActivity;
@@ -43,14 +42,14 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private Fragment the_thirs;
     private Fragment currentFragment;
     private ImageView knowImg, iWantKnowImg, meImg;
-    protected Profile myAccount;
+    protected Profile profile;
     private long exitTime = 0;//点击两次退出程序的计时
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        getMyAccountFromSharePerFences();
+        profile = new Gson().fromJson(SPUtil.getInstance(this).getData("profile"), Profile.class);
         connectBmob();
         initUI();
         initTab();
@@ -58,8 +57,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     private void connectBmob() {
         //TODO 连接：3.1、登录成功、注册成功或处于登录状态重新打开应用后执行连接IM服务器的操作
-        if (!TextUtils.isEmpty(myAccount.getObjectId())) {
-            BmobIM.connect(myAccount.getObjectId(), new ConnectListener() {
+        if (!TextUtils.isEmpty(profile.getObjectId())) {
+            BmobIM.connect(profile.getObjectId(), new ConnectListener() {
                 @Override
                 public void done(String uid, BmobException e) {
                     if (e == null) {
@@ -67,8 +66,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                         //服务器连接成功就发送一个更新事件，同步更新会话及主页的小红点
                         //TODO 会话：3.6、更新用户资料，用于在会话页面、聊天页面以及个人信息页面显示
                         BmobIM.getInstance().
-                                updateUserInfo(new BmobIMUserInfo(myAccount.getObjectId(),
-                                        myAccount.getName(), myAccount.getAvatar()));
+                                updateUserInfo(new BmobIMUserInfo(profile.getObjectId(),
+                                        profile.getName(), profile.getAvatar()));
                         Log.e("william   ", "链接成功");
                     } else {
                         Log.e("william   ", e.getMessage());
@@ -86,26 +85,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             //解决leancanary提示InputMethodManager内存泄露的问题
             IMMLeaks.fixFocusedViewLeak(getApplication());
         }
-    }
-
-    private void getMyAccountFromSharePerFences() {
-        SharedPreferences sp = this.getSharedPreferences("account", Context.MODE_PRIVATE);
-        String string = sp.getString("myAccount", null);
-        if (string != null) {
-            myAccount = new Gson().fromJson(string, Profile.class);
-            return;
-        }
-        myAccount = new Profile("18219111588", "http://bmob-cdn-8783.b0.upaiyun.com/2017/10/19/a9b5ff14ae814db1abe69f24eebaf01b.jpg",
-                "威", "五邑大学", "计算机学院", null, null, null);
-        myAccount.setObjectId("a646d91303");
-        saveMyAccountFromSharePerFences(this, myAccount);
-    }
-
-    public void saveMyAccountFromSharePerFences(Context context, Profile myAccount) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("account", Context.MODE_WORLD_WRITEABLE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("myAccount", new Gson().toJson(myAccount));
-        editor.commit();
     }
 
     /**

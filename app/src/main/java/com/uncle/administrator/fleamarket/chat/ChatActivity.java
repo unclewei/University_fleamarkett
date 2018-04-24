@@ -91,7 +91,7 @@ public class ChatActivity extends BaseBindingActivity<ActivityChatBinding> imple
         binding.swRefresh.setEnabled(true);
         layoutManager = new LinearLayoutManager(this);
         binding.rcView.setLayoutManager(layoutManager);
-        adapter = new ChatAdapter(this, myAccount.getObjectId(), mConversationManager);
+        adapter = new ChatAdapter(this, profile.getObjectId(), mConversationManager);
         adapter.setEmptyView(LayoutInflater.from(ChatActivity.this).inflate(R.layout.load_more_view, null));
         binding.rcView.setAdapter(adapter);
         binding.llChat.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {

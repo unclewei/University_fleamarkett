@@ -49,7 +49,7 @@ public abstract class BaseBindingFragment<T extends ViewDataBinding> extends Fra
 
     private void getMyAccountFromSharePerFences() {
         SharedPreferences sp = getActivity().getSharedPreferences("account", Context.MODE_PRIVATE);
-        String string = sp.getString("myAccount", null);
+        String string = sp.getString("profile", null);
         if (string != null) {
 
             myAccount = new Gson().fromJson(string, Profile.class);
@@ -59,7 +59,7 @@ public abstract class BaseBindingFragment<T extends ViewDataBinding> extends Fra
     public void saveMyAccountFromSharePerFences(Profile myAccount) {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("account", Context.MODE_WORLD_WRITEABLE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("myAccount",new Gson().toJson(myAccount));
+        editor.putString("profile",new Gson().toJson(myAccount));
         editor.commit();
     }
 

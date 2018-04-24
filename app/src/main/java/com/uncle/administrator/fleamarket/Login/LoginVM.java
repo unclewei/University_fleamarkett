@@ -36,7 +36,7 @@ public class LoginVM {
     private static final int SEND_SMS_SUCCESS = 0;
     private LoginActivityBinding binding;
     private LoginHandler loginHandler;
-    private String phoneNub;
+    private String phoneNub, code;
     private LoginActivity activity;
 
     public LoginVM(LoginActivity activity, LoginActivityBinding binding) {
@@ -62,7 +62,7 @@ public class LoginVM {
     }
 
     public void login(View view) {
-        String code = binding.etCode.getText().toString().trim();
+        code = binding.etCode.getText().toString().trim();
         if (TextUtils.isEmpty(code)) {
             ToastUtil.show(activity, "请出入验证码");
             return;
@@ -101,12 +101,13 @@ public class LoginVM {
 
             @Override
             public void onFail(int failCode) {
-                //数据库找不到数据
+                //数据库找不到数据,错误码 101 : 查询的 对象或Class 不存在 或者 登录接口的用户名或密码不正确
                 DialogUtil.getInstance(activity).dismiss();
-                if (failCode == 9015) {
+                if (failCode == 101) {
                     Intent intent = new Intent(activity, SetUesrDataActivity.class);
                     intent.putExtra("phoneNub", phoneNub);
                     activity.startActivity(intent);
+                    activity.finish();
                     return;
                 }
                 ToastUtil.show(activity, "验证失败，请重试");
@@ -119,12 +120,12 @@ public class LoginVM {
      * 发送号码到后台并判断返回验证码
      */
     private void sendSms(String nub) {
+        loginHandler.sendEmptyMessage(SEND_SMS_SUCCESS);
         BmobSMS.requestSMSCode(activity, nub, "登录注册验证码", new RequestSMSCodeListener() {
             @Override
             public void done(Integer smsId, BmobException ex) {
                 // TODO Auto-generated method stub
                 if (ex == null) {
-                    loginHandler.sendEmptyMessage(SEND_SMS_SUCCESS);
                     return;
                 }
                 if (ex.getErrorCode() == 10010) {
@@ -153,6 +154,7 @@ public class LoginVM {
             }
             txCode.setText("获取验证码");
             txCode.setClickable(true);
+            time = 120;
         }
 
         void setBtCode(WeakReference<TextView> btCode) {

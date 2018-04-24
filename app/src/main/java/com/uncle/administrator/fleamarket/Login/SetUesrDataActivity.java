@@ -28,7 +28,7 @@ public class SetUesrDataActivity extends BaseBindingActivity<SetUserDataActivity
 
     @Override
     protected void bindData(SetUserDataActivityBinding dataBinding) {
-
+        init();
     }
 
     @Override
@@ -42,15 +42,27 @@ public class SetUesrDataActivity extends BaseBindingActivity<SetUserDataActivity
         mItems3 = getResources().getStringArray(R.array.spinnername3);
         mItems4 = getResources().getStringArray(R.array.spinnername4);
 
-        ArrayAdapter<String> _Adapter1 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mItems1);
-        ArrayAdapter<String> _Adapter2 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mItems2);
-        ArrayAdapter<String> _Adapter3 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mItems3);
-        ArrayAdapter<String> _Adapter4 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mItems4);
-        binding.spProvince.setAdapter(_Adapter1);
-        binding.spCity.setAdapter(_Adapter2);
-        binding.spSchool.setAdapter(_Adapter3);
-        binding.spOrganization.setAdapter(_Adapter4);
-        spinner_setOnItemSelectedListener();
+        ArrayAdapter<String> adapterProvince = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mItems1);
+        ArrayAdapter<String> adapterCity = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mItems2);
+        ArrayAdapter<String> adapterSchool = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mItems3);
+        ArrayAdapter<String> adapterOrganization = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mItems4);
+
+        binding.spProvince.setDropDownVerticalOffset(30);
+        binding.spCity.setDropDownVerticalOffset(30);
+        binding.spSchool.setDropDownVerticalOffset(30);
+        binding.spOrganization.setDropDownVerticalOffset(30);
+
+        binding.spProvince.setAdapter(adapterProvince);
+        binding.spCity.setAdapter(adapterCity);
+        binding.spSchool.setAdapter(adapterSchool);
+        binding.spOrganization.setAdapter(adapterOrganization);
+
+        binding.spProvince.setSelection(0);
+        binding.spCity.setSelection(0);
+        binding.spSchool.setSelection(0);
+        binding.spOrganization.setSelection(0);
+
+        spinnerSetOnItemSelectedListener();
         click();
     }
 
@@ -73,7 +85,7 @@ public class SetUesrDataActivity extends BaseBindingActivity<SetUserDataActivity
         Intent intent = getIntent();
         String nub = intent.getStringExtra("phoneNub");
         String name = binding.etName.getText().toString();
-        Profile profile = new Profile(nub,null, name, college, organization, null, null, null);
+        Profile profile = new Profile(nub, null, name, college, organization, null, null, null);
         SPUtil.getInstance(SetUesrDataActivity.this).saveSP("profile", new Gson().toJson(profile));
         BOMBOpenHelper.getInstance().addAccount(profile, new BOMBOpenHelper.AddAccountCallback() {
             @Override
@@ -92,60 +104,29 @@ public class SetUesrDataActivity extends BaseBindingActivity<SetUserDataActivity
         });
     }
 
-    private void spinner_setOnItemSelectedListener() {
-        binding.spProvince.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                parent.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                parent.setVisibility(View.VISIBLE);
-            }
-        });//省
-
-        binding.spCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                parent.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                parent.setVisibility(View.VISIBLE);
-            }
-        });//市
-
+    private void spinnerSetOnItemSelectedListener() {
         binding.spSchool.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 college = mItems3[position];
-                parent.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 college = mItems3[0];
-                parent.setVisibility(View.VISIBLE);
             }
-        });//学校
+        });
 
         binding.spOrganization.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 organization = mItems4[position];
-                parent.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 organization = mItems4[0];
-                parent.setVisibility(View.VISIBLE);
             }
-        });//学院
+        });
     }
-
 }
