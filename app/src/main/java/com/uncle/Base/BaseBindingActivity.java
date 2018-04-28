@@ -45,11 +45,12 @@ public abstract class BaseBindingActivity<T extends ViewDataBinding> extends Act
         }
     }
 
-    public void saveMyAccountFromSharePerFences(Profile myAccount){
+    public void saveMyAccountFromSharePerFences(Profile profile){
         SharedPreferences sharedPreferences = this.getSharedPreferences("account", Context.MODE_WORLD_WRITEABLE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("profile",new Gson().toJson(myAccount));
-        editor.commit();
+        editor.putString("profile",new Gson().toJson(profile));
+        editor.apply();
+        this.profile = profile;
     }
 
     protected abstract void bindData(T dataBinding);

@@ -46,14 +46,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.uncle.administrator.fleamarket.TextActivity" />
         <activity android:name="com.uncle.administrator.fleamarket.Sell.SellActivity" />
-        <activity android:name="com.uncle.administrator.fleamarket.GoodsDetailsActivity" />
-        <activity android:name="com.uncle.administrator.fleamarket.ViewPagerActivity" />
+        <activity android:name="com.uncle.administrator.fleamarket.GoodsDetails.GoodsDetailsActivity" />
+        <activity android:name="com.uncle.administrator.fleamarket.GoodsDetails.ViewPagerActivity" />
         <activity android:name=".chat.ChatActivity" />
         <activity android:name="com.uncle.administrator.fleamarket.MainActivity" />
         <activity android:name="com.uncle.administrator.fleamarket.Login.SetUesrDataActivity" />
-        <activity android:name="com.uncle.administrator.fleamarket.ChangePersonDataActivity" />
+        <activity android:name="com.uncle.administrator.fleamarket.Mine.PersonDataSettingActivity" />
         <activity android:name="com.uncle.administrator.fleamarket.NullActivity" />
         <activity android:name=".Mine.MineDataActivity" />
         <activity android:name="com.uncle.administrator.fleamarket.Login.welcome_page" />

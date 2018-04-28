@@ -10,7 +10,7 @@ import com.uncle.Base.BaseBindAdapter;
 import com.uncle.Base.BaseBindingActivity;
 import com.uncle.Util.ToastUtil;
 import com.uncle.DTO.shopGoods;
-import com.uncle.administrator.fleamarket.GoodsDetailsActivity;
+import com.uncle.administrator.fleamarket.GoodsDetails.GoodsDetailsActivity;
 import com.uncle.administrator.fleamarket.R;
 import com.uncle.administrator.fleamarket.databinding.ActivityMineDataBinding;
 import com.uncle.bomb.BOMBOpenHelper;

@@ -5,14 +5,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#e7e7e7"
+        android:background="@color/white"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:background="#FFF"
-            android:paddingStart="20dp"
+            android:layout_marginStart="20dp"
             android:paddingTop="10dp"
             android:text="Market"
             android:textColor="#000"
@@ -57,6 +57,9 @@
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recylerview"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:paddingTop="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior" />

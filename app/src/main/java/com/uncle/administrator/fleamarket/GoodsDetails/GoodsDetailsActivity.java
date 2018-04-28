@@ -1,4 +1,4 @@
-package com.uncle.administrator.fleamarket;
+package com.uncle.administrator.fleamarket.GoodsDetails;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -17,6 +17,8 @@ import com.uncle.Util.KeyboardUtil;
 import com.uncle.DTO.CommentZan;
 import com.uncle.DTO.Profile;
 import com.uncle.DTO.shopGoods;
+import com.uncle.Util.ToastUtil;
+import com.uncle.administrator.fleamarket.R;
 import com.uncle.administrator.fleamarket.chat.ChatActivity;
 import com.uncle.administrator.fleamarket.databinding.ActivityGoodsDetailBinding;
 import com.uncle.bomb.BOMBOpenHelper;
@@ -43,7 +45,7 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
     private String goodsOwnerObjectId;
     private ArrayList zanList = null;
     private ArrayList commentList = null;
-    private Profile pageAccount;
+    private Profile objectProfile;
 
     @Override
     protected void bindData(ActivityGoodsDetailBinding dataBinding) {
@@ -89,7 +91,6 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
         bomb.findAccountDataAlone(targetObject, new BOMBOpenHelper.FindAccountDataAloneCallback() {
             @Override
             public void onSuccess(Profile object) {
-                pageAccount = object;
                 Message message = new Message();
                 message.what = messageType;
                 message.obj = object;
@@ -108,10 +109,16 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
         @Override
         public void onClick(View view) {
             if (goodsOwnerObjectId.equals(profile.getObjectId())) {
-                Toast.makeText(GoodsDetailsActivity.this, "不能自己与自己聊天", Toast.LENGTH_SHORT).show();
-            } else {
-                navToChat(pageAccount.getObjectId(), pageAccount.getName(), pageAccount.getAvatar());
+                ToastUtil.show(GoodsDetailsActivity.this, "不能自己与自己聊天");
+                return;
             }
+            if (objectProfile == null) {
+                findAccountDataFromBomb(GET_GOODS_OWNER_ACCOUNT, goodsOwnerObjectId);
+                ToastUtil.show(GoodsDetailsActivity.this, "系统正繁忙，请稍候");
+                return;
+            }
+            navToChat(objectProfile.getObjectId(), objectProfile.getName(), objectProfile.getAvatar());
+
         }
     }
 
@@ -292,7 +299,7 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
             super.handleMessage(msg);
             switch (msg.what) {
                 case GET_GOODS_OWNER_ACCOUNT:
-                    pageAccount = (Profile) msg.obj;
+                    objectProfile = (Profile) msg.obj;
                     break;
                 default:
                     break;

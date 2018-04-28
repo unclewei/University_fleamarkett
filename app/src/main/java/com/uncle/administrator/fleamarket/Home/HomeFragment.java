@@ -17,7 +17,7 @@ import com.ethanhua.skeleton.SkeletonScreen;
 import com.uncle.Base.BaseBindAdapter;
 import com.uncle.Base.BaseBindingFragment;
 import com.uncle.DTO.shopGoods;
-import com.uncle.administrator.fleamarket.GoodsDetailsActivity;
+import com.uncle.administrator.fleamarket.GoodsDetails.GoodsDetailsActivity;
 import com.uncle.administrator.fleamarket.R;
 import com.uncle.administrator.fleamarket.databinding.GoodsFragmentBinding;
 

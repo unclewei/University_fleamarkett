@@ -10,7 +10,6 @@ import com.uncle.administrator.fleamarket.databinding.LoginActivityBinding;
 import cn.bmob.sms.BmobSMS;
 
 /**
- *
  * @author Administrator
  * @date 2017/4/15 0015
  */
@@ -23,6 +22,7 @@ public class LoginActivity extends BaseBindingActivity<LoginActivityBinding> {
         BmobSMS.initialize(LoginActivity.this, "144dbb1fbca09ce5d3af201a05c54628");
         LoginVM loginVM = new LoginVM(LoginActivity.this, binding);
         binding.setModule(loginVM);
+        judgeLogin();
     }
 
     @Override

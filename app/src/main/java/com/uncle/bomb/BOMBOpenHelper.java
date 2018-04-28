@@ -1,5 +1,6 @@
 package com.uncle.bomb;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.uncle.DTO.CommentZan;
@@ -361,8 +362,8 @@ public class BOMBOpenHelper {
     }
 
     //更新头像资料，姓名，学校
-    public void updateAllData(String objectId, Profile userAccount, final LoginUpdateSchoolCallback loginUpdateSchoolCallback) {
-        userAccount.update(objectId, new UpdateListener() {
+    public void updateAllData(String objectId, Profile profile, final LoginUpdateSchoolCallback loginUpdateSchoolCallback) {
+        profile.update(objectId, new UpdateListener() {
             @Override
             public void done(BmobException e) {
                 loginUpdateSchoolCallback.done();
@@ -370,14 +371,18 @@ public class BOMBOpenHelper {
         });
     }
 
-    public void uploadHeadPortrait(final String objectId, final Profile userAccount
+    public void uploadHeadPortrait(final String objectId, final Profile profile
             , final LoginUpdateSchoolCallback loginUpdateSchoolCallback) {
-        final BmobFile bmobFile = new BmobFile(new File(userAccount.getAvatar()));
+        if (TextUtils.isEmpty(profile.getAvatar())) {
+            updateAllData(objectId, profile, loginUpdateSchoolCallback);
+            return;
+        }
+        final BmobFile bmobFile = new BmobFile(new File(profile.getAvatar()));
         bmobFile.uploadblock(new UploadFileListener() {
             @Override
             public void done(BmobException e) {
                 if (e == null) {
-                    updateAllData(objectId, userAccount, loginUpdateSchoolCallback);
+                    updateAllData(objectId, profile, loginUpdateSchoolCallback);
                     //bmobFile.getFileUrl()--返回的上传文件的完整地址
                 } else {
                     loginUpdateSchoolCallback.fail();

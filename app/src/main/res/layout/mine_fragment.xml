@@ -50,6 +50,7 @@
                 android:id="@+id/img_avatar"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
+                android:paddingEnd="10dp"
                 android:layout_gravity="right|center_vertical"
                 android:layout_marginStart="10dp"
                 android:src="@drawable/head_yard" />
@@ -69,15 +70,6 @@
                 android:layout_weight="0.62"
                 android:background="@drawable/bt_3_fabu"
                 android:onClick="@{module::navToMyPublic}"
-                android:scaleType="center" />
-
-            <ImageView
-                android:id="@+id/img_my_buy"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/bt_3_maidaode"
-                android:onClick="@{module::navToMyBuy}"
                 android:scaleType="center" />
 
             <ImageView
