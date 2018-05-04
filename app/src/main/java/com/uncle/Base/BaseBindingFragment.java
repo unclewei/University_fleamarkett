@@ -23,7 +23,7 @@ public abstract class BaseBindingFragment<T extends ViewDataBinding> extends Fra
 
     protected T binding;
     private boolean isCreated = false;
-    protected Profile myAccount;
+    protected Profile profile;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,8 +51,7 @@ public abstract class BaseBindingFragment<T extends ViewDataBinding> extends Fra
         SharedPreferences sp = getActivity().getSharedPreferences("account", Context.MODE_PRIVATE);
         String string = sp.getString("profile", null);
         if (string != null) {
-
-            myAccount = new Gson().fromJson(string, Profile.class);
+            profile = new Gson().fromJson(string, Profile.class);
         }
     }
 

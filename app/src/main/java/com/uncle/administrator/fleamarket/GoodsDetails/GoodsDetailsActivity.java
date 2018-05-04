@@ -41,7 +41,7 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
     private final int GET_GOODS_OWNER_ACCOUNT = 7;
     private final int GET_MY_ACCOUNT = 8;
     private String pageGoodsID;
-    private BOMBOpenHelper bomb = new BOMBOpenHelper();
+    private BOMBOpenHelper bomb = BOMBOpenHelper.getInstance();
     private String goodsOwnerObjectId;
     private ArrayList zanList = null;
     private ArrayList commentList = null;
@@ -181,12 +181,13 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
         if (intent != null) {
             pageGoodsID = intent.getStringExtra("pageGoodsId");
             goodsOwnerObjectId = intent.getStringExtra("goodsOwnerObjectId");
-            BOMBOpenHelper bomb = new BOMBOpenHelper();
             bomb.find_alone(pageGoodsID, new BOMBOpenHelper.ImageCallback() {
                 @Override
                 public void onImageLoad(shopGoods shopgoods) {
                     Glide.with(GoodsDetailsActivity.this)
                             .load(shopgoods.getAvatar())
+                            .placeholder(R.drawable.head_yard)
+                            .error(R.drawable.head_black)
                             .into(binding.imgHead);
                     binding.tvName.setText(shopgoods.getName());
                     binding.tvOrganization.setText(shopgoods.getOrganization());

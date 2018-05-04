@@ -1,23 +1,19 @@
 package com.uncle.administrator.fleamarket.Mine;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 
 import com.uncle.Base.BaseBindAdapter;
 import com.uncle.Base.BaseBindingActivity;
-import com.uncle.Util.ToastUtil;
 import com.uncle.DTO.shopGoods;
+import com.uncle.Util.ToastUtil;
 import com.uncle.administrator.fleamarket.GoodsDetails.GoodsDetailsActivity;
 import com.uncle.administrator.fleamarket.R;
 import com.uncle.administrator.fleamarket.databinding.ActivityMineDataBinding;
 import com.uncle.bomb.BOMBOpenHelper;
 
 import java.util.List;
-
-import static com.uncle.administrator.fleamarket.chat.ChatActivity.TARGET_OBJECT_ID;
 
 /**
  * @author Administrator
@@ -31,7 +27,6 @@ public class MineDataActivity extends BaseBindingActivity<ActivityMineDataBindin
     public static final String MY_ZAN = "myZan";
     public static final String TYPE = "type";
     private MineDataAdapter adapter;
-    private String object;
     private BOMBOpenHelper bomb;
     private int page = 1;
     private boolean isLast;
@@ -61,11 +56,9 @@ public class MineDataActivity extends BaseBindingActivity<ActivityMineDataBindin
     }
 
     private void initData() {
-        SharedPreferences sharedPreferences = getSharedPreferences("account", Context.MODE_WORLD_READABLE);
-        object = sharedPreferences.getString(TARGET_OBJECT_ID, null);
         Intent intent = getIntent();
         type = intent.getStringExtra(TYPE);
-        if (object == null || type == null) {
+        if (profile.getObjectId() == null || type == null) {
             ToastUtil.show(MineDataActivity.this, "数据出错");
             return;
         }
@@ -75,13 +68,13 @@ public class MineDataActivity extends BaseBindingActivity<ActivityMineDataBindin
     private void getList(String type, BOMBOpenHelper.OnGoodsListCallBack callBack) {
         switch (type) {
             case MY_PUBLIC:
-                bomb.findMyPubGoods(object, page, callBack);
+                bomb.findMyPubGoods(profile.getObjectId(), page, callBack);
                 break;
             case MY_SCAN:
-                bomb.findMyGoods(object, MY_SCAN, page, callBack);
+                bomb.findMyGoods(profile.getObjectId(), MY_SCAN, page, callBack);
                 break;
             case MY_ZAN:
-                bomb.findMyGoods(object, MY_ZAN, page, callBack);
+                bomb.findMyGoods(profile.getObjectId(), MY_ZAN, page, callBack);
                 break;
             default:
                 break;

@@ -151,7 +151,7 @@ public class BOMBOpenHelper {
     }
 
 
-    private void upload_alnog(String picPath, final UploadAlongListener alongListener) {
+    private void uploadAvatar(String picPath, final UploadAlongListener alongListener) {
         final BmobFile bmobFile = new BmobFile(new File(picPath));
         bmobFile.uploadblock(new UploadFileListener() {
 
@@ -312,55 +312,6 @@ public class BOMBOpenHelper {
         });
     }
 
-
-    //登录界面设置名字的时候更新数据库的名字
-    public void Login_update_name(String objectId, String name) {
-        Profile userAccount = new Profile();
-        userAccount.setName(name);
-        userAccount.update(objectId, new UpdateListener() {
-            @Override
-            public void done(BmobException e) {
-
-            }
-        });
-    }
-
-
-    //更新学校的名字
-    public void loginUpdateSchool(String objectId, String college, String organization, final LoginUpdateSchoolCallback loginUpdateSchoolCallback) {
-
-        Profile userAccount = new Profile();
-        userAccount.setCollege(college);
-        userAccount.setOrganization(organization);
-        userAccount.update(objectId, new UpdateListener() {
-            @Override
-            public void done(BmobException e) {
-                loginUpdateSchoolCallback.done();
-            }
-        });
-    }
-
-    //上传头像
-    public void uploadHeadPortrait(String picPath) {
-        BmobFile bmobFile = new BmobFile(new File(picPath));
-        bmobFile.uploadblock(new UploadFileListener() {
-            @Override
-            public void done(BmobException e) {
-                if (e == null) {
-                    //bmobFile.getFileUrl()--返回的上传文件的完整地址
-                    //成功
-                } else {
-                    //fail
-                }
-            }
-
-            @Override
-            public void onProgress(Integer value) {
-                // 返回的上传进度（百分比）
-            }
-        });
-    }
-
     //更新头像资料，姓名，学校
     public void updateAllData(String objectId, Profile profile, final LoginUpdateSchoolCallback loginUpdateSchoolCallback) {
         profile.update(objectId, new UpdateListener() {
@@ -382,8 +333,8 @@ public class BOMBOpenHelper {
             @Override
             public void done(BmobException e) {
                 if (e == null) {
+                    profile.setAvatar(bmobFile.getFileUrl());
                     updateAllData(objectId, profile, loginUpdateSchoolCallback);
-                    //bmobFile.getFileUrl()--返回的上传文件的完整地址
                 } else {
                     loginUpdateSchoolCallback.fail();
                 }
@@ -391,7 +342,6 @@ public class BOMBOpenHelper {
 
             @Override
             public void onProgress(Integer value) {
-                // 返回的上传进度（百分比）
             }
         });
     }

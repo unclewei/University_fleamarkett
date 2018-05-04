@@ -3,6 +3,7 @@ package com.uncle.administrator.fleamarket.Sell;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.View;
 import android.widget.Toast;
@@ -21,6 +22,7 @@ import com.uncle.bomb.BOMBOpenHelper;
 import com.uncle.DTO.shopGoods;
 
 import java.util.ArrayList;
+import java.util.concurrent.ThreadFactory;
 
 
 /**
@@ -106,11 +108,16 @@ public class SellActivity extends BaseBindingActivity<ActivitySellBinding> imple
                             , title, detail, price, null, 0,
                             imgFileList.size(), profile.getObjectId(), profile.getCollege(),
                             profile.getOrganization(), profile.getAvatar(), profile.getName());
-                    final BOMBOpenHelper bomb = new BOMBOpenHelper();
-                    Runnable runnable = new Runnable() {
+                    final Runnable runnable = new Runnable() {
                         @Override
                         public void run() {
-                            bomb.uploadImg(shopgoods);
+                            BOMBOpenHelper.getInstance().uploadImg(shopgoods);
+                        }
+                    };
+                    new ThreadFactory() {
+                        @Override
+                        public Thread newThread(@NonNull Runnable r) {
+                            return newThread(runnable);
                         }
                     };
                     runnable.run();

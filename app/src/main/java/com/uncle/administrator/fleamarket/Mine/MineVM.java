@@ -37,7 +37,7 @@ public class MineVM {
     }
 
     public void navToSet(View view) {
-
+        fragment.exit();
     }
 
 }

@@ -30,6 +30,7 @@ import com.bumptech.glide.Glide;
 import com.uncle.Base.BaseBindingActivity;
 import com.uncle.DTO.Profile;
 import com.uncle.Util.DialogUtil;
+import com.uncle.Util.ToastUtil;
 import com.uncle.administrator.fleamarket.MainActivity;
 import com.uncle.administrator.fleamarket.R;
 import com.uncle.administrator.fleamarket.databinding.PersonDataSettingActivityBinding;
@@ -85,6 +86,10 @@ public class PersonDataSettingActivity extends BaseBindingActivity<PersonDataSet
             return;
         }
         if (v == binding.btnComfig) {
+            if (TextUtils.isEmpty(binding.tvName.getText().toString().trim())) {
+                ToastUtil.show(PersonDataSettingActivity.this, "名字不可以为空");
+                return;
+            }
             DialogUtil.getInstance(PersonDataSettingActivity.this).show();
             updateDataOnBomb();
             return;
@@ -118,6 +123,9 @@ public class PersonDataSettingActivity extends BaseBindingActivity<PersonDataSet
     }
 
     private void updateDataOnBomb() {
+        if (TextUtils.isEmpty(avaterUrl)) {
+            avaterUrl = profile.getAvatar();
+        }
         Profile profile = new Profile();
         profile.setCollege(college);
         profile.setOrganization(organization);

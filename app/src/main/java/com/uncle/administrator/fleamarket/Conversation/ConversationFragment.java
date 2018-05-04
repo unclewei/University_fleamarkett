@@ -49,6 +49,7 @@ public class ConversationFragment extends BaseBindingFragment<ConversationFragme
         binding.list.addItemDecoration(new DividerItemDecoration(
                 getActivity(), DividerItemDecoration.HORIZONTAL));
         binding.list.setAdapter(adapter);
+
     }
 
     private void navToChat(ConversationDTO user) {
@@ -62,6 +63,7 @@ public class ConversationFragment extends BaseBindingFragment<ConversationFragme
     }
 
     private void getConversationList() {
+        List<BmobIMConversation> lists =  BmobIM.getInstance().loadAllConversation();
         List<ConversationDTO> list = dao.findConversationByDB();
         if (list == null || list.size() == 0) {
             return;
