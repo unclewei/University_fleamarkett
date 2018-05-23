@@ -28,7 +28,7 @@ public class MineDataActivity extends BaseBindingActivity<ActivityMineDataBindin
     public static final String TYPE = "type";
     private MineDataAdapter adapter;
     private BOMBOpenHelper bomb;
-    private int page = 1;
+    private int page = 0;
     private boolean isLast;
     private String type;
 
@@ -68,12 +68,15 @@ public class MineDataActivity extends BaseBindingActivity<ActivityMineDataBindin
     private void getList(String type, BOMBOpenHelper.OnGoodsListCallBack callBack) {
         switch (type) {
             case MY_PUBLIC:
+                binding.title.setText("PublicList");
                 bomb.findMyPubGoods(profile.getObjectId(), page, callBack);
                 break;
             case MY_SCAN:
+                binding.title.setText("ScanList");
                 bomb.findMyGoods(profile.getObjectId(), MY_SCAN, page, callBack);
                 break;
             case MY_ZAN:
+                binding.title.setText("ZanList");
                 bomb.findMyGoods(profile.getObjectId(), MY_ZAN, page, callBack);
                 break;
             default:

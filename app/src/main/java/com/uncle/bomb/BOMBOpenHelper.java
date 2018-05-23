@@ -3,6 +3,7 @@ package com.uncle.bomb;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.uncle.DTO.CommentZan;
 import com.uncle.DTO.Profile;
 import com.uncle.DTO.shopGoods;
@@ -49,10 +50,28 @@ public class BOMBOpenHelper {
             @Override
             public void done(String objectId, BmobException e) {
                 if (e == null) {
-                    System.out.println("整个id是：" + objectId);
-                } else {
-                    System.out.println("错误的信息是是：" + e.getErrorCode() + "-----------" + e.getMessage());
+                    return;
                 }
+
+            }
+
+        });
+    }
+
+    /**
+     * 创建一条商品信息
+     */
+    public void createPerson(shopGoods goods, final OnBmobStringListener onBmobStringListener) {
+        goods.save(new SaveListener<String>() {
+
+            @Override
+            public void done(String objectId, BmobException e) {
+                if (e == null) {
+                    onBmobStringListener.onDone(objectId);
+                    System.out.println("整个id是：" + objectId);
+                    return;
+                }
+                onBmobStringListener.onFail(e.toString());
             }
 
         });
@@ -96,7 +115,7 @@ public class BOMBOpenHelper {
             public void done(Profile userAccount, BmobException e) {
                 if (e == null || userAccount != null) {
                     if (MineDataActivity.MY_SCAN.equals(type)) {
-                        findScanList(userAccount.getScanList(), setSkipNumber, onGoodsListCallBack);
+                        findScanList(userAccount.getPublicList(), setSkipNumber, onGoodsListCallBack);
                         return;
                     }
                     if (MineDataActivity.MY_ZAN.equals(type)) {
@@ -107,7 +126,7 @@ public class BOMBOpenHelper {
         });
     }
 
-    public void uploadImg(final shopGoods shopgoods) {
+    public void uploadImg(final shopGoods shopgoods, final Profile profile, final OnBmobStringListener onBmobStringListener) {
         final String[] filePaths = new String[shopgoods.getImgFileList().size()];
         for (int i = 0; i < shopgoods.getImgFileList().size(); i++) {
             filePaths[i] = shopgoods.getImgFileList().get(i);
@@ -126,13 +145,39 @@ public class BOMBOpenHelper {
                         }
                     }
                     shopgoods.setImgFileList((ArrayList<String>) urls);
-                    createPerson(shopgoods);
+                    createPerson(shopgoods, new OnBmobStringListener() {
+                        @Override
+                        public void onDone(String object) {
+                            ArrayList<String> list = new ArrayList<>();
+                            if (profile.getPublicList() != null) {
+                                list = profile.getPublicList();
+                            }
+                            list.add(object);
+                            profile.setPublicList(list);
+                            profile.update(new UpdateListener() {
+                                @Override
+                                public void done(BmobException e) {
+                                    //更新成功
+                                    if (e == null) {
+                                        onBmobStringListener.onDone(new Gson().toJson(profile));
+                                        return;
+                                    }
+                                    onBmobStringListener.onFail(e.toString());
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onFail(String failResult) {
+                            onBmobStringListener.onFail(failResult);
+                        }
+                    });
                 }
             }
 
             @Override
             public void onError(int statuscode, String errormsg) {
-//				ShowToast("错误码"+statuscode +",错误描述："+errormsg);
+                onBmobStringListener.onFail(errormsg);
             }
 
             @Override
@@ -172,7 +217,7 @@ public class BOMBOpenHelper {
 
 
     //通过id找到一条数据，用于点击商品之后的详细信息
-    public void find_alone(String objID, final ImageCallback callback) {
+    public void findAlone(String objID, final ImageCallback callback) {
         BmobQuery<shopGoods> query = new BmobQuery<>();
         query.getObject(objID, new QueryListener<shopGoods>() {
             @Override
@@ -299,33 +344,33 @@ public class BOMBOpenHelper {
 
 
     //增加一个账号信息
-    public void addAccount(Profile profile, final AddAccountCallback addAccountCallback) {
+    public void addAccount(Profile profile, final OnBmobStringListener onBmobStringListener) {
         profile.save(new SaveListener<String>() {
             @Override
             public void done(String s, BmobException e) {
                 if (e == null) {
-                    addAccountCallback.onSuccess(s);
+                    onBmobStringListener.onDone(s);
                     return;
                 }
-                addAccountCallback.onFail(e.toString());
+                onBmobStringListener.onFail(e.toString());
             }
         });
     }
 
     //更新头像资料，姓名，学校
-    public void updateAllData(String objectId, Profile profile, final LoginUpdateSchoolCallback loginUpdateSchoolCallback) {
+    public void updateAllData(String objectId, Profile profile, final OnBmobListener OnBmobListener) {
         profile.update(objectId, new UpdateListener() {
             @Override
             public void done(BmobException e) {
-                loginUpdateSchoolCallback.done();
+                OnBmobListener.done();
             }
         });
     }
 
     public void uploadHeadPortrait(final String objectId, final Profile profile
-            , final LoginUpdateSchoolCallback loginUpdateSchoolCallback) {
+            , final OnBmobListener OnBmobListener) {
         if (TextUtils.isEmpty(profile.getAvatar())) {
-            updateAllData(objectId, profile, loginUpdateSchoolCallback);
+            updateAllData(objectId, profile, OnBmobListener);
             return;
         }
         final BmobFile bmobFile = new BmobFile(new File(profile.getAvatar()));
@@ -334,9 +379,9 @@ public class BOMBOpenHelper {
             public void done(BmobException e) {
                 if (e == null) {
                     profile.setAvatar(bmobFile.getFileUrl());
-                    updateAllData(objectId, profile, loginUpdateSchoolCallback);
+                    updateAllData(objectId, profile, OnBmobListener);
                 } else {
-                    loginUpdateSchoolCallback.fail();
+                    OnBmobListener.fail();
                 }
             }
 
@@ -402,13 +447,13 @@ public class BOMBOpenHelper {
         void onSuccess(Profile object);
     }
 
-    public interface AddAccountCallback {
-        public void onSuccess(String object);
+    public interface OnBmobStringListener {
+        void onDone(String object);
 
         void onFail(String failResult);
     }
 
-    public interface LoginUpdateSchoolCallback {
+    public interface OnBmobListener {
         void done();
 
         void fail();

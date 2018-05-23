@@ -87,9 +87,9 @@ public class SetUesrDataActivity extends BaseBindingActivity<SetUserDataActivity
         String name = binding.etName.getText().toString();
         Profile profile = new Profile(nub, null, name, college, organization, null, null, null);
         SPUtil.getInstance(SetUesrDataActivity.this).saveSP("profile", new Gson().toJson(profile));
-        BOMBOpenHelper.getInstance().addAccount(profile, new BOMBOpenHelper.AddAccountCallback() {
+        BOMBOpenHelper.getInstance().addAccount(profile, new BOMBOpenHelper.OnBmobStringListener() {
             @Override
-            public void onSuccess(String object) {
+            public void onDone(String object) {
                 DialogUtil.getInstance(SetUesrDataActivity.this).dismiss();
                 Intent intent = new Intent(SetUesrDataActivity.this, MainActivity.class);
                 startActivity(intent);

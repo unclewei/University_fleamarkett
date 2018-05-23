@@ -18,14 +18,14 @@ public class Profile extends BmobObject {
     private String organization;
     private ArrayList<String> zanList;
     private ArrayList<String> commentList;
-    private ArrayList<String> scanList;
+    private ArrayList<String> publicList;
 
     public Profile() {
     }
 
     public Profile(String phoneNub, String avatar, String name, String college,
                    String organization, ArrayList<String> zanList,
-                   ArrayList<String> commentList, ArrayList<String> scanList) {
+                   ArrayList<String> commentList, ArrayList<String> publicList) {
         this.phoneNub = phoneNub;
         this.avatar = avatar;
         this.name = name;
@@ -33,15 +33,15 @@ public class Profile extends BmobObject {
         this.organization = organization;
         this.zanList = zanList;
         this.commentList = commentList;
-        this.scanList = scanList;
+        this.publicList = publicList;
     }
 
-    public ArrayList<String> getScanList() {
-        return scanList;
+    public ArrayList<String> getPublicList() {
+        return publicList;
     }
 
-    public void setScanList(ArrayList scanList) {
-        this.scanList = scanList;
+    public void setPublicList(ArrayList publicList) {
+        this.publicList = publicList;
     }
 
     public ArrayList<String> getCommentList() {

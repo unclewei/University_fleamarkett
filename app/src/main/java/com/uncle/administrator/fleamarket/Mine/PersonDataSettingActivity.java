@@ -131,7 +131,7 @@ public class PersonDataSettingActivity extends BaseBindingActivity<PersonDataSet
         profile.setOrganization(organization);
         profile.setAvatar(avaterUrl);
         profile.setName(binding.tvName.getText().toString());
-        BOMBOpenHelper.getInstance().uploadHeadPortrait(this.profile.getObjectId(), profile, new BOMBOpenHelper.LoginUpdateSchoolCallback() {
+        BOMBOpenHelper.getInstance().uploadHeadPortrait(this.profile.getObjectId(), profile, new BOMBOpenHelper.OnBmobListener() {
             @Override
             public void done() {
                 DialogUtil.getInstance(PersonDataSettingActivity.this).dismiss();

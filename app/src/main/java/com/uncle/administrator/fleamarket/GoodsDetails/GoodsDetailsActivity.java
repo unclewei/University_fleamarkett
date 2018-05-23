@@ -181,7 +181,7 @@ public class GoodsDetailsActivity extends BaseBindingActivity<ActivityGoodsDetai
         if (intent != null) {
             pageGoodsID = intent.getStringExtra("pageGoodsId");
             goodsOwnerObjectId = intent.getStringExtra("goodsOwnerObjectId");
-            bomb.find_alone(pageGoodsID, new BOMBOpenHelper.ImageCallback() {
+            bomb.findAlone(pageGoodsID, new BOMBOpenHelper.ImageCallback() {
                 @Override
                 public void onImageLoad(shopGoods shopgoods) {
                     Glide.with(GoodsDetailsActivity.this)

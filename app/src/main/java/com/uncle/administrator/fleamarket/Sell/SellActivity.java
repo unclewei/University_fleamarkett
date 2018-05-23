@@ -5,21 +5,25 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.lzy.imagepicker.view.CropImageView;
 import com.uncle.Base.BaseBindAdapter;
 import com.uncle.Base.BaseBindingActivity;
+import com.uncle.DTO.Profile;
+import com.uncle.DTO.shopGoods;
 import com.uncle.Util.GlideImageLoader;
+import com.uncle.Util.ToastUtil;
 import com.uncle.administrator.fleamarket.MainActivity;
 import com.uncle.administrator.fleamarket.R;
 import com.uncle.administrator.fleamarket.databinding.ActivitySellBinding;
 import com.uncle.bomb.BOMBOpenHelper;
-import com.uncle.DTO.shopGoods;
 
 import java.util.ArrayList;
 import java.util.concurrent.ThreadFactory;
@@ -111,7 +115,17 @@ public class SellActivity extends BaseBindingActivity<ActivitySellBinding> imple
                     final Runnable runnable = new Runnable() {
                         @Override
                         public void run() {
-                            BOMBOpenHelper.getInstance().uploadImg(shopgoods);
+                            BOMBOpenHelper.getInstance().uploadImg(shopgoods, profile, new BOMBOpenHelper.OnBmobStringListener() {
+                                @Override
+                                public void onDone(String object) {
+                                    saveMyAccountFromSharePerFences(new Gson().fromJson(object, Profile.class));
+                                }
+
+                                @Override
+                                public void onFail(String failResult) {
+                                    ToastUtil.show(SellActivity.this, failResult);
+                                }
+                            });
                         }
                     };
                     new ThreadFactory() {
@@ -126,14 +140,6 @@ public class SellActivity extends BaseBindingActivity<ActivitySellBinding> imple
                     startActivity(intent);
                     finish();
                 }
-            }
-        });
-
-
-        binding.sellBtClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
             }
         });
     }
@@ -189,5 +195,28 @@ public class SellActivity extends BaseBindingActivity<ActivitySellBinding> imple
     @Override
     public void onItemClick(ImageItem data) {
 
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(SellActivity.this);
+        builder.setMessage("退出编辑发布页吗？");
+        builder.setTitle("提示");
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                finish();
+
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+        return super.onKeyDown(keyCode, event);
     }
 }
